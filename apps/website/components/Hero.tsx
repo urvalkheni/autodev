@@ -1,4 +1,5 @@
 "use client";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 const container = {
@@ -11,6 +12,39 @@ const item = {
 };
 
 export default function Hero() {
+  const [text, setText] = useState("");
+  const words = ["DEVELOPERS.", "ENGINEERS.", "BUILDERS.", "HACKERS.", "CREATORS."];
+  const [wordIndex, setWordIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [typingSpeed, setTypingSpeed] = useState(150);
+
+  useEffect(() => {
+    const currentWord = words[wordIndex];
+    let timer: NodeJS.Timeout;
+
+    if (isDeleting) {
+      timer = setTimeout(() => {
+        setText(currentWord.substring(0, text.length - 1));
+        setTypingSpeed(80);
+      }, typingSpeed);
+    } else {
+      timer = setTimeout(() => {
+        setText(currentWord.substring(0, text.length + 1));
+        setTypingSpeed(120);
+      }, typingSpeed);
+    }
+
+    if (!isDeleting && text === currentWord) {
+      timer = setTimeout(() => setIsDeleting(true), 2000);
+    } else if (isDeleting && text === "") {
+      setIsDeleting(false);
+      setWordIndex((prev) => (prev + 1) % words.length);
+      setTypingSpeed(300);
+    }
+
+    return () => clearTimeout(timer);
+  }, [text, isDeleting, wordIndex, typingSpeed]);
+
   return (
     <section className="pt-36 pb-24 px-6 max-w-7xl mx-auto">
       <motion.div variants={container} initial="hidden" animate="show">
@@ -28,7 +62,10 @@ export default function Hero() {
         >
           THE APP STORE
           <br />
-          <span className="text-[#FFD700]">FOR DEVELOPERS.</span>
+          <span className="text-[#FFD700] inline-flex items-center min-h-[1.1em]">
+            FOR {text}
+            <span className="inline-block w-[4px] md:w-[8px] h-[0.8em] bg-[#FFD700] ml-2 align-middle animate-pulse" />
+          </span>
         </motion.h1>
 
         {/* Sub-headline */}

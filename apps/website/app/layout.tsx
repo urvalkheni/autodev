@@ -19,6 +19,11 @@ export const metadata: Metadata = {
   description:
     "Clone. Scan. Install. Build. An open-source cross-platform developer environment bootstrapper. Install any language, framework, or tool with a single command.",
   keywords: ["developer tools", "CLI", "package manager", "environment setup", "autodev"],
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
   openGraph: {
     title: "AutoDev — The App Store for Developers",
     description: "Clone. Scan. Install. Build.",

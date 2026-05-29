@@ -175,7 +175,7 @@ func runClone(repoURL, targetDir string, skipConfirm bool) error {
 	if !skipConfirm {
 		fmt.Print("  Proceed with installation? [y/N] ")
 		var answer string
-		fmt.Scanln(&answer)
+		_, _ = fmt.Scanln(&answer)
 		if answer != "y" && answer != "Y" && answer != "yes" {
 			fmt.Println(dimStyle.Render("  Installation cancelled."))
 			return nil

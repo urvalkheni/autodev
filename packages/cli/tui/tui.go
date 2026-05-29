@@ -25,14 +25,6 @@ var (
 	colorGray   = lipgloss.Color("#555555")
 	colorWhite  = lipgloss.Color("#F0F0F0")
 
-	styleTitle = lipgloss.NewStyle().
-			Bold(true).
-			Foreground(colorYellow).
-			BorderStyle(lipgloss.ThickBorder()).
-			BorderForeground(colorYellow).
-			Padding(0, 3).
-			Align(lipgloss.Center)
-
 	styleSelected = lipgloss.NewStyle().Bold(true).Foreground(colorYellow)
 	styleNormal   = lipgloss.NewStyle().Foreground(colorWhite)
 	styleDim      = lipgloss.NewStyle().Foreground(colorGray)
@@ -309,7 +301,6 @@ func (m Model) updateConfirm(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 // with full terminal access — this allows sudo to prompt for the password normally.
 func (m Model) execNextInstall() tea.Cmd {
 	if m.installIdx >= len(m.toInstall) {
-		m.screen = screenDone
 		return nil
 	}
 	pkg := m.toInstall[m.installIdx]
@@ -567,16 +558,6 @@ func (m Model) renderHeader() string {
 	return b.String()
 }
 
-func progressBar(done, total, width int) string {
-	if total == 0 {
-		return ""
-	}
-	filled := (done * width) / total
-	bar := strings.Repeat("█", filled) + strings.Repeat("░", width-filled)
-	return lipgloss.NewStyle().Foreground(colorYellow).Render("[") +
-		lipgloss.NewStyle().Foreground(colorGreen).Render(bar) +
-		lipgloss.NewStyle().Foreground(colorYellow).Render("]")
-}
 
 // buildInstallCmd builds an *exec.Cmd for a package, with stdin/stdout/stderr
 // connected to the real terminal (so sudo password prompts work).

@@ -112,7 +112,7 @@ func runSetup(path string, isDryRun, skipConfirm bool) error {
 	if !skipConfirm && !isDryRun {
 		fmt.Print("  Proceed with installation? [y/N] ")
 		var answer string
-		fmt.Scanln(&answer)
+		_, _ = fmt.Scanln(&answer)
 		if answer != "y" && answer != "Y" && answer != "yes" {
 			fmt.Println(dimStyle.Render("  Installation cancelled."))
 			return nil

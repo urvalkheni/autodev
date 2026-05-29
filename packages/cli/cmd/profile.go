@@ -97,7 +97,7 @@ func runProfile(c *catalog.Catalog, profileID string) error {
 
 	fmt.Print("  Proceed? [y/N] ")
 	var ans string
-	fmt.Scanln(&ans)
+	_, _ = fmt.Scanln(&ans)
 	if strings.ToLower(ans) != "y" && strings.ToLower(ans) != "yes" {
 		fmt.Println(dimStyle.Render("  Cancelled."))
 		return nil

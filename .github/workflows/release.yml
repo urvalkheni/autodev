@@ -56,7 +56,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ghcr.io/autodev-sh/autodev:latest
-            ghcr.io/autodev-sh/autodev:${{ github.ref_name }}
+            ghcr.io/heetmehta18/autodev:latest
+            ghcr.io/heetmehta18/autodev:${{ github.ref_name }}
           cache-from: type=gha
           cache-to: type=gha,mode=max

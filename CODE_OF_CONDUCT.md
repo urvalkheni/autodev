@@ -45,8 +45,8 @@ an individual is officially representing the community in public spaces.
 ## Enforcement
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported to the community leaders responsible for enforcement at
-**conduct@autodev.dev**.
+reported to the community leaders responsible for enforcement by opening a private report or contacting the project maintainers via GitHub:
+https://github.com/HEETMEHTA18/autodev/issues/new
 
 All complaints will be reviewed and investigated promptly and fairly.
 

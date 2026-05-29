@@ -38,7 +38,7 @@ func runSkills(path string) error {
 	dimStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("#888888"))
 
 	fmt.Println()
-	fmt.Println(titleStyle.Render("📚 AutoDev Skills — Learning Roadmap"))
+	fmt.Println(titleStyle.Render("  AutoDev Skills — Learning Roadmap"))
 	fmt.Println(dimStyle.Render("  Powered by skills.sh"))
 	fmt.Println()
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# AutoDev Installer — https://autodev.dev
-# Usage: curl -fsSL https://autodev.dev/install.sh | bash
+# AutoDev Installer — https://github.com/HEETMEHTA18/autodev
+# Usage: curl -fsSL https://raw.githubusercontent.com/HEETMEHTA18/autodev/main/scripts/install.sh | bash
 set -euo pipefail
 
 AUTODEV_VERSION="${AUTODEV_VERSION:-latest}"
@@ -24,7 +24,7 @@ echo -e "${YELLOW}"
 cat <<'EOF'
   AutoDev Installer
   Clone. Scan. Install. Build. — The App Store for Developers
-  https://autodev.dev
+  https://github.com/HEETMEHTA18/autodev
 EOF
 echo -e "${RESET}"
 
@@ -54,14 +54,38 @@ info "Detected: ${OS}/${ARCH}"
 # ── Fetch latest version ──────────────────────────────────────────────────────
 if [ "${AUTODEV_VERSION}" = "latest" ]; then
   info "Fetching latest release..."
+  GITHUB_RELEASE_URL="${GITHUB_API}/repos/${REPO}/releases/latest"
+  
+  # Fetch JSON response from GitHub API
   if command -v curl &>/dev/null; then
-    AUTODEV_VERSION=$(curl -fsSL "${GITHUB_API}/repos/${REPO}/releases/latest" \
-      | grep '"tag_name"' | sed -E 's/.*"v([^"]+)".*/\1/')
+    RELEASE_JSON=$(curl -fsSL -s "${GITHUB_RELEASE_URL}" || echo "")
   elif command -v wget &>/dev/null; then
-    AUTODEV_VERSION=$(wget -qO- "${GITHUB_API}/repos/${REPO}/releases/latest" \
-      | grep '"tag_name"' | sed -E 's/.*"v([^"]+)".*/\1/')
+    RELEASE_JSON=$(wget -qO- "${GITHUB_RELEASE_URL}" || echo "")
   else
     error "curl or wget is required"
+  fi
+
+  # Check if repo exists or has releases
+  if [ -z "${RELEASE_JSON}" ] || echo "${RELEASE_JSON}" | grep -q "Not Found"; then
+    warn "No GitHub release found for ${REPO}."
+    warn "This happens if you haven't created a Release on GitHub yet."
+    echo ""
+    echo "To fix this and make the installer work:"
+    echo "  1. Compile binaries locally or via GitHub Actions"
+    echo "  2. Go to https://github.com/${REPO}/releases and create a release"
+    echo "  3. Upload the compiled binaries as release assets"
+    echo ""
+    error "Please create a GitHub release first, or run the installer with a specific version: AUTODEV_VERSION=0.1.0"
+  fi
+
+  # Parse version tag
+  AUTODEV_VERSION=$(echo "${RELEASE_JSON}" | grep '"tag_name"' | sed -E 's/.*"v([^"]+)".*/\1/' || echo "")
+  if [ -z "${AUTODEV_VERSION}" ]; then
+    AUTODEV_VERSION=$(echo "${RELEASE_JSON}" | grep '"tag_name"' | sed -E 's/.*"tag_name":\s*"([^"]+)".*/\1/' || echo "")
+  fi
+
+  if [ -z "${AUTODEV_VERSION}" ]; then
+    error "Could not parse version tag from GitHub API response. Please check if the release exists."
   fi
 fi
 
@@ -129,5 +153,5 @@ echo -e "  ${GREEN}autodev profile web-dev${RESET}  — install a developer prof
 echo -e "  ${GREEN}autodev github USERNAME${RESET}  — scan a GitHub user's repos"
 echo -e "  ${GREEN}autodev doctor${RESET}           — check environment health"
 echo ""
-echo -e "  Docs: ${BLUE}https://autodev.dev/docs${RESET}"
+echo -e "  Docs: ${BLUE}https://github.com/HEETMEHTA18/autodev${RESET}"
 echo ""

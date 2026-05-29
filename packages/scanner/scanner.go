@@ -12,27 +12,27 @@ import (
 
 // Technology represents a detected technology with its confidence level.
 type Technology struct {
-	Name       string   `json:"name"`
-	Type       string   `json:"type"` // language | framework | package_manager | database | infra
-	Version    string   `json:"version,omitempty"`
-	ConfigFile string   `json:"config_file,omitempty"`
-	Confidence float64  `json:"confidence"` // 0.0 – 1.0
-	InstallCmd string   `json:"install_cmd,omitempty"`
-	DocsURL    string   `json:"docs_url,omitempty"`
+	Name       string  `json:"name"`
+	Type       string  `json:"type"` // language | framework | package_manager | database | infra
+	Version    string  `json:"version,omitempty"`
+	ConfigFile string  `json:"config_file,omitempty"`
+	Confidence float64 `json:"confidence"` // 0.0 – 1.0
+	InstallCmd string  `json:"install_cmd,omitempty"`
+	DocsURL    string  `json:"docs_url,omitempty"`
 }
 
 // ScanResult is the output of a repository scan.
 type ScanResult struct {
-	Path          string       `json:"path"`
-	Technologies  []Technology `json:"technologies"`
-	Languages     []string     `json:"languages"`
-	Frameworks    []string     `json:"frameworks"`
-	PackageManagers []string   `json:"package_managers"`
-	Databases     []string     `json:"databases"`
-	Infra         []string     `json:"infra"`
-	HasDocker     bool         `json:"has_docker"`
-	HasK8s        bool         `json:"has_kubernetes"`
-	RecommendedSetup []string  `json:"recommended_setup"`
+	Path             string       `json:"path"`
+	Technologies     []Technology `json:"technologies"`
+	Languages        []string     `json:"languages"`
+	Frameworks       []string     `json:"frameworks"`
+	PackageManagers  []string     `json:"package_managers"`
+	Databases        []string     `json:"databases"`
+	Infra            []string     `json:"infra"`
+	HasDocker        bool         `json:"has_docker"`
+	HasK8s           bool         `json:"has_kubernetes"`
+	RecommendedSetup []string     `json:"recommended_setup"`
 }
 
 // indicator maps a filename / glob pattern to a Technology.
@@ -244,14 +244,14 @@ func detectFromPackageJSON(path string, result *ScanResult, seen map[string]bool
 	}
 
 	frameworkDeps := map[string]Technology{
-		"react":        {Name: "React", Type: "framework", Confidence: 1.0, DocsURL: "https://react.dev"},
-		"vue":          {Name: "Vue", Type: "framework", Confidence: 1.0, DocsURL: "https://vuejs.org"},
+		"react":         {Name: "React", Type: "framework", Confidence: 1.0, DocsURL: "https://react.dev"},
+		"vue":           {Name: "Vue", Type: "framework", Confidence: 1.0, DocsURL: "https://vuejs.org"},
 		"@angular/core": {Name: "Angular", Type: "framework", Confidence: 1.0, DocsURL: "https://angular.io"},
-		"svelte":       {Name: "Svelte", Type: "framework", Confidence: 1.0, DocsURL: "https://svelte.dev"},
-		"next":         {Name: "Next.js", Type: "framework", Confidence: 1.0, DocsURL: "https://nextjs.org"},
-		"express":      {Name: "Express", Type: "framework", Confidence: 1.0, DocsURL: "https://expressjs.com"},
-		"fastify":      {Name: "Fastify", Type: "framework", Confidence: 1.0, DocsURL: "https://fastify.dev"},
-		"typescript":   {Name: "TypeScript", Type: "language", Confidence: 1.0, DocsURL: "https://typescriptlang.org"},
+		"svelte":        {Name: "Svelte", Type: "framework", Confidence: 1.0, DocsURL: "https://svelte.dev"},
+		"next":          {Name: "Next.js", Type: "framework", Confidence: 1.0, DocsURL: "https://nextjs.org"},
+		"express":       {Name: "Express", Type: "framework", Confidence: 1.0, DocsURL: "https://expressjs.com"},
+		"fastify":       {Name: "Fastify", Type: "framework", Confidence: 1.0, DocsURL: "https://fastify.dev"},
+		"typescript":    {Name: "TypeScript", Type: "language", Confidence: 1.0, DocsURL: "https://typescriptlang.org"},
 	}
 
 	for dep, tech := range frameworkDeps {

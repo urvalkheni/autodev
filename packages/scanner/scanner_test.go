@@ -11,10 +11,10 @@ func TestScan_NodeProject(t *testing.T) {
 	dir := t.TempDir()
 
 	files := map[string]string{
-		"package.json":    `{"name":"test","dependencies":{"react":"^18","next":"^15"}}`,
-		"pnpm-lock.yaml":  "",
-		"next.config.js":  "module.exports = {}",
-		"Dockerfile":      "FROM node:20",
+		"package.json":   `{"name":"test","dependencies":{"react":"^18","next":"^15"}}`,
+		"pnpm-lock.yaml": "",
+		"next.config.js": "module.exports = {}",
+		"Dockerfile":     "FROM node:20",
 	}
 	for name, content := range files {
 		path := filepath.Join(dir, name)

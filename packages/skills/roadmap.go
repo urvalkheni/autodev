@@ -9,11 +9,11 @@ import (
 
 // Skill represents a technology skill in a roadmap.
 type Skill struct {
-	Name        string   `json:"name"`
-	Category    string   `json:"category"`
-	Level       string   `json:"level"` // beginner | intermediate | advanced
-	Resources   []string `json:"resources"`
-	NextSkills  []string `json:"next_skills"`
+	Name       string   `json:"name"`
+	Category   string   `json:"category"`
+	Level      string   `json:"level"` // beginner | intermediate | advanced
+	Resources  []string `json:"resources"`
+	NextSkills []string `json:"next_skills"`
 }
 
 // Roadmap represents a personalized learning roadmap.
@@ -87,30 +87,30 @@ func (r *RoadmapGenerator) Generate(detected []string) *Roadmap {
 // PrintRoadmap prints the roadmap to stdout.
 func (r *Roadmap) Print() {
 	fmt.Println("\n╔══════════════════════════════════════════════════")
-	fmt.Printf("║  📚 %s\n", r.Title)
+	fmt.Printf("║  %s\n", r.Title)
 	fmt.Println("╚══════════════════════════════════════════════════")
 
 	if len(r.CurrentSkills) > 0 {
-		fmt.Println("\n✅ Current Skills Detected:")
+		fmt.Println("\n  [CURRENT SKILLS DETECTED]")
 		for _, s := range r.CurrentSkills {
-			fmt.Printf("   • %-20s [%s] %s\n", s.Name, s.Level, s.Category)
+			fmt.Printf("   - %-20s [%s] %s\n", s.Name, s.Level, s.Category)
 		}
 	}
 
 	if len(r.NextSteps) > 0 {
-		fmt.Println("\n🚀 Recommended Next Steps:")
+		fmt.Println("\n  [RECOMMENDED NEXT STEPS]")
 		for _, s := range r.NextSteps {
-			fmt.Printf("   • %-20s [%s]\n", s.Name, s.Level)
+			fmt.Printf("   - %-20s [%s]\n", s.Name, s.Level)
 			if len(s.Resources) > 0 {
-				fmt.Printf("     → %s\n", s.Resources[0])
+				fmt.Printf("     Link: %s\n", s.Resources[0])
 			}
 		}
 	}
 
 	if len(r.LongTermGoals) > 0 {
-		fmt.Println("\n🌟 Long-Term Goals:")
+		fmt.Println("\n  [LONG-TERM GOALS]")
 		for _, s := range r.LongTermGoals {
-			fmt.Printf("   • %-20s [%s]\n", s.Name, s.Level)
+			fmt.Printf("   - %-20s [%s]\n", s.Name, s.Level)
 		}
 	}
 	fmt.Println()

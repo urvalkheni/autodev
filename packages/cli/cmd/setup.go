@@ -72,18 +72,18 @@ func runSetup(path string, isDryRun, skipConfirm bool) error {
 	// Step 2: Check what's installed
 	inst := installer.New(isDryRun)
 	langToRuntime := map[string]string{
-		"Node.js":  "nodejs",
-		"Python":   "python",
-		"Go":       "go",
-		"Rust":     "rust",
-		"Docker":   "docker",
-		"Bun":      "bun",
-		"pnpm":     "pnpm",
-		"Flutter":  "flutter",
-		"Java":     "java",
-		"Kotlin":   "kotlin",
-		"PHP":      "php",
-		"Ruby":     "ruby",
+		"Node.js": "nodejs",
+		"Python":  "python",
+		"Go":      "go",
+		"Rust":    "rust",
+		"Docker":  "docker",
+		"Bun":     "bun",
+		"pnpm":    "pnpm",
+		"Flutter": "flutter",
+		"Java":    "java",
+		"Kotlin":  "kotlin",
+		"PHP":     "php",
+		"Ruby":    "ruby",
 	}
 
 	var toInstall []string

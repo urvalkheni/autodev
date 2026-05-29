@@ -21,14 +21,14 @@ type InstallSteps struct {
 
 // Package represents one installable entry in the catalog.
 type Package struct {
-	ID          string `yaml:"id"`
-	Name        string `yaml:"name"`
-	Category    string `yaml:"category"`
-	Description string `yaml:"description"`
-	Icon        string `yaml:"icon"`
+	ID          string   `yaml:"id"`
+	Name        string   `yaml:"name"`
+	Category    string   `yaml:"category"`
+	Description string   `yaml:"description"`
+	Icon        string   `yaml:"icon"`
 	Deps        []string `yaml:"deps"`
 	PostInstall []string `yaml:"post_install"`
-	Verify      string `yaml:"verify"`
+	Verify      string   `yaml:"verify"`
 	Install     struct {
 		Linux   InstallSteps `yaml:"linux"`
 		Darwin  InstallSteps `yaml:"darwin"`

@@ -12,14 +12,14 @@ import (
 
 // Info holds detected system information.
 type Info struct {
-	OS           string
-	Arch         string
-	Version      string
+	OS             string
+	Arch           string
+	Version        string
 	PackageManager string
-	RAMBytes     uint64
-	DiskBytes    uint64
-	CPUCores     int
-	HasGPU       bool
+	RAMBytes       uint64
+	DiskBytes      uint64
+	CPUCores       int
+	HasGPU         bool
 }
 
 // Detect returns a populated Info struct for the current system.

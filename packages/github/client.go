@@ -37,13 +37,13 @@ type Repo struct {
 
 // UserScanResult is the result of scanning all public repos for a user.
 type UserScanResult struct {
-	Username      string            `json:"username"`
-	TotalRepos    int               `json:"total_repos"`
-	Languages     map[string]int    `json:"languages"` // lang → repo count
-	Topics        map[string]int    `json:"topics"`
-	TopRepos      []Repo            `json:"top_repos"`
-	Recommended   []string          `json:"recommended_environment"`
-	SkillGaps     []string          `json:"skill_gaps"`
+	Username    string         `json:"username"`
+	TotalRepos  int            `json:"total_repos"`
+	Languages   map[string]int `json:"languages"` // lang → repo count
+	Topics      map[string]int `json:"topics"`
+	TopRepos    []Repo         `json:"top_repos"`
+	Recommended []string       `json:"recommended_environment"`
+	SkillGaps   []string       `json:"skill_gaps"`
 }
 
 // New creates a new GitHub API client.

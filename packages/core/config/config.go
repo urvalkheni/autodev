@@ -10,13 +10,13 @@ import (
 
 // Config holds the application configuration.
 type Config struct {
-	Version    string `mapstructure:"version"`
-	LogLevel   string `mapstructure:"log_level"`
-	OutputDir  string `mapstructure:"output_dir"`
-	GitHubToken string `mapstructure:"github_token"`
+	Version      string `mapstructure:"version"`
+	LogLevel     string `mapstructure:"log_level"`
+	OutputDir    string `mapstructure:"output_dir"`
+	GitHubToken  string `mapstructure:"github_token"`
 	SkillsAPIURL string `mapstructure:"skills_api_url"`
-	NoColor    bool   `mapstructure:"no_color"`
-	NoTelemetry bool  `mapstructure:"no_telemetry"`
+	NoColor      bool   `mapstructure:"no_color"`
+	NoTelemetry  bool   `mapstructure:"no_telemetry"`
 }
 
 // DefaultConfig returns sensible defaults.

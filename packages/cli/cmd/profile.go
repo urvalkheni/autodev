@@ -75,7 +75,7 @@ func runProfile(c *catalog.Catalog, profileID string) error {
 
 	fmt.Println()
 	fmt.Printf("  %s %s\n", titleStyle.Render(prof.Name), dimStyle.Render("profile"))
-	fmt.Println(dimStyle.Render("  "+prof.Description))
+	fmt.Println(dimStyle.Render("  " + prof.Description))
 	fmt.Println()
 
 	// Resolve with deps

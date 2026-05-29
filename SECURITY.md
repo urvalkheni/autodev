@@ -8,14 +8,10 @@
 
 ## Reporting a Vulnerability
 
-**Please do NOT report security vulnerabilities through public GitHub Issues.**
+Instead, please report security vulnerabilities privately via GitHub Security Advisories:
+https://github.com/HEETMEHTA18/autodev/security/advisories/new
 
-Instead, please send an email to **security@autodev.dev** with:
-
-1. Description of the vulnerability
-2. Steps to reproduce
-3. Potential impact
-4. Suggested fix (if any)
+Alternatively, you can contact the maintainer directly.
 
 You will receive a response within **48 hours**, and we aim to release a patch within **7 days** for critical issues.
 

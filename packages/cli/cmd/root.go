@@ -76,6 +76,8 @@ func init() {
 		newSkillsCmd(),
 		newExportCmd(),
 		newProfileCmd(),
+		newUICmd(),
+		newCloneCmd(),
 	)
 }
 

@@ -1,8 +1,18 @@
 <h1 align="center">
-  <img src="https://raw.githubusercontent.com/autodev-sh/autodev/main/apps/website/public/logo.svg" alt="AutoDev" width="80" />
+  <img src="https://raw.githubusercontent.com/HEETMEHTA18/autodev/main/apps/website/public/logo.svg" alt="AutoDev" width="80" />
   <br/>
   AutoDev
 </h1>
+
+```text
+  █████╗ ██╗   ██╗████████╗ ██████╗ ██████╗ ███████╗██╗   ██╗
+  ██╔══██╗██║   ██║╚══██╔══╝██╔═══██╗██╔══██╗██╔════╝██║   ██║
+  ███████║██║   ██║   ██║   ██║   ██║██║  ██║█████╗  ██║   ██║
+  ██╔══██║██║   ██║   ██║   ██║   ██║██║  ██║██╔══╝  ╚██╗ ██╔╝
+  ██║  ██║╚██████╔╝   ██║   ╚██████╔╝██████╔╝███████╗ ╚████╔╝ 
+  ╚═╝  ╚═╝ ╚═════╝    ╚═╝    ╚══════╝ ╚═════╝ ╚══════╝  ╚═══╝ 
+```
+
 
 <p align="center">
   <strong>Clone. Scan. Install. Build.</strong>
@@ -13,27 +23,27 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/autodev-sh/autodev/actions/workflows/ci.yml">
-    <img src="https://github.com/autodev-sh/autodev/actions/workflows/ci.yml/badge.svg" alt="CI" />
+  <a href="https://github.com/HEETMEHTA18/autodev/actions/workflows/ci.yml">
+    <img src="https://github.com/HEETMEHTA18/autodev/actions/workflows/ci.yml/badge.svg" alt="CI" />
   </a>
-  <a href="https://github.com/autodev-sh/autodev/releases/latest">
-    <img src="https://img.shields.io/github/v/release/autodev-sh/autodev?color=brightgreen" alt="Release" />
+  <a href="https://github.com/HEETMEHTA18/autodev/releases/latest">
+    <img src="https://img.shields.io/github/v/release/HEETMEHTA18/autodev?color=brightgreen" alt="Release" />
   </a>
   <a href="LICENSE">
     <img src="https://img.shields.io/badge/license-MIT-blue" alt="License" />
   </a>
-  <a href="https://github.com/autodev-sh/autodev/stargazers">
-    <img src="https://img.shields.io/github/stars/autodev-sh/autodev?style=social" alt="Stars" />
+  <a href="https://github.com/HEETMEHTA18/autodev/stargazers">
+    <img src="https://img.shields.io/github/stars/HEETMEHTA18/autodev?style=social" alt="Stars" />
   </a>
 </p>
 
 ---
 
-## ⚡ Quick Start
+## Quick Start
 
 ```bash
 # One-line install
-curl -fsSL https://autodev.dev/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/HEETMEHTA18/autodev/main/scripts/install.sh | bash
 
 # Or via NPX
 npx autodev setup
@@ -42,13 +52,13 @@ npx autodev setup
 pnpm dlx autodev setup
 
 # Or via Homebrew (macOS/Linux)
-brew install autodev-sh/tap/autodev
+brew install HEETMEHTA18/tap/autodev
 
 # Or via Scoop (Windows)
 scoop install autodev
 
 # Or via Docker
-docker run --rm -v $(pwd):/workspace ghcr.io/autodev-sh/autodev setup
+docker run --rm -v $(pwd):/workspace ghcr.io/heetmehta18/autodev setup
 ```
 
 Then run in any repo:
@@ -93,14 +103,14 @@ AutoDev scans your repository and detects:
 
 | Method | Command |
 |--------|---------|
-| Shell | `curl -fsSL https://autodev.dev/install.sh \| bash` |
+| Shell | `curl -fsSL https://raw.githubusercontent.com/HEETMEHTA18/autodev/main/scripts/install.sh \| bash` |
 | NPX | `npx autodev` |
 | PNPM | `pnpm dlx autodev` |
-| Homebrew | `brew install autodev-sh/tap/autodev` |
+| Homebrew | `brew install HEETMEHTA18/tap/autodev` |
 | Scoop | `scoop install autodev` |
 | Chocolatey | `choco install autodev` |
-| Docker | `docker run ghcr.io/autodev-sh/autodev` |
-| Binary | [GitHub Releases](https://github.com/autodev-sh/autodev/releases) |
+| Docker | `docker run ghcr.io/heetmehta18/autodev` |
+| Binary | [GitHub Releases](https://github.com/HEETMEHTA18/autodev/releases) |
 
 ---
 
@@ -133,13 +143,12 @@ autodev/
 
 We welcome contributions of all kinds! Please read [CONTRIBUTING.md](CONTRIBUTING.md) to get started.
 
-- 🐛 [Report a Bug](https://github.com/autodev-sh/autodev/issues/new?template=bug_report.md)
-- 💡 [Request a Feature](https://github.com/autodev-sh/autodev/issues/new?template=feature_request.md)
-- 📖 [Improve Docs](https://github.com/autodev-sh/autodev/tree/main/apps/website)
+- 🐛 [Report a Bug](https://github.com/HEETMEHTA18/autodev/issues/new?template=bug_report.md)
+- 💡 [Request a Feature](https://github.com/HEETMEHTA18/autodev/issues/new?template=feature_request.md)
+- 📖 [Improve Docs](https://github.com/HEETMEHTA18/autodev/tree/main/apps/website)
 
 ---
 
 ## 📜 License
 
-MIT © [AutoDev Contributors](https://github.com/autodev-sh/autodev/graphs/contributors)
-# autodev
+MIT © [AutoDev Contributors](https://github.com/HEETMEHTA18/autodev/graphs/contributors)

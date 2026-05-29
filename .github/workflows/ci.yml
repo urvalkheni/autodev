@@ -21,11 +21,16 @@ jobs:
         with:
           go-version: "1.22"
           cache: true
-      - name: golangci-lint
-        uses: golangci/golangci-lint-action@v4
-        with:
-          version: latest
-          working-directory: packages/cli
+      - name: Install golangci-lint
+        run: curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.59.0
+      - name: Run golangci-lint
+        run: |
+          for dir in packages/*; do
+            if [ -d "$dir" ] && [ -f "$dir/go.mod" ]; then
+              echo "Linting $dir..."
+              (cd "$dir" && $(go env GOPATH)/bin/golangci-lint run --timeout=5m)
+            fi
+          done
 
   go-test:
     name: Go Tests

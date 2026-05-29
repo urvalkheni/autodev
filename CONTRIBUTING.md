@@ -192,7 +192,6 @@ We require **≥ 90% coverage** for Go packages.
 
 ## Need Help?
 
-- Open a [Discussion](https://github.com/autodev-sh/autodev/discussions)
-- Join our community on Discord: https://discord.gg/autodev
+- Open a [Discussion](https://github.com/HEETMEHTA18/autodev/discussions)
 
 Thank you for contributing! 🚀

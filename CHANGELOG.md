@@ -32,5 +32,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - HTML, JSON, and Markdown report generation
 - Multi-platform binaries (Linux x86_64/arm64, macOS, Windows)
 
-[Unreleased]: https://github.com/autodev-sh/autodev/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/autodev-sh/autodev/releases/tag/v0.1.0
+[Unreleased]: https://github.com/HEETMEHTA18/autodev/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/HEETMEHTA18/autodev/releases/tag/v0.1.0

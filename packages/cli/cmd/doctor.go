@@ -15,9 +15,9 @@ import (
 
 func newDoctorCmd() *cobra.Command {
 	return &cobra.Command{
-		Use:   "doctor",
-		Short: "Check the health of your development environment",
-		Long:  `Verify that all common development tools are installed and working correctly. Reports versions, warns about missing tools, and suggests fixes.`,
+		Use:     "doctor",
+		Short:   "Check the health of your development environment",
+		Long:    `Verify that all common development tools are installed and working correctly. Reports versions, warns about missing tools, and suggests fixes.`,
 		Example: `  autodev doctor`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return runDoctor()
@@ -26,10 +26,10 @@ func newDoctorCmd() *cobra.Command {
 }
 
 type check struct {
-	name    string
-	cmd     string
-	args    []string
-	hint    string
+	name string
+	cmd  string
+	args []string
+	hint string
 }
 
 var checks = []check{
@@ -86,30 +86,59 @@ func runDoctor() error {
 		err     error
 	}
 
-	results := make([]checkResult, len(checks))
+	var mu sync.Mutex
+	results := make(map[int]checkResult)
 	var wg sync.WaitGroup
 	wg.Add(len(checks))
 
 	for i, c := range checks {
 		go func(idx int, ch check) {
 			defer wg.Done()
-			ctx, cancel := context.WithTimeout(context.Background(), 1500*time.Millisecond)
+
+			// 1. Quick check if the binary exists in PATH
+			_, err := exec.LookPath(ch.cmd)
+			if err != nil {
+				mu.Lock()
+				results[idx] = checkResult{version: "", err: err}
+				mu.Unlock()
+				return
+			}
+
+			// 2. If it exists, run version check command with a timeout
+			ctx, cancel := context.WithTimeout(context.Background(), 700*time.Millisecond)
 			defer cancel()
 
 			cmd := exec.CommandContext(ctx, ch.cmd, ch.args...)
 			out, err := cmd.CombinedOutput()
+
+			mu.Lock()
 			results[idx] = checkResult{
 				version: strings.TrimSpace(strings.Split(string(out), "\n")[0]),
 				err:     err,
 			}
+			mu.Unlock()
 		}(i, c)
 	}
 
-	wg.Wait()
+	// Channel to signal completion
+	done := make(chan struct{})
+	go func() {
+		wg.Wait()
+		close(done)
+	}()
+
+	select {
+	case <-done:
+	case <-time.After(800 * time.Millisecond):
+		// Timeout to keep doctor command extremely fast, cutting off hung check processes
+	}
 
 	for i, c := range checks {
-		res := results[i]
-		if res.err != nil || strings.TrimSpace(res.version) == "" {
+		mu.Lock()
+		res, exists := results[i]
+		mu.Unlock()
+
+		if !exists || res.err != nil || strings.TrimSpace(res.version) == "" {
 			fmt.Printf("  %-10s %-20s %s\n",
 				warnStyle.Render("[MISSING]"),
 				c.name,

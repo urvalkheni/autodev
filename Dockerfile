@@ -38,6 +38,6 @@ CMD ["--help"]
 
 LABEL org.opencontainers.image.title="AutoDev"
 LABEL org.opencontainers.image.description="The App Store for Developers — Clone. Scan. Install. Build."
-LABEL org.opencontainers.image.url="https://autodev.dev"
-LABEL org.opencontainers.image.source="https://github.com/autodev-sh/autodev"
+LABEL org.opencontainers.image.url="https://github.com/HEETMEHTA18/autodev"
+LABEL org.opencontainers.image.source="https://github.com/HEETMEHTA18/autodev"
 LABEL org.opencontainers.image.licenses="MIT"

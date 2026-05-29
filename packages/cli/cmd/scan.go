@@ -71,7 +71,7 @@ func printScanHeader(path string) {
 		BorderForeground(lipgloss.Color("#FFD700")).
 		Padding(0, 2)
 
-	fmt.Println(headerStyle.Render(fmt.Sprintf("🔍 Scanning: %s", path)))
+	fmt.Println(headerStyle.Render(fmt.Sprintf("Scanning: %s", path)))
 	fmt.Println()
 }
 
@@ -86,62 +86,62 @@ func printScanResult(result *scanner.ScanResult, elapsed time.Duration) {
 		Bold(true)
 
 	if len(result.Languages) > 0 {
-		fmt.Println(titleStyle.Render("◆ Languages"))
+		fmt.Println(titleStyle.Render("  [LANGUAGES]"))
 		for _, lang := range result.Languages {
-			fmt.Println(itemStyle.Render("  • " + lang))
+			fmt.Println(itemStyle.Render("  - " + lang))
 		}
 		fmt.Println()
 	}
 
 	if len(result.Frameworks) > 0 {
-		fmt.Println(titleStyle.Render("◆ Frameworks"))
+		fmt.Println(titleStyle.Render("  [FRAMEWORKS]"))
 		for _, fw := range result.Frameworks {
-			fmt.Println(itemStyle.Render("  • " + fw))
+			fmt.Println(itemStyle.Render("  - " + fw))
 		}
 		fmt.Println()
 	}
 
 	if len(result.PackageManagers) > 0 {
-		fmt.Println(titleStyle.Render("◆ Package Managers"))
+		fmt.Println(titleStyle.Render("  [PACKAGE MANAGERS]"))
 		for _, pm := range result.PackageManagers {
-			fmt.Println(itemStyle.Render("  • " + pm))
+			fmt.Println(itemStyle.Render("  - " + pm))
 		}
 		fmt.Println()
 	}
 
 	if len(result.Databases) > 0 {
-		fmt.Println(titleStyle.Render("◆ Databases & Services"))
+		fmt.Println(titleStyle.Render("  [DATABASES & SERVICES]"))
 		for _, db := range result.Databases {
-			fmt.Println(itemStyle.Render("  • " + db))
+			fmt.Println(itemStyle.Render("  - " + db))
 		}
 		fmt.Println()
 	}
 
 	if len(result.Infra) > 0 {
-		fmt.Println(titleStyle.Render("◆ Infrastructure"))
+		fmt.Println(titleStyle.Render("  [INFRASTRUCTURE]"))
 		for _, inf := range result.Infra {
-			fmt.Println(itemStyle.Render("  • " + inf))
+			fmt.Println(itemStyle.Render("  - " + inf))
 		}
 		fmt.Println()
 	}
 
 	if result.HasDocker {
-		fmt.Println(badgeStyle.Render("🐳 Docker") + "  " + badgeStyle.Render("Container-ready"))
+		fmt.Println("  " + badgeStyle.Render("Docker") + "  " + badgeStyle.Render("Container-ready"))
 	}
 	if result.HasK8s {
-		fmt.Println(badgeStyle.Render("☸  Kubernetes") + "  Found k8s manifests")
+		fmt.Println("  " + badgeStyle.Render("Kubernetes") + "  Found k8s manifests")
 	}
 
 	if len(result.RecommendedSetup) > 0 {
 		fmt.Println()
-		fmt.Println(titleStyle.Render("◆ Setup Plan"))
+		fmt.Println(titleStyle.Render("  [SETUP PLAN]"))
 		for i, step := range result.RecommendedSetup {
 			fmt.Println(itemStyle.Render(fmt.Sprintf("  %d. %s", i+1, step)))
 		}
 	}
 
 	fmt.Println()
-	fmt.Println(dimStyle.Render(fmt.Sprintf("  Scanned in %s  ·  %d technologies detected", elapsed.Round(time.Millisecond), len(result.Technologies))))
+	fmt.Println(dimStyle.Render(fmt.Sprintf("  Scanned in %s | %d technologies detected", elapsed.Round(time.Millisecond), len(result.Technologies))))
 	fmt.Println()
 	fmt.Println(dimStyle.Render("  Run 'autodev setup' to install all missing tools."))
 	fmt.Println()

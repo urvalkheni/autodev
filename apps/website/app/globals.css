@@ -1,0 +1,140 @@
+@import "tailwindcss";
+
+@theme {
+  --color-yellow: #FFD700;
+  --color-green: #00FF87;
+  --color-red: #FF4444;
+  --color-blue: #4A90E2;
+  --color-black: #0A0A0A;
+  --color-dark: #111111;
+  --color-border: #2A2A2A;
+  --font-space: var(--font-space), "Space Grotesk", sans-serif;
+  --font-mono: var(--font-mono), "JetBrains Mono", monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #0A0A0A;
+  color: #F0F0F0;
+  font-family: var(--font-space);
+}
+
+/* ── Neo-Brutalist Utilities ─────────────────────────────────────────── */
+.nb-border {
+  border: 3px solid #FFD700;
+}
+
+.nb-border-white {
+  border: 3px solid #F0F0F0;
+}
+
+.nb-shadow {
+  box-shadow: 6px 6px 0px #FFD700;
+}
+
+.nb-shadow-white {
+  box-shadow: 6px 6px 0px #F0F0F0;
+}
+
+.nb-shadow-green {
+  box-shadow: 6px 6px 0px #00FF87;
+}
+
+.nb-shadow-red {
+  box-shadow: 6px 6px 0px #FF4444;
+}
+
+.nb-btn {
+  border: 3px solid #FFD700;
+  box-shadow: 4px 4px 0px #FFD700;
+  background: #FFD700;
+  color: #000000;
+  font-weight: 700;
+  font-family: var(--font-space);
+  transition: transform 80ms ease, box-shadow 80ms ease;
+  cursor: pointer;
+}
+
+.nb-btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px #FFD700;
+}
+
+.nb-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px #FFD700;
+}
+
+.nb-btn-outline {
+  border: 3px solid #F0F0F0;
+  box-shadow: 4px 4px 0px #F0F0F0;
+  background: transparent;
+  color: #F0F0F0;
+  font-weight: 700;
+  font-family: var(--font-space);
+  transition: transform 80ms ease, box-shadow 80ms ease, background 80ms ease;
+  cursor: pointer;
+}
+
+.nb-btn-outline:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px #F0F0F0;
+  background: #F0F0F0;
+  color: #000;
+}
+
+.nb-btn-outline:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px #F0F0F0;
+}
+
+.nb-card {
+  border: 2px solid #2A2A2A;
+  background: #111111;
+  transition: transform 120ms ease, box-shadow 120ms ease, border-color 120ms ease;
+}
+
+.nb-card:hover {
+  border-color: #FFD700;
+  box-shadow: 4px 4px 0px #FFD700;
+  transform: translate(-2px, -2px);
+}
+
+/* ── Terminal ─────────────────────────────────────────────────────────── */
+.terminal {
+  background: #0D0D0D;
+  border: 3px solid #333;
+  box-shadow: 8px 8px 0px #FFD700;
+  font-family: var(--font-mono);
+}
+
+.terminal-bar {
+  background: #1A1A1A;
+  border-bottom: 2px solid #333;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px;
+}
+
+.terminal-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* ── Scrollbar ────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #111; }
+::-webkit-scrollbar-thumb { background: #FFD700; }
+
+/* ── Selection ────────────────────────────────────────────────────────── */
+::selection { background: #FFD700; color: #000; }

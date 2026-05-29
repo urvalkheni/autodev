@@ -28,6 +28,19 @@ interface GithubRepo {
   topics: string[];
 }
 
+function checkScannerCooldown(): { waitSecs: number | null; now: number } {
+  if (typeof window === "undefined") {
+    return { waitSecs: null, now: 0 };
+  }
+  const lastScan = localStorage.getItem("autodev_last_scan_time");
+  const now = Date.now();
+  if (lastScan && now - parseInt(lastScan, 10) < 10000) { // 10 second cooldown
+    const waitSecs = Math.ceil((10000 - (now - parseInt(lastScan, 10))) / 1000);
+    return { waitSecs, now };
+  }
+  return { waitSecs: null, now };
+}
+
 export default function GithubScanner() {
   const [username, setUsername] = useState("");
   const [loading, setLoading] = useState(false);
@@ -64,13 +77,11 @@ export default function GithubScanner() {
       }
 
       // 2. Cooldown check (prevent bot spamming / API abuse)
+      const { waitSecs, now } = checkScannerCooldown();
+      if (waitSecs !== null) {
+        throw new Error(`Rate limit: Please wait ${waitSecs}s before scanning again.`);
+      }
       if (typeof window !== "undefined") {
-        const lastScan = localStorage.getItem("autodev_last_scan_time");
-        const now = Date.now();
-        if (lastScan && now - parseInt(lastScan, 10) < 10000) { // 10 second cooldown
-          const waitSecs = Math.ceil((10000 - (now - parseInt(lastScan, 10))) / 1000);
-          throw new Error(`Rate limit: Please wait ${waitSecs}s before scanning again.`);
-        }
         localStorage.setItem("autodev_last_scan_time", now.toString());
       }
 

@@ -10,6 +10,26 @@ interface DocSection {
   content: React.ReactNode;
 }
 
+const Callout = ({ type, title, children }: { type: "info" | "warning" | "tip"; title: string; children: React.ReactNode }) => {
+  const styles = {
+    info: { border: "border-l-4 border-l-[#4A90E2] border-[#2A2A2A]", bg: "bg-[#4A90E2]/5", icon: "ℹ️", color: "text-[#4A90E2]" },
+    warning: { border: "border-l-4 border-l-[#FF4444] border-[#2A2A2A]", bg: "bg-[#FF4444]/5", icon: "⚠️", color: "text-[#FF4444]" },
+    tip: { border: "border-l-4 border-l-[#00FF87] border-[#2A2A2A]", bg: "bg-[#00FF87]/5", icon: "⚡", color: "text-[#00FF87]" },
+  };
+
+  const currentStyle = styles[type];
+
+  return (
+    <div className={`p-4 my-6 rounded border ${currentStyle.border} ${currentStyle.bg}`}>
+      <div className="flex items-center gap-2 mb-2 font-bold font-mono text-sm uppercase tracking-wider">
+        <span className="text-base">{currentStyle.icon}</span>
+        <span className={currentStyle.color}>{title}</span>
+      </div>
+      <div className="text-neutral-400 text-sm font-sans">{children}</div>
+    </div>
+  );
+};
+
 export default function DocsClient() {
   const [activeSection, setActiveSection] = useState("introduction");
   const [copiedId, setCopiedId] = useState<string | null>(null);
@@ -20,8 +40,8 @@ export default function DocsClient() {
     setTimeout(() => setCopiedId(null), 2000);
   };
 
-  const CodeBlock = ({ code, id }: { code: string; id: string }) => (
-    <div className="relative group border-2 border-[#2A2A2A] bg-[#050505] p-4 font-mono text-sm my-4 rounded-md overflow-x-auto">
+  const renderCodeBlock = (id: string, code: string) => (
+    <div key={id} className="relative group border-2 border-[#2A2A2A] bg-[#050505] p-4 font-mono text-sm my-4 rounded-md overflow-x-auto">
       <button
         onClick={() => handleCopy(code, id)}
         className="absolute top-2 right-2 text-xs bg-[#111] hover:bg-[#FFD700] hover:text-black border border-[#2A2A2A] px-2 py-1 rounded transition-colors text-neutral-400 font-sans"
@@ -31,26 +51,6 @@ export default function DocsClient() {
       <pre className="text-neutral-200">{code}</pre>
     </div>
   );
-
-  const Callout = ({ type, title, children }: { type: "info" | "warning" | "tip"; title: string; children: React.ReactNode }) => {
-    const styles = {
-      info: { border: "border-l-4 border-l-[#4A90E2] border-[#2A2A2A]", bg: "bg-[#4A90E2]/5", icon: "ℹ️", color: "text-[#4A90E2]" },
-      warning: { border: "border-l-4 border-l-[#FF4444] border-[#2A2A2A]", bg: "bg-[#FF4444]/5", icon: "⚠️", color: "text-[#FF4444]" },
-      tip: { border: "border-l-4 border-l-[#00FF87] border-[#2A2A2A]", bg: "bg-[#00FF87]/5", icon: "⚡", color: "text-[#00FF87]" },
-    };
-
-    const currentStyle = styles[type];
-
-    return (
-      <div className={`p-4 my-6 rounded border ${currentStyle.border} ${currentStyle.bg}`}>
-        <div className="flex items-center gap-2 mb-2 font-bold font-mono text-sm uppercase tracking-wider">
-          <span className="text-base">{currentStyle.icon}</span>
-          <span className={currentStyle.color}>{title}</span>
-        </div>
-        <div className="text-neutral-400 text-sm font-sans">{children}</div>
-      </div>
-    );
-  };
 
   const sections: DocSection[] = [
     {
@@ -62,7 +62,7 @@ export default function DocsClient() {
           <h1 className="text-4xl font-black text-white mb-6 uppercase tracking-tight">Introduction</h1>
           <p className="text-neutral-300 leading-relaxed mb-4">
             AutoDev is an open-source, cross-platform developer environment bootstrapper. It acts as an
-            <strong> "App Store for Developers,"</strong> simplifying complex toolchain setups through intelligent, profile-based automation.
+            <strong> &quot;App Store for Developers,&quot;</strong> simplifying complex toolchain setups through intelligent, profile-based automation.
           </p>
           <p className="text-neutral-300 leading-relaxed mb-4">
             Setting up local environments often involves manually downloading compilers, installing dependencies, configuring paths, and matching versions.
@@ -87,11 +87,11 @@ export default function DocsClient() {
           </p>
           <h2 className="text-2xl font-bold text-[#FFD700] mt-8 mb-4">One-line Shell Install</h2>
           <p className="text-neutral-300 mb-2">For Linux and macOS, install using curl:</p>
-          <CodeBlock id="qs-curl" code="curl -fsSL https://raw.githubusercontent.com/HEETMEHTA18/autodev/main/scripts/install.sh | bash" />
+          {renderCodeBlock("qs-curl", "curl -fsSL https://raw.githubusercontent.com/HEETMEHTA18/autodev/main/scripts/install.sh | bash")}
 
           <h2 className="text-2xl font-bold text-[#FFD700] mt-8 mb-4">Interactive Setup</h2>
-          <p className="text-neutral-300 mb-2">Once installed, enter your project's directory and run:</p>
-          <CodeBlock id="qs-setup" code="autodev setup" />
+          <p className="text-neutral-300 mb-2">Once installed, enter your project&apos;s directory and run:</p>
+          {renderCodeBlock("qs-setup", "autodev setup")}
 
           <p className="text-neutral-300 leading-relaxed mt-4">
             AutoDev will analyze your codebase, display a list of recommended tools and libraries, and prompt you to install them.
@@ -114,31 +114,31 @@ export default function DocsClient() {
             <div>
               <h3 className="text-lg font-bold text-white mb-1">Node.js (NPX)</h3>
               <p className="text-neutral-400 text-sm mb-2">Run without local binary installation:</p>
-              <CodeBlock id="inst-npx" code="npx autodev setup" />
+              {renderCodeBlock("inst-npx", "npx autodev setup")}
             </div>
 
             <div>
               <h3 className="text-lg font-bold text-white mb-1">PNPM</h3>
               <p className="text-neutral-400 text-sm mb-2">Execute on the fly with PNPM:</p>
-              <CodeBlock id="inst-pnpm" code="pnpm dlx autodev setup" />
+              {renderCodeBlock("inst-pnpm", "pnpm dlx autodev setup")}
             </div>
 
             <div>
               <h3 className="text-lg font-bold text-white mb-1">Homebrew (macOS / Linux)</h3>
               <p className="text-neutral-400 text-sm mb-2">Install globally via Brew tap:</p>
-              <CodeBlock id="inst-brew" code="brew install HEETMEHTA18/tap/autodev" />
+              {renderCodeBlock("inst-brew", "brew install HEETMEHTA18/tap/autodev")}
             </div>
 
             <div>
               <h3 className="text-lg font-bold text-white mb-1">Scoop (Windows)</h3>
               <p className="text-neutral-400 text-sm mb-2">Install on Windows systems using Scoop:</p>
-              <CodeBlock id="inst-scoop" code="scoop install autodev" />
+              {renderCodeBlock("inst-scoop", "scoop install autodev")}
             </div>
 
             <div>
               <h3 className="text-lg font-bold text-white mb-1">Docker Container</h3>
               <p className="text-neutral-400 text-sm mb-2">Run inside a container mapping your repository directory:</p>
-              <CodeBlock id="inst-docker" code="docker run --rm -v $(pwd):/workspace ghcr.io/heetmehta18/autodev setup" />
+              {renderCodeBlock("inst-docker", "docker run --rm -v $(pwd):/workspace ghcr.io/heetmehta18/autodev setup")}
             </div>
           </div>
         </>
@@ -152,9 +152,9 @@ export default function DocsClient() {
         <>
           <h1 className="text-4xl font-black text-white mb-6 uppercase tracking-tight">autodev doctor</h1>
           <p className="text-neutral-300 leading-relaxed mb-4">
-            The <code className="text-[#FFD700] font-mono bg-[#111] px-1 py-0.5 rounded text-sm">doctor</code> command inspects your system's specifications, active package managers, and checks the installation status of managed runtimes.
+            The <code className="text-[#FFD700] font-mono bg-[#111] px-1 py-0.5 rounded text-sm">doctor</code> command inspects your system&apos;s specifications, active package managers, and checks the installation status of managed runtimes.
           </p>
-          <CodeBlock id="cmd-doc-run" code="autodev doctor" />
+          {renderCodeBlock("cmd-doc-run", "autodev doctor")}
           <p className="text-neutral-300 leading-relaxed mb-4">
             It performs a diagnostic check of languages, framework execution environments, databases, container configurations, DevOps infrastructure, and mobile development SDKs.
           </p>
@@ -179,7 +179,7 @@ export default function DocsClient() {
           <p className="text-neutral-300 leading-relaxed mb-4">
             The <code className="text-[#FFD700] font-mono bg-[#111] px-1 py-0.5 rounded text-sm">scan</code> command analyzes your current working directory for configuration markers, lockfiles, and structures.
           </p>
-          <CodeBlock id="cmd-scan-run" code="autodev scan" />
+          {renderCodeBlock("cmd-scan-run", "autodev scan")}
           <p className="text-neutral-300 leading-relaxed mb-4">
             Instead of simply looking at file extensions, AutoDev queries package registries (like <code className="font-mono text-neutral-400">package.json</code>, <code className="font-mono text-neutral-400">go.mod</code>, or <code className="font-mono text-neutral-400">requirements.txt</code>) to build a precise map of frameworks, databases, and secondary development tools.
           </p>
@@ -196,7 +196,7 @@ export default function DocsClient() {
           <p className="text-neutral-300 leading-relaxed mb-4">
             The <code className="text-[#FFD700] font-mono bg-[#111] px-1 py-0.5 rounded text-sm">setup</code> command scans the project and aligns your local development environment.
           </p>
-          <CodeBlock id="cmd-setup-run" code="autodev setup" />
+          {renderCodeBlock("cmd-setup-run", "autodev setup")}
           <p className="text-neutral-300 leading-relaxed mb-4">
             It performs download caching, automated binary extraction, environment variable linking (PATH configuration), and triggers package-manager installs (like running <code className="font-mono text-neutral-400">npm install</code>, <code className="font-mono text-neutral-400">go mod download</code>, or setting up virtual environments).
           </p>
@@ -216,7 +216,7 @@ export default function DocsClient() {
           <p className="text-neutral-300 leading-relaxed mb-4">
             Bootstrap a pre-defined set of developer tools based on your job profile or team role. This is useful for configuring new machines.
           </p>
-          <CodeBlock id="cmd-prof-web" code="autodev profile web-dev" />
+          {renderCodeBlock("cmd-prof-web", "autodev profile web-dev")}
           <p className="text-neutral-300 mb-4">Supported profiles include:</p>
           <ul className="list-disc pl-5 mb-4 space-y-2 text-neutral-300 font-sans">
             <li><strong>web-dev</strong>: Node.js, pnpm, Docker, VS Code integrations</li>
@@ -238,9 +238,9 @@ export default function DocsClient() {
             To lock environment tooling configurations across your engineering team, you can generate a lockfile config.
           </p>
           <p className="text-neutral-300 mb-2">Export your current environment config using:</p>
-          <CodeBlock id="adv-export" code="autodev export" />
+          {renderCodeBlock("adv-export", "autodev export")}
           <p className="text-neutral-300 leading-relaxed mt-4">
-            This creates a <code className="font-mono text-[#FFD700] bg-[#111] px-1 py-0.5 rounded">.autodev.yaml</code> file at your project root. When other developers run <code className="font-mono text-neutral-300">autodev setup</code>, the CLI reads this file to guarantee identical compiler and tool versions across everyone's workstation.
+            This creates a <code className="font-mono text-[#FFD700] bg-[#111] px-1 py-0.5 rounded">.autodev.yaml</code> file at your project root. When other developers run <code className="font-mono text-neutral-300">autodev setup</code>, the CLI reads this file to guarantee identical compiler and tool versions across everyone&apos;s workstation.
           </p>
         </>
       ),
@@ -255,7 +255,7 @@ export default function DocsClient() {
           <p className="text-neutral-300 leading-relaxed mb-4">
             If you want to keep your host machine clean, you can run AutoDev scanner inside a Docker sandbox.
           </p>
-          <CodeBlock id="adv-dock" code="docker run --rm -v $(pwd):/workspace ghcr.io/heetmehta18/autodev scan" />
+          {renderCodeBlock("adv-dock", "docker run --rm -v $(pwd):/workspace ghcr.io/heetmehta18/autodev scan")}
           <p className="text-neutral-300 leading-relaxed mt-4">
             This will mount your local repository into the container workspace, run the dependency scanners, and print the resulting plan without altering files on your host OS.
           </p>

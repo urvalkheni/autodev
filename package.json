@@ -1,0 +1,28 @@
+{
+  "name": "autodev",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Clone. Scan. Install. Build. — Open-source developer environment bootstrapper",
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "website": "pnpm --filter=website dev",
+    "cli:build": "cd packages/cli && go build -o bin/autodev ./main.go",
+    "cli:test": "cd packages/cli && go test ./...",
+    "cli:install": "cd packages/cli && go install ./..."
+  },
+  "devDependencies": {
+    "turbo": "^2.5.4",
+    "prettier": "^3.5.3",
+    "prettier-plugin-tailwindcss": "^0.6.11"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "packageManager": "pnpm@9.15.4"
+}

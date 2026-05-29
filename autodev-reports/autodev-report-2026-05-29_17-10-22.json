@@ -1,0 +1,87 @@
+{
+  "path": "/media/heet18/Futuristic/Heet/Github/Autodev-Independent",
+  "technologies": [
+    {
+      "name": "Docker",
+      "type": "infra",
+      "config_file": "Dockerfile",
+      "confidence": 1,
+      "install_cmd": "autodev install docker",
+      "docs_url": "https://docker.com"
+    },
+    {
+      "name": "Next.js",
+      "type": "framework",
+      "config_file": "apps/website/next.config.ts",
+      "confidence": 1,
+      "docs_url": "https://nextjs.org"
+    },
+    {
+      "name": "Node.js",
+      "type": "language",
+      "config_file": "apps/website/package.json",
+      "confidence": 0.9,
+      "install_cmd": "autodev install nodejs",
+      "docs_url": "https://nodejs.org"
+    },
+    {
+      "name": "React",
+      "type": "framework",
+      "confidence": 1,
+      "docs_url": "https://react.dev"
+    },
+    {
+      "name": "TypeScript",
+      "type": "language",
+      "confidence": 1,
+      "docs_url": "https://typescriptlang.org"
+    },
+    {
+      "name": "Kubernetes",
+      "type": "infra",
+      "config_file": "packages/catalog/catalog.yaml",
+      "confidence": 0.2
+    },
+    {
+      "name": "Go",
+      "type": "language",
+      "config_file": "packages/catalog/go.mod",
+      "confidence": 1,
+      "install_cmd": "autodev install go",
+      "docs_url": "https://go.dev"
+    },
+    {
+      "name": "pnpm",
+      "type": "package_manager",
+      "config_file": "pnpm-lock.yaml",
+      "confidence": 1,
+      "install_cmd": "npm install -g pnpm",
+      "docs_url": "https://pnpm.io"
+    }
+  ],
+  "languages": [
+    "Node.js",
+    "TypeScript",
+    "Go"
+  ],
+  "frameworks": [
+    "Next.js",
+    "React"
+  ],
+  "package_managers": [
+    "pnpm"
+  ],
+  "databases": null,
+  "infra": [
+    "Docker",
+    "Kubernetes"
+  ],
+  "has_docker": true,
+  "has_kubernetes": true,
+  "recommended_setup": [
+    "autodev install docker",
+    "autodev install nodejs",
+    "autodev install go",
+    "npm install -g pnpm"
+  ]
+}

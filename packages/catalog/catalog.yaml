@@ -1,0 +1,987 @@
+# AutoDev Package Catalog
+# The single source of truth for all installable packages.
+# To add a new package: add a YAML entry. That's it.
+#
+# Structure:
+#   id:          unique identifier used in CLI
+#   name:        display name
+#   category:    Languages | Frameworks | Databases | DevOps | Mobile | AI/ML | WebDev
+#   description: one-line description
+#   icon:        emoji icon
+#   deps:        list of package IDs that must be installed first
+#   install:
+#     linux|darwin|windows:
+#       method: apt | brew | winget | script | npm | pip | cargo | manual
+#       packages: [...] (for apt/brew/winget)
+#       script: [...] (array of shell commands)
+#   post_install: shell commands to run after install (PATH fixes etc.)
+#   verify: command to verify installation succeeded
+
+packages:
+
+  # ============================================================
+  # LANGUAGES
+  # ============================================================
+
+  - id: python
+    name: Python
+    category: Languages
+    description: General-purpose scripting and data language
+    icon: 🐍
+    install:
+      linux:
+        method: apt
+        packages: [python3, python3-pip, python3-venv, python3-dev]
+      darwin:
+        method: brew
+        packages: [python@3.12]
+      windows:
+        method: winget
+        packages: ["Python.Python.3"]
+    verify: python3 --version
+
+  - id: nodejs
+    name: Node.js
+    category: Languages
+    description: JavaScript runtime built on Chrome's V8 engine
+    icon: 🟢
+    install:
+      linux:
+        method: script
+        script:
+          - curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+          - sudo apt-get install -y nodejs
+      darwin:
+        method: brew
+        packages: [node@22]
+      windows:
+        method: winget
+        packages: ["OpenJS.NodeJS.LTS"]
+    verify: node --version
+
+  - id: go
+    name: Go
+    category: Languages
+    description: Fast, statically typed compiled language by Google
+    icon: 🔵
+    install:
+      linux:
+        method: script
+        script:
+          - curl -fsSL https://go.dev/dl/go1.22.2.linux-amd64.tar.gz -o /tmp/go.tar.gz
+          - sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf /tmp/go.tar.gz
+          - echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
+      darwin:
+        method: brew
+        packages: [go]
+      windows:
+        method: winget
+        packages: ["GoLang.Go"]
+    verify: go version
+
+  - id: rust
+    name: Rust
+    category: Languages
+    description: Systems language focused on safety and performance
+    icon: 🦀
+    install:
+      linux:
+        method: script
+        script:
+          - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+          - source "$HOME/.cargo/env"
+      darwin:
+        method: script
+        script:
+          - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+      windows:
+        method: winget
+        packages: ["Rustlang.Rust.MSVC"]
+    verify: rustc --version
+
+  - id: java
+    name: Java (OpenJDK 21)
+    category: Languages
+    description: Cross-platform object-oriented language (LTS)
+    icon: ☕
+    install:
+      linux:
+        method: apt
+        packages: [openjdk-21-jdk, openjdk-21-jre]
+      darwin:
+        method: brew
+        packages: [openjdk@21]
+      windows:
+        method: winget
+        packages: ["Microsoft.OpenJDK.21"]
+    verify: java -version
+
+  - id: kotlin
+    name: Kotlin
+    category: Languages
+    description: Modern language for Android and JVM
+    icon: 🎯
+    deps: [java]
+    install:
+      linux:
+        method: apt
+        packages: [kotlin]
+      darwin:
+        method: brew
+        packages: [kotlin]
+      windows:
+        method: winget
+        packages: ["JetBrains.Kotlin"]
+    verify: kotlin -version
+
+  - id: php
+    name: PHP
+    category: Languages
+    description: Server-side scripting language for web development
+    icon: 🐘
+    install:
+      linux:
+        method: apt
+        packages: [php, php-cli, php-fpm, php-mysql, php-zip, php-gd, php-mbstring, php-curl, php-xml, php-bcmath]
+      darwin:
+        method: brew
+        packages: [php]
+      windows:
+        method: winget
+        packages: ["PHP.PHP"]
+    verify: php --version
+
+  - id: ruby
+    name: Ruby
+    category: Languages
+    description: Dynamic, expressive language for web development
+    icon: 💎
+    install:
+      linux:
+        method: apt
+        packages: [ruby-full]
+      darwin:
+        method: brew
+        packages: [ruby]
+      windows:
+        method: winget
+        packages: ["RubyInstallerTeam.Ruby"]
+    verify: ruby --version
+
+  - id: dart
+    name: Dart
+    category: Languages
+    description: Client-optimized language for fast apps on any platform
+    icon: 🎯
+    install:
+      linux:
+        method: script
+        script:
+          - sudo apt-get update && sudo apt-get install apt-transport-https
+          - wget -qO- https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo gpg --dearmor -o /usr/share/keyrings/dart.gpg
+          - echo 'deb [signed-by=/usr/share/keyrings/dart.gpg arch=amd64] https://storage.googleapis.com/download.dartlang.org/linux/debian stable main' | sudo tee /etc/apt/sources.list.d/dart_stable.list
+          - sudo apt-get update && sudo apt-get install dart
+      darwin:
+        method: brew
+        packages: [dart]
+      windows:
+        method: winget
+        packages: ["Dart.Dart"]
+    verify: dart --version
+
+  - id: swift
+    name: Swift
+    category: Languages
+    description: Powerful language for Apple platforms and Linux
+    icon: 🦉
+    install:
+      linux:
+        method: script
+        script:
+          - sudo apt-get install -y clang libicu-dev
+          - curl -fsSL https://download.swift.org/swift-5.10-release/ubuntu2204/swift-5.10-RELEASE/swift-5.10-RELEASE-ubuntu22.04.tar.gz -o /tmp/swift.tar.gz
+          - sudo tar xzf /tmp/swift.tar.gz -C /opt
+          - echo 'export PATH=/opt/swift-5.10-RELEASE-ubuntu22.04/usr/bin:$PATH' >> ~/.bashrc
+      darwin:
+        method: manual
+        script:
+          - xcode-select --install
+      windows:
+        method: winget
+        packages: ["Swift.Toolchain"]
+    verify: swift --version
+
+  # ============================================================
+  # FRAMEWORKS
+  # ============================================================
+
+  - id: react
+    name: React
+    category: Frameworks
+    description: UI library for building component-based interfaces
+    icon: ⚛️
+    deps: [nodejs]
+    install:
+      linux:
+        method: npm
+        packages: [create-react-app]
+      darwin:
+        method: npm
+        packages: [create-react-app]
+      windows:
+        method: npm
+        packages: [create-react-app]
+    verify: npx create-react-app --version
+
+  - id: nextjs
+    name: Next.js
+    category: Frameworks
+    description: React framework for production with SSR and SSG
+    icon: ▲
+    deps: [nodejs]
+    install:
+      linux:
+        method: npm
+        packages: [create-next-app]
+      darwin:
+        method: npm
+        packages: [create-next-app]
+      windows:
+        method: npm
+        packages: [create-next-app]
+    verify: npx create-next-app --version
+
+  - id: vue
+    name: Vue.js
+    category: Frameworks
+    description: Progressive JavaScript framework for UIs
+    icon: 💚
+    deps: [nodejs]
+    install:
+      linux:
+        method: npm
+        packages: ["@vue/cli"]
+      darwin:
+        method: npm
+        packages: ["@vue/cli"]
+      windows:
+        method: npm
+        packages: ["@vue/cli"]
+    verify: vue --version
+
+  - id: angular
+    name: Angular
+    category: Frameworks
+    description: Platform for building mobile and desktop web apps
+    icon: 🔴
+    deps: [nodejs]
+    install:
+      linux:
+        method: npm
+        packages: ["@angular/cli"]
+      darwin:
+        method: npm
+        packages: ["@angular/cli"]
+      windows:
+        method: npm
+        packages: ["@angular/cli"]
+    verify: ng version
+
+  - id: svelte
+    name: Svelte
+    category: Frameworks
+    description: Cybernetically enhanced web apps with no virtual DOM
+    icon: 🔥
+    deps: [nodejs]
+    install:
+      linux:
+        method: npm
+        packages: [create-svelte]
+      darwin:
+        method: npm
+        packages: [create-svelte]
+      windows:
+        method: npm
+        packages: [create-svelte]
+    verify: npx create-svelte --version
+
+  - id: django
+    name: Django
+    category: Frameworks
+    description: High-level Python web framework
+    icon: 🎸
+    deps: [python]
+    install:
+      linux:
+        method: pip
+        packages: [django]
+      darwin:
+        method: pip
+        packages: [django]
+      windows:
+        method: pip
+        packages: [django]
+    verify: python3 -m django --version
+
+  - id: fastapi
+    name: FastAPI
+    category: Frameworks
+    description: Modern, fast Python web framework for APIs
+    icon: ⚡
+    deps: [python]
+    install:
+      linux:
+        method: pip
+        packages: [fastapi, uvicorn]
+      darwin:
+        method: pip
+        packages: [fastapi, uvicorn]
+      windows:
+        method: pip
+        packages: [fastapi, uvicorn]
+    verify: python3 -c "import fastapi; print(fastapi.__version__)"
+
+  - id: laravel
+    name: Laravel
+    category: Frameworks
+    description: PHP framework for elegant web applications
+    icon: 🎻
+    deps: [php, composer]
+    install:
+      linux:
+        method: script
+        script:
+          - composer global require laravel/installer
+          - echo 'export PATH="$HOME/.config/composer/vendor/bin:$PATH"' >> ~/.bashrc
+      darwin:
+        method: script
+        script:
+          - composer global require laravel/installer
+      windows:
+        method: script
+        script:
+          - composer global require laravel/installer
+    verify: laravel --version
+
+  - id: springboot
+    name: Spring Boot
+    category: Frameworks
+    description: Java framework for production-ready apps
+    icon: 🌱
+    deps: [java, maven]
+    install:
+      linux:
+        method: script
+        script:
+          - curl -s https://get.sdkman.io | bash
+          - source "$HOME/.sdkman/bin/sdkman-init.sh" && sdk install springboot
+      darwin:
+        method: brew
+        packages: [spring-boot]
+      windows:
+        method: winget
+        packages: ["VMware.SpringToolSuite4"]
+    verify: spring --version
+
+  - id: flutter
+    name: Flutter
+    category: Frameworks
+    description: Google's UI toolkit for cross-platform apps
+    icon: 💙
+    deps: [dart, java, android-sdk]
+    install:
+      linux:
+        method: script
+        script:
+          - sudo snap install flutter --classic
+          - flutter doctor
+      darwin:
+        method: brew
+        packages: [flutter]
+      windows:
+        method: winget
+        packages: ["Flutter.Flutter"]
+    verify: flutter --version
+
+  # ============================================================
+  # DATABASES
+  # ============================================================
+
+  - id: postgresql
+    name: PostgreSQL
+    category: Databases
+    description: Advanced open-source relational database
+    icon: 🐘
+    install:
+      linux:
+        method: apt
+        packages: [postgresql, postgresql-contrib]
+      darwin:
+        method: brew
+        packages: [postgresql@16]
+      windows:
+        method: winget
+        packages: ["PostgreSQL.PostgreSQL"]
+    verify: psql --version
+
+  - id: mysql
+    name: MySQL
+    category: Databases
+    description: World's most popular open-source database
+    icon: 🐬
+    install:
+      linux:
+        method: apt
+        packages: [mysql-server]
+      darwin:
+        method: brew
+        packages: [mysql]
+      windows:
+        method: winget
+        packages: ["Oracle.MySQL"]
+    verify: mysql --version
+
+  - id: mongodb
+    name: MongoDB
+    category: Databases
+    description: Document-oriented NoSQL database
+    icon: 🍃
+    install:
+      linux:
+        method: script
+        script:
+          - curl -fsSL https://www.mongodb.org/static/pgp/server-7.0.asc | sudo gpg -o /usr/share/keyrings/mongodb-server-7.0.gpg --dearmor
+          - echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
+          - sudo apt-get update && sudo apt-get install -y mongodb-org
+      darwin:
+        method: brew
+        packages: [mongodb-community]
+      windows:
+        method: winget
+        packages: ["MongoDB.Server"]
+    verify: mongod --version
+
+  - id: redis
+    name: Redis
+    category: Databases
+    description: In-memory data structure store and cache
+    icon: 🔴
+    install:
+      linux:
+        method: apt
+        packages: [redis-server]
+      darwin:
+        method: brew
+        packages: [redis]
+      windows:
+        method: winget
+        packages: ["Redis.Redis"]
+    verify: redis-cli --version
+
+  - id: sqlite
+    name: SQLite
+    category: Databases
+    description: Lightweight embedded relational database
+    icon: 📦
+    install:
+      linux:
+        method: apt
+        packages: [sqlite3]
+      darwin:
+        method: brew
+        packages: [sqlite]
+      windows:
+        method: winget
+        packages: ["SQLite.SQLite"]
+    verify: sqlite3 --version
+
+  # ============================================================
+  # DEVOPS
+  # ============================================================
+
+  - id: docker
+    name: Docker
+    category: DevOps
+    description: Container platform for building and running apps
+    icon: 🐳
+    install:
+      linux:
+        method: script
+        script:
+          - curl -fsSL https://get.docker.com | sh
+          - sudo usermod -aG docker $USER
+          - newgrp docker
+      darwin:
+        method: brew
+        packages: [docker]
+      windows:
+        method: winget
+        packages: ["Docker.DockerDesktop"]
+    verify: docker --version
+
+  - id: docker-compose
+    name: Docker Compose
+    category: DevOps
+    description: Tool for defining multi-container Docker applications
+    icon: 🐙
+    deps: [docker]
+    install:
+      linux:
+        method: script
+        script:
+          - sudo apt-get install -y docker-compose-plugin
+      darwin:
+        method: brew
+        packages: [docker-compose]
+      windows:
+        method: manual
+        script:
+          - echo "Docker Compose is bundled with Docker Desktop on Windows"
+    verify: docker compose version
+
+  - id: kubernetes
+    name: kubectl
+    category: DevOps
+    description: CLI for managing Kubernetes clusters
+    icon: ☸️
+    install:
+      linux:
+        method: script
+        script:
+          - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+          - sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+          - rm kubectl
+      darwin:
+        method: brew
+        packages: [kubectl]
+      windows:
+        method: winget
+        packages: ["Kubernetes.kubectl"]
+    verify: kubectl version --client
+
+  - id: terraform
+    name: Terraform
+    category: DevOps
+    description: Infrastructure as Code by HashiCorp
+    icon: 🏗️
+    install:
+      linux:
+        method: script
+        script:
+          - wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+          - echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+          - sudo apt update && sudo apt-get install -y terraform
+      darwin:
+        method: brew
+        packages: [terraform]
+      windows:
+        method: winget
+        packages: ["Hashicorp.Terraform"]
+    verify: terraform version
+
+  - id: nginx
+    name: Nginx
+    category: DevOps
+    description: High-performance HTTP server and reverse proxy
+    icon: 🌐
+    install:
+      linux:
+        method: apt
+        packages: [nginx]
+      darwin:
+        method: brew
+        packages: [nginx]
+      windows:
+        method: winget
+        packages: ["Nginx.Nginx"]
+    verify: nginx -v
+
+  - id: git
+    name: Git
+    category: DevOps
+    description: Distributed version control system
+    icon: 📝
+    install:
+      linux:
+        method: apt
+        packages: [git]
+      darwin:
+        method: brew
+        packages: [git]
+      windows:
+        method: winget
+        packages: ["Git.Git"]
+    verify: git --version
+
+  # ============================================================
+  # MOBILE DEVELOPMENT
+  # ============================================================
+
+  - id: android-sdk
+    name: Android SDK
+    category: Mobile
+    description: SDK for building native Android apps
+    icon: 🤖
+    deps: [java]
+    install:
+      linux:
+        method: script
+        script:
+          - sudo apt-get install -y android-sdk adb
+          - echo 'export ANDROID_HOME=$HOME/Android/Sdk' >> ~/.bashrc
+          - echo 'export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools' >> ~/.bashrc
+      darwin:
+        method: brew
+        packages: [android-sdk]
+      windows:
+        method: winget
+        packages: ["Google.AndroidStudio"]
+    verify: adb version
+
+  - id: android-studio
+    name: Android Studio
+    category: Mobile
+    description: Official IDE for Android development
+    icon: 🖥️
+    deps: [java, android-sdk]
+    install:
+      linux:
+        method: script
+        script:
+          - sudo snap install android-studio --classic
+      darwin:
+        method: brew
+        packages: [android-studio]
+      windows:
+        method: winget
+        packages: ["Google.AndroidStudio"]
+    verify: android-studio --version
+
+  - id: xcode-tools
+    name: Xcode CLI Tools
+    category: Mobile
+    description: Apple command-line developer tools
+    icon: 🍎
+    install:
+      darwin:
+        method: script
+        script:
+          - xcode-select --install
+      linux:
+        method: manual
+        script:
+          - echo "Xcode is only available on macOS"
+      windows:
+        method: manual
+        script:
+          - echo "Xcode is only available on macOS"
+    verify: xcode-select -p
+
+  # ============================================================
+  # AI / ML
+  # ============================================================
+
+  - id: pytorch
+    name: PyTorch
+    category: AI/ML
+    description: Open-source machine learning framework by Meta
+    icon: 🔥
+    deps: [python]
+    install:
+      linux:
+        method: pip
+        packages: [torch, torchvision, torchaudio]
+      darwin:
+        method: pip
+        packages: [torch, torchvision, torchaudio]
+      windows:
+        method: pip
+        packages: [torch, torchvision, torchaudio]
+    verify: python3 -c "import torch; print(torch.__version__)"
+
+  - id: tensorflow
+    name: TensorFlow
+    category: AI/ML
+    description: End-to-end ML platform by Google
+    icon: 🧠
+    deps: [python]
+    install:
+      linux:
+        method: pip
+        packages: [tensorflow]
+      darwin:
+        method: pip
+        packages: [tensorflow-macos]
+      windows:
+        method: pip
+        packages: [tensorflow]
+    verify: python3 -c "import tensorflow as tf; print(tf.__version__)"
+
+  - id: jupyter
+    name: Jupyter
+    category: AI/ML
+    description: Interactive notebooks for data science
+    icon: 📓
+    deps: [python]
+    install:
+      linux:
+        method: pip
+        packages: [jupyter, jupyterlab]
+      darwin:
+        method: pip
+        packages: [jupyter, jupyterlab]
+      windows:
+        method: pip
+        packages: [jupyter, jupyterlab]
+    verify: jupyter --version
+
+  - id: ollama
+    name: Ollama
+    category: AI/ML
+    description: Run large language models locally
+    icon: 🦙
+    install:
+      linux:
+        method: script
+        script:
+          - curl -fsSL https://ollama.com/install.sh | sh
+      darwin:
+        method: brew
+        packages: [ollama]
+      windows:
+        method: winget
+        packages: ["Ollama.Ollama"]
+    verify: ollama --version
+
+  - id: langchain
+    name: LangChain
+    category: AI/ML
+    description: Framework for building LLM applications
+    icon: 🔗
+    deps: [python]
+    install:
+      linux:
+        method: pip
+        packages: [langchain, langchain-community]
+      darwin:
+        method: pip
+        packages: [langchain, langchain-community]
+      windows:
+        method: pip
+        packages: [langchain, langchain-community]
+    verify: python3 -c "import langchain; print(langchain.__version__)"
+
+  - id: huggingface
+    name: HuggingFace Transformers
+    category: AI/ML
+    description: State-of-the-art ML models and datasets
+    icon: 🤗
+    deps: [python]
+    install:
+      linux:
+        method: pip
+        packages: [transformers, datasets, accelerate]
+      darwin:
+        method: pip
+        packages: [transformers, datasets, accelerate]
+      windows:
+        method: pip
+        packages: [transformers, datasets, accelerate]
+    verify: python3 -c "import transformers; print(transformers.__version__)"
+
+  - id: opencv
+    name: OpenCV
+    category: AI/ML
+    description: Computer vision and image processing library
+    icon: 👁️
+    deps: [python]
+    install:
+      linux:
+        method: pip
+        packages: [opencv-python]
+      darwin:
+        method: pip
+        packages: [opencv-python]
+      windows:
+        method: pip
+        packages: [opencv-python]
+    verify: python3 -c "import cv2; print(cv2.__version__)"
+
+  # ============================================================
+  # PACKAGE MANAGERS / TOOLS
+  # ============================================================
+
+  - id: pnpm
+    name: pnpm
+    category: Tools
+    description: Fast, disk space efficient package manager
+    icon: 📦
+    deps: [nodejs]
+    install:
+      linux:
+        method: npm
+        packages: [pnpm]
+      darwin:
+        method: npm
+        packages: [pnpm]
+      windows:
+        method: npm
+        packages: [pnpm]
+    verify: pnpm --version
+
+  - id: bun
+    name: Bun
+    category: Tools
+    description: All-in-one JavaScript runtime & toolkit
+    icon: 🍞
+    install:
+      linux:
+        method: script
+        script:
+          - curl -fsSL https://bun.sh/install | bash
+      darwin:
+        method: brew
+        packages: [bun]
+      windows:
+        method: script
+        script:
+          - powershell -c "irm bun.sh/install.ps1 | iex"
+    verify: bun --version
+
+  - id: composer
+    name: Composer
+    category: Tools
+    description: Dependency manager for PHP
+    icon: 🎼
+    deps: [php]
+    install:
+      linux:
+        method: script
+        script:
+          - curl -sS https://getcomposer.org/installer | php
+          - sudo mv composer.phar /usr/local/bin/composer
+          - sudo chmod +x /usr/local/bin/composer
+      darwin:
+        method: brew
+        packages: [composer]
+      windows:
+        method: winget
+        packages: ["Composer.Composer"]
+    verify: composer --version
+
+  - id: maven
+    name: Maven
+    category: Tools
+    description: Build automation for Java projects
+    icon: 🔨
+    deps: [java]
+    install:
+      linux:
+        method: apt
+        packages: [maven]
+      darwin:
+        method: brew
+        packages: [maven]
+      windows:
+        method: winget
+        packages: ["Apache.Maven"]
+    verify: mvn --version
+
+  - id: gradle
+    name: Gradle
+    category: Tools
+    description: Build automation for JVM projects
+    icon: 🐘
+    deps: [java]
+    install:
+      linux:
+        method: apt
+        packages: [gradle]
+      darwin:
+        method: brew
+        packages: [gradle]
+      windows:
+        method: winget
+        packages: ["Gradle.Gradle"]
+    verify: gradle --version
+
+  - id: poetry
+    name: Poetry
+    category: Tools
+    description: Python dependency management and packaging
+    icon: 📜
+    deps: [python]
+    install:
+      linux:
+        method: script
+        script:
+          - curl -sSL https://install.python-poetry.org | python3 -
+          - echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
+      darwin:
+        method: brew
+        packages: [poetry]
+      windows:
+        method: script
+        script:
+          - (Invoke-WebRequest -Uri https://install.python-poetry.org -UseBasicParsing).Content | python -
+    verify: poetry --version
+
+# ============================================================
+# PROFILES — pre-defined tool sets for common developer roles
+# ============================================================
+
+profiles:
+
+  - id: web-dev
+    name: Web Developer
+    description: Full-stack web development environment
+    icon: 🌐
+    packages: [git, nodejs, pnpm, react, nextjs, docker, postgresql, redis]
+
+  - id: ml-engineer
+    name: ML Engineer
+    description: Machine learning and data science environment
+    icon: 🤖
+    packages: [git, python, jupyter, pytorch, tensorflow, opencv, langchain, docker]
+
+  - id: flutter-dev
+    name: Flutter Developer
+    description: Cross-platform mobile development environment
+    icon: 💙
+    packages: [git, java, dart, flutter, android-sdk, android-studio]
+
+  - id: devops-engineer
+    name: DevOps Engineer
+    description: Infrastructure and DevOps toolchain
+    icon: ⚙️
+    packages: [git, docker, docker-compose, kubernetes, terraform, nginx]
+
+  - id: backend-dev
+    name: Backend Developer
+    description: Server-side development environment
+    icon: 🔧
+    packages: [git, nodejs, python, go, docker, postgresql, redis, nginx]
+
+  - id: android-dev
+    name: Android Developer
+    description: Native Android development environment
+    icon: 🤖
+    packages: [git, java, kotlin, android-sdk, android-studio, gradle]
+
+  - id: data-scientist
+    name: Data Scientist
+    description: Data analysis and visualization environment
+    icon: 📊
+    packages: [git, python, jupyter, pytorch, tensorflow, opencv, huggingface, sqlite]
+
+  - id: rust-dev
+    name: Rust Developer
+    description: Systems programming with Rust
+    icon: 🦀
+    packages: [git, rust, docker]
+
+  - id: fullstack-ai
+    name: Full-Stack AI Developer
+    description: AI-powered full-stack development
+    icon: 🧠
+    packages: [git, nodejs, python, pnpm, nextjs, fastapi, pytorch, langchain, docker, postgresql]

@@ -1,0 +1,94 @@
+# ============================================================
+# AutoDev — .gitignore
+# ============================================================
+
+# Node / pnpm
+node_modules/
+.next/
+dist/
+build/
+coverage/
+.cache/
+turbo/
+pnpm-store/
+.pnpm-store/
+.turbo/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Go
+vendor/
+bin/
+*.exe
+*.test
+*.out
+/packages/cli/autodev
+/packages/cli/dist/
+
+# Build artifacts
+target/
+tmp/
+.goreleaser-dist/
+
+# Environment
+.env
+.env.local
+.env.production
+.env.development
+.env.test
+*.env
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+pnpm-debug.log*
+
+# Reports
+reports/
+generated/
+downloads/
+
+# Docker
+docker-volumes/
+.docker/
+
+# Flutter / Dart
+flutter/.dart_tool/
+flutter/build/
+.dart_tool/
+.packages
+
+# Android / iOS
+android/.gradle/
+android/build/
+ios/Pods/
+ios/.symlinks/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+
+# Java / Gradle / Maven
+.gradle/
+*.class
+*.jar
+*.war
+.m2/
+
+# SQLite
+*.db
+*.sqlite
+*.sqlite3
+
+# Go workspace sum
+go.work.sum

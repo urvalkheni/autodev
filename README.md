@@ -1,7 +1,3 @@
-<h1 align="center">
-  <img src="https://raw.githubusercontent.com/HEETMEHTA18/autodev/main/apps/website/public/logo.svg" alt="AutoDev" width="80" />
-  <br/>
-  AutoDev
 </h1>
 
 ```text

@@ -1,13 +1,43 @@
 @import "tailwindcss";
 
+:root {
+  --bg-primary: #0A0A0A;
+  --bg-secondary: #111111;
+  --bg-tertiary: #080808;
+  --border-primary: #2A2A2A;
+  --border-secondary: #1A1A1A;
+  --text-primary: #F0F0F0;
+  --text-secondary: #888888;
+  --text-muted: #666666;
+  
+  --color-yellow-theme: #FFD700;
+  --color-green-theme: #00FF87;
+  --color-blue-theme: #4A90E2;
+}
+
+html.light {
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F8FAFC;
+  --bg-tertiary: #F1F5F9;
+  --border-primary: #E2E8F0;
+  --border-secondary: #CBD5E1;
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-muted: #64748B;
+  
+  --color-yellow-theme: #D97706; /* Golden amber for readability on white bg */
+  --color-green-theme: #059669;  /* Emerald green for readability on white bg */
+  --color-blue-theme: #1D4ED8;   /* Royal blue for readability on white bg */
+}
+
 @theme {
-  --color-yellow: #FFD700;
-  --color-green: #00FF87;
+  --color-yellow: var(--color-yellow-theme);
+  --color-green: var(--color-green-theme);
   --color-red: #FF4444;
-  --color-blue: #4A90E2;
-  --color-black: #0A0A0A;
-  --color-dark: #111111;
-  --color-border: #2A2A2A;
+  --color-blue: var(--color-blue-theme);
+  --color-black: var(--bg-primary);
+  --color-dark: var(--bg-secondary);
+  --color-border: var(--border-primary);
   --font-space: var(--font-space), "Space Grotesk", sans-serif;
   --font-mono: var(--font-mono), "JetBrains Mono", monospace;
 }
@@ -21,10 +51,247 @@ html {
 }
 
 body {
-  background: #0A0A0A;
-  color: #F0F0F0;
+  background: var(--bg-primary);
+  color: var(--text-primary);
   font-family: var(--font-space);
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
+
+/* Light mode overrides for arbitrary Tailwind styles */
+html.light .bg-black {
+  background-color: var(--bg-primary) !important;
+}
+html.light .bg-black\/95 {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+}
+html.light .bg-\[\#0A0A0A\] {
+  background-color: var(--bg-primary) !important;
+}
+html.light .bg-\[\#111\] {
+  background-color: var(--bg-secondary) !important;
+}
+html.light .bg-\[\#111111\] {
+  background-color: var(--bg-secondary) !important;
+}
+html.light .bg-\[\#0E0E0E\] {
+  background-color: var(--bg-secondary) !important;
+}
+html.light .bg-\[\#080808\] {
+  background-color: var(--bg-tertiary) !important;
+}
+html.light .bg-\[\#0D0D0D\] {
+  background-color: var(--bg-secondary) !important;
+}
+html.light .bg-\[\#151515\] {
+  background-color: var(--bg-tertiary) !important;
+}
+html.light .hover\:bg-\[\#151515\]:hover {
+  background-color: var(--bg-tertiary) !important;
+}
+
+html.light .border-\[\#2A2A2A\] {
+  border-color: var(--border-primary) !important;
+}
+html.light .border-b-2 {
+  border-bottom-color: var(--border-primary) !important;
+}
+html.light .border-b-4 {
+  border-bottom-color: var(--border-primary) !important;
+}
+html.light .border-r-4 {
+  border-right-color: var(--border-primary) !important;
+}
+html.light .border-t-2 {
+  border-top-color: var(--border-primary) !important;
+}
+html.light .border-y-2 {
+  border-top-color: var(--border-primary) !important;
+  border-bottom-color: var(--border-primary) !important;
+}
+html.light .border-\[\#1A1A1A\] {
+  border-color: var(--border-secondary) !important;
+}
+html.light .border-b-\[\#1A1A1A\] {
+  border-bottom-color: var(--border-secondary) !important;
+}
+html.light .border-t-\[\#1A1A1A\] {
+  border-top-color: var(--border-secondary) !important;
+}
+html.light .border-\[\#333\] {
+  border-color: var(--border-secondary) !important;
+}
+html.light .border-white {
+  border-color: var(--text-primary) !important;
+}
+html.light .border-\[\#1F1F1F\] {
+  border-color: var(--border-primary) !important;
+}
+html.light .border-t-\[\#1F1F1F\] {
+  border-top-color: var(--border-primary) !important;
+}
+html.light .border-\[\#888\] {
+  border-color: var(--border-secondary) !important;
+}
+
+html.light .text-white {
+  color: var(--text-primary) !important;
+}
+html.light .text-\[\#888\] {
+  color: var(--text-secondary) !important;
+}
+html.light .text-\[\#aaa\] {
+  color: var(--text-secondary) !important;
+}
+html.light .text-\[\#ccc\] {
+  color: var(--text-secondary) !important;
+}
+html.light .text-\[\#666\] {
+  color: var(--text-muted) !important;
+}
+html.light .text-\[\#555\] {
+  color: var(--text-muted) !important;
+}
+html.light .text-neutral-200 {
+  color: var(--text-primary) !important;
+}
+html.light .text-neutral-300 {
+  color: var(--text-secondary) !important;
+}
+html.light .text-neutral-400 {
+  color: var(--text-secondary) !important;
+}
+html.light .text-\[\#FFD700\] {
+  color: var(--color-yellow-theme) !important;
+}
+html.light .text-\[\#00FF87\] {
+  color: var(--color-green-theme) !important;
+}
+html.light .text-\[\#4A90E2\] {
+  color: var(--color-blue-theme) !important;
+}
+
+html.light .hover\:text-white:hover {
+  color: var(--text-primary) !important;
+}
+
+html.light .nb-card {
+  border-color: var(--border-primary) !important;
+  background-color: var(--bg-secondary) !important;
+}
+html.light .nb-card:hover {
+  border-color: #FFD700 !important;
+  box-shadow: 4px 4px 0px #FFD700 !important;
+}
+html.light .nb-btn-outline {
+  border: 3px solid var(--text-primary) !important;
+  box-shadow: 4px 4px 0px var(--text-primary) !important;
+  color: var(--text-primary) !important;
+  background: transparent !important;
+}
+html.light .nb-btn-outline:hover {
+  background: var(--text-primary) !important;
+  color: var(--bg-primary) !important;
+  box-shadow: 6px 6px 0px var(--text-primary) !important;
+}
+html.light .nb-btn-outline:active {
+  box-shadow: 2px 2px 0px var(--text-primary) !important;
+}
+html.light .nb-shadow-white {
+  box-shadow: 6px 6px 0px var(--text-primary) !important;
+}
+html.light .nb-border-white {
+  border: 3px solid var(--text-primary) !important;
+}
+
+/* Restore dark mode console/terminal and code block styles in light mode */
+html.light .terminal,
+html.light .terminal *,
+html.light .terminal-bar,
+html.light .terminal-bar *,
+html.light pre,
+html.light pre *,
+html.light code,
+html.light code * {
+  color: inherit;
+}
+
+html.light .terminal {
+  background-color: #0D0D0D !important;
+  border-color: #333333 !important;
+  box-shadow: 8px 8px 0px #D97706 !important;
+  color: #F0F0F0 !important;
+}
+html.light .terminal-bar {
+  background-color: #1A1A1A !important;
+  border-bottom-color: #333333 !important;
+  color: #888888 !important;
+}
+html.light .terminal .text-white,
+html.light .terminal-bar .text-white {
+  color: #FFFFFF !important;
+}
+html.light .terminal .text-\[\#888\],
+html.light .terminal-bar .text-\[\#888\] {
+  color: #888888 !important;
+}
+html.light .terminal .text-\[\#aaa\] {
+  color: #aaaaaa !important;
+}
+html.light .terminal .text-\[\#ccc\] {
+  color: #cccccc !important;
+}
+html.light .terminal .text-\[\#666\] {
+  color: #666666 !important;
+}
+html.light .terminal .text-\[\#555\] {
+  color: #555555 !important;
+}
+html.light .terminal .text-\[\#00FF87\] {
+  color: #00FF87 !important;
+}
+html.light .terminal .text-\[\#FFD700\] {
+  color: #FFD700 !important;
+}
+html.light .terminal .text-\[\#4A90E2\] {
+  color: #4A90E2 !important;
+}
+html.light .terminal .bg-black {
+  background-color: #000000 !important;
+}
+html.light .terminal .bg-\[\#111\] {
+  background-color: #111111 !important;
+}
+html.light .terminal .border-\[\#2A2A2A\] {
+  border-color: #2A2A2A !important;
+}
+
+/* Also restore docs pre and code block elements */
+html.light pre {
+  background-color: #050505 !important;
+  border-color: #2A2A2A !important;
+  color: #E2E8F0 !important;
+}
+html.light pre .text-neutral-200,
+html.light code .text-neutral-200 {
+  color: #E5E5E5 !important;
+}
+html.light pre .text-neutral-300,
+html.light code .text-neutral-300 {
+  color: #D4D4D4 !important;
+}
+html.light pre .text-neutral-400,
+html.light code .text-neutral-400 {
+  color: #A3A3A3 !important;
+}
+html.light pre .text-\[\#00FF87\],
+html.light code .text-\[\#00FF87\] {
+  color: #00FF87 !important;
+}
+html.light pre .text-\[\#FFD700\],
+html.light code .text-\[\#FFD700\] {
+  color: #FFD700 !important;
+}
+
 
 /* ── Neo-Brutalist Utilities ─────────────────────────────────────────── */
 .nb-border {

@@ -603,7 +603,7 @@ export default function Categories() {
                 </div>
                 <button
                   onClick={() => {
-                    const cmd = `curl -fsSL https://autodev.dev/install.sh | bash -s -- --install ${selectedPackagesForCliCommand || "nodejs git"}`;
+                    const cmd = `curl -fsSL https://autodevs.dev/install.sh | bash -s -- --install ${selectedPackagesForCliCommand || "nodejs git"}`;
                     navigator.clipboard.writeText(cmd);
                     setCopiedCompiler(true);
                     setTimeout(() => setCopiedCompiler(false), 1800);
@@ -626,7 +626,7 @@ export default function Categories() {
               </div>
               <div className="px-4 py-3 font-mono text-xs md:text-sm text-[#00FF87] flex flex-col md:flex-row md:items-center justify-between gap-4 overflow-x-auto bg-black">
                 <code className="whitespace-nowrap">
-                  <span className="text-[#555]">$</span> curl -fsSL https://autodev.dev/install.sh | bash -s -- --install{" "}
+                  <span className="text-[#555]">$</span> curl -fsSL https://autodevs.dev/install.sh | bash -s -- --install{" "}
                   <span className="text-[#FFD700] font-bold">
                     {selectedPackagesForCliCommand || "nodejs git"}
                   </span>

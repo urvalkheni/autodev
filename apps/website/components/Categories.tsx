@@ -337,6 +337,13 @@ export default function Categories() {
     return Object.values(appStates).filter(state => state === "installed").length;
   }, [appStates]);
 
+  const selectedPackagesForCliCommand = useMemo(() => {
+    return Object.entries(appStates)
+      .filter(([_, state]) => state === "installed")
+      .map(([id]) => id)
+      .join(" ");
+  }, [appStates]);
+
 
   return (
     <section id="features" className="py-20 px-6 max-w-7xl mx-auto scroll-mt-24">

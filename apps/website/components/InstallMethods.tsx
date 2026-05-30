@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { Copy, Check } from "lucide-react";
 
 const methods = [
   { label: "Shell",       cmd: "curl -fsSL https://raw.githubusercontent.com/HEETMEHTA18/autodev/main/scripts/install.sh | bash",   icon: "🐚" },
@@ -31,15 +32,25 @@ export default function InstallMethods() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {methods.map((m) => (
-          <div key={m.label} className="nb-card p-5 cursor-pointer" onClick={() => copy(m.cmd)}>
+          <div key={m.label} className="nb-card p-5 cursor-pointer group" onClick={() => copy(m.cmd)}>
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <span className="text-xl">{m.icon}</span>
                 <span className="font-bold text-white text-sm">{m.label}</span>
               </div>
-              <span className="text-xs text-[#555]">
-                {copied === m.cmd ? "✓ Copied!" : "click to copy"}
-              </span>
+              <div className="flex items-center gap-1 text-xs">
+                {copied === m.cmd ? (
+                  <>
+                    <Check className="w-3.5 h-3.5 text-[#00FF87]" />
+                    <span className="text-[10px] text-[#00FF87] font-mono">Copied!</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-3.5 h-3.5 text-[#555] group-hover:text-[#FFD700] transition-colors" />
+                    <span className="text-[10px] text-[#555] group-hover:text-[#FFD700] font-mono transition-colors">Copy</span>
+                  </>
+                )}
+              </div>
             </div>
             <div className="font-mono text-xs text-[#00FF87] bg-[#0D0D0D] border border-[#222] px-3 py-2 truncate">
               {m.cmd}

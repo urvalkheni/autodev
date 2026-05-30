@@ -172,5 +172,6 @@ func runDoctor() error {
 	}
 	fmt.Println()
 
+	PrintGitHubCTA()
 	return nil
 }

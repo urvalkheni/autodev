@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { Copy, Check } from "lucide-react";
 
 interface DocSection {
   id: string;
@@ -41,12 +42,22 @@ export default function DocsClient() {
   };
 
   const renderCodeBlock = (id: string, code: string) => (
-    <div key={id} className="relative group border-2 border-[#2A2A2A] bg-[#050505] p-4 font-mono text-sm my-4 rounded-md overflow-x-auto">
+    <div key={id} className="relative group border-2 border-[#2A2A2A] bg-[#050505] p-4 font-mono text-sm my-4 rounded-md overflow-x-auto pr-24">
       <button
         onClick={() => handleCopy(code, id)}
-        className="absolute top-2 right-2 text-xs bg-[#111] hover:bg-[#FFD700] hover:text-black border border-[#2A2A2A] px-2 py-1 rounded transition-colors text-neutral-400 font-sans"
+        className="absolute top-2.5 right-2.5 text-xs bg-[#111] hover:bg-[#FFD700] hover:text-black hover:border-[#FFD700] border border-[#2A2A2A] px-2.5 py-1.5 rounded transition-all text-neutral-400 font-mono flex items-center gap-1.5 cursor-pointer"
       >
-        {copiedId === id ? "Copied!" : "Copy"}
+        {copiedId === id ? (
+          <>
+            <Check className="w-3.5 h-3.5 text-[#00FF87]" />
+            <span className="text-[#00FF87]">Copied!</span>
+          </>
+        ) : (
+          <>
+            <Copy className="w-3.5 h-3.5" />
+            <span>Copy</span>
+          </>
+        )}
       </button>
       <pre className="text-neutral-200">{code}</pre>
     </div>
@@ -182,6 +193,23 @@ export default function DocsClient() {
           {renderCodeBlock("cmd-scan-run", "autodev scan")}
           <p className="text-neutral-300 leading-relaxed mb-4">
             Instead of simply looking at file extensions, AutoDev queries package registries (like <code className="font-mono text-neutral-400">package.json</code>, <code className="font-mono text-neutral-400">go.mod</code>, or <code className="font-mono text-neutral-400">requirements.txt</code>) to build a precise map of frameworks, databases, and secondary development tools.
+          </p>
+        </>
+      ),
+    },
+    {
+      id: "cmd-audit",
+      category: "Commands",
+      title: "autodev audit",
+      content: (
+        <>
+          <h1 className="text-4xl font-black text-white mb-6 uppercase tracking-tight">autodev audit</h1>
+          <p className="text-neutral-300 leading-relaxed mb-4">
+            The <code className="text-[#FFD700] font-mono bg-[#111] px-1 py-0.5 rounded text-sm">audit</code> command scans your project&apos;s lockfiles and dependency lists and queries the OSV (Open Source Vulnerabilities) database.
+          </p>
+          {renderCodeBlock("cmd-audit-run", "autodev audit")}
+          <p className="text-neutral-300 leading-relaxed mb-4">
+            It checks Python, Node.js, and Go dependencies for known supply-chain vulnerabilities, compromised packages, and security advisories, listing the CVE and severity level for any threats.
           </p>
         </>
       ),

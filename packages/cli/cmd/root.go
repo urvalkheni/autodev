@@ -7,6 +7,7 @@ import (
 
 	"github.com/autodev-sh/autodev/catalog"
 	"github.com/autodev-sh/autodev/cli/tui"
+	"github.com/charmbracelet/lipgloss"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -23,7 +24,7 @@ var (
 var rootCmd = &cobra.Command{
 	Use:     "autodev",
 	Short:   "Clone. Scan. Install. Build. — The App Store for Developers",
-	Version: "0.1.0",
+	Version: "0.1.1",
 	Long: `
   █████╗ ██╗   ██╗████████╗ ██████╗ ██████╗ ███████╗██╗   ██╗
   ██╔══██╗██║   ██║╚══██╔══╝██╔═══██╗██╔══██╗██╔════╝██║   ██║
@@ -78,6 +79,7 @@ func init() {
 		newProfileCmd(),
 		newUICmd(),
 		newCloneCmd(),
+		newAuditCmd(),
 	)
 }
 
@@ -94,4 +96,22 @@ func initConfig() {
 	viper.SetEnvPrefix("AUTODEV")
 	viper.AutomaticEnv()
 	_ = viper.ReadInConfig()
+}
+
+// PrintGitHubCTA prints a friendly CTA requesting users to star the GitHub repo.
+func PrintGitHubCTA() {
+	if jsonOut {
+		return
+	}
+	starStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("#FFD700")).Bold(true)
+	linkStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("#00FF87")).Underline(true)
+	dimStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("#555555"))
+
+	fmt.Println()
+	fmt.Println(dimStyle.Render("  ──────────────────────────────────────────────────────────"))
+	fmt.Printf("  %s Star the repo to support AutoDev: %s\n",
+		starStyle.Render("⭐ Love this tool?"),
+		linkStyle.Render("https://github.com/HEETMEHTA18/autodev"))
+	fmt.Println(dimStyle.Render("  ──────────────────────────────────────────────────────────"))
+	fmt.Println()
 }

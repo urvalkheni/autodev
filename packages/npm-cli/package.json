@@ -1,0 +1,34 @@
+{
+  "name": "@heetmehta18/autodev",
+  "version": "0.1.1",
+  "description": "The App Store for Developers. Install languages, frameworks, and databases with a single command.",
+  "main": "bin/index.js",
+  "bin": {
+    "autodev": "bin/index.js"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "test": "node bin/index.js --help"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HEETMEHTA18/autodev.git"
+  },
+  "keywords": [
+    "autodev",
+    "developer",
+    "environment",
+    "installer",
+    "bootstrap",
+    "setup",
+    "cli"
+  ],
+  "author": "Heet Mehta",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/HEETMEHTA18/autodev/issues"
+  },
+  "homepage": "https://github.com/HEETMEHTA18/autodev#readme"
+}

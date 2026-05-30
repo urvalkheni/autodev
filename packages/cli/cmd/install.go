@@ -1,9 +1,16 @@
 package cmd
 
 import (
+	"context"
 	"fmt"
+	"net/http"
+	"os/exec"
+	"strings"
+	"sync"
+	"time"
 
 	"github.com/autodev-sh/autodev/catalog"
+	"github.com/autodev-sh/autodev/scanner"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/spf13/cobra"
 )
@@ -97,6 +104,8 @@ func runCatalogInstall(c *catalog.Catalog, id string) error {
 	}
 	fmt.Println()
 
+	var installedPkgs []*catalog.Package
+
 	for _, p := range resolved {
 		fmt.Printf(titleStyle.Render("  - %s\n"), p.Name)
 		if dryRun {
@@ -107,13 +116,291 @@ func runCatalogInstall(c *catalog.Catalog, id string) error {
 			fmt.Println(warnStyle.Render(fmt.Sprintf("  [FAIL] %s: %v", p.Name, err)))
 		} else {
 			fmt.Println(okStyle.Render(fmt.Sprintf("  [OK] %s installed", p.Name)))
+			installedPkgs = append(installedPkgs, p)
 		}
+	}
+
+	if len(installedPkgs) > 0 {
+		runBumblebeeSafetyCheck(installedPkgs)
 	}
 
 	fmt.Println()
 	fmt.Println(okStyle.Render(fmt.Sprintf("  [OK] %s ready!", pkg.Name)))
 	return nil
 }
+
+func runBumblebeeSafetyCheck(pkgs []*catalog.Package) {
+	bumblebeeHeaderStyle := lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("#00FFFF"))
+	dimStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("#888888"))
+	okStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("#00FF87")).Bold(true)
+	warnStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("#FF6B6B")).Bold(true)
+	infoStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("#4A90E2")).Bold(true)
+
+	criticalStyle := lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("#FF2A2A"))
+	highStyle := lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("#FF6B6B"))
+	moderateStyle := lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("#FFD700"))
+	lowStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("#888888"))
+
+	fmt.Println()
+	fmt.Println(bumblebeeHeaderStyle.Render("  🛡️  Bumblebee Post-Install Safety Audit"))
+
+	type pkgInfo struct {
+		pkg       *catalog.Package
+		version   string
+		ecosystem string
+		names     []string
+	}
+
+	var infos []pkgInfo
+	var displayNames []string
+
+	for _, pkg := range pkgs {
+		version := getVersionFromVerify(pkg)
+		if version == "" {
+			version = "0.0.1"
+		}
+		ecosystem, names := determineOsvEcosystemAndNames(pkg)
+		if len(names) == 0 {
+			ecosystem = "npm"
+			names = []string{pkg.ID}
+		}
+		infos = append(infos, pkgInfo{
+			pkg:       pkg,
+			version:   version,
+			ecosystem: ecosystem,
+			names:     names,
+		})
+		displayNames = append(displayNames, fmt.Sprintf("%s@%s", pkg.Name, version))
+	}
+
+	type auditResult struct {
+		pkgName    string
+		pkgVersion string
+		name       string
+		ecosystem  string
+		vulns      []scanner.Vulnerability
+		err        error
+	}
+
+	totalQueries := 0
+	for _, info := range infos {
+		totalQueries += len(info.names)
+	}
+
+	resChan := make(chan auditResult, totalQueries)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	spinnerDone := make(chan struct{})
+	go func() {
+		spinner := []string{"⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"}
+		start := time.Now()
+		ticker := time.NewTicker(100 * time.Millisecond)
+		defer ticker.Stop()
+		i := 0
+		for {
+			select {
+			case <-spinnerDone:
+				fmt.Print("\r\033[K") // Clear line
+				return
+			case <-ticker.C:
+				elapsed := time.Since(start).Seconds()
+				fmt.Printf("\r  %s %s Running safety audit on %s... %s",
+					lipgloss.NewStyle().Foreground(lipgloss.Color("#00FFFF")).Render(spinner[i%len(spinner)]),
+					dimStyle.Render("Bumblebee:"),
+					strings.Join(displayNames, ", "),
+					dimStyle.Render(fmt.Sprintf("[%.1fs]", elapsed)),
+				)
+				i++
+			}
+		}
+	}()
+
+	client := &http.Client{Timeout: 3 * time.Second}
+	var wg sync.WaitGroup
+
+	for _, info := range infos {
+		for _, name := range info.names {
+			wg.Add(1)
+			go func(inf pkgInfo, n string) {
+				defer wg.Done()
+				p := scanner.AuditPackage{
+					Name:      n,
+					Version:   inf.version,
+					Ecosystem: inf.ecosystem,
+				}
+				vulns, err := scanner.CheckPackageVulnerabilities(ctx, client, p)
+				resChan <- auditResult{
+					pkgName:    inf.pkg.Name,
+					pkgVersion: inf.version,
+					name:       n,
+					ecosystem:  inf.ecosystem,
+					vulns:      vulns,
+					err:        err,
+				}
+			}(info, name)
+		}
+	}
+
+	go func() {
+		wg.Wait()
+		close(resChan)
+	}()
+
+	var results []auditResult
+	for res := range resChan {
+		results = append(results, res)
+	}
+
+	close(spinnerDone)
+	time.Sleep(100 * time.Millisecond) // wait for spinner to clear
+
+	totalVulns := 0
+	for _, r := range results {
+		totalVulns += len(r.vulns)
+	}
+
+	if totalVulns == 0 {
+		fmt.Println(okStyle.Render(fmt.Sprintf("  ✓ Verified %s: No known vulnerabilities found! Safe from attackers' malicious files.", strings.Join(displayNames, ", "))))
+		fmt.Println()
+		return
+	}
+
+	fmt.Println(warnStyle.Render(fmt.Sprintf("  ✗ Found %d security vulnerabilities across downloaded packages:", totalVulns)))
+	
+	// Group results by catalog package name
+	byPkg := make(map[string][]auditResult)
+	for _, r := range results {
+		if len(r.vulns) > 0 {
+			byPkg[r.pkgName] = append(byPkg[r.pkgName], r)
+		}
+	}
+
+	for pkgName, pkgResults := range byPkg {
+		version := pkgResults[0].pkgVersion
+		fmt.Println(infoStyle.Render(fmt.Sprintf("    📦 %s@%s", pkgName, version)))
+		for _, r := range pkgResults {
+			fmt.Println(dimStyle.Render(fmt.Sprintf("      ecosystem: %s, package: %s", r.ecosystem, r.name)))
+			for _, v := range r.vulns {
+				var sevBadge string
+				switch v.Severity {
+				case "CRITICAL":
+					sevBadge = criticalStyle.Render("[CRITICAL]")
+				case "HIGH":
+					sevBadge = highStyle.Render("[HIGH]")
+				case "MODERATE", "MEDIUM":
+					sevBadge = moderateStyle.Render("[MODERATE]")
+				default:
+					sevBadge = lowStyle.Render(fmt.Sprintf("[%s]", v.Severity))
+				}
+				alias := ""
+				if len(v.Aliases) > 0 {
+					alias = fmt.Sprintf(" (%s)", v.Aliases[0])
+				}
+				fmt.Printf("        - %s %s%s: %s\n", sevBadge, v.ID, alias, v.Summary)
+			}
+		}
+	}
+	fmt.Println()
+}
+
+func getVersionFromVerify(pkg *catalog.Package) string {
+	if pkg.Verify == "" {
+		return ""
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	defer cancel()
+	
+	// Create command with shell to run the verification
+	cmd := exec.CommandContext(ctx, "sh", "-c", pkg.Verify)
+	out, err := cmd.Output()
+	if err != nil {
+		return ""
+	}
+	return extractVersion(string(out))
+}
+
+func extractVersion(input string) string {
+	input = strings.TrimSpace(input)
+	if input == "" {
+		return ""
+	}
+	if strings.Contains(input, "go version go") {
+		parts := strings.Split(input, " ")
+		for _, part := range parts {
+			if strings.HasPrefix(part, "go") && len(part) > 2 {
+				return strings.TrimPrefix(part, "go")
+			}
+		}
+	}
+	words := strings.Fields(input)
+	for _, word := range words {
+		word = strings.TrimLeft(word, "vV")
+		dotCount := strings.Count(word, ".")
+		if dotCount >= 1 {
+			cleaned := strings.TrimFunc(word, func(r rune) bool {
+				return !((r >= '0' && r <= '9') || r == '.' || r == '-' || (r >= 'a' && r <= 'z'))
+			})
+			if cleaned != "" {
+				return cleaned
+			}
+		}
+	}
+	return input
+}
+
+func determineOsvEcosystemAndNames(pkg *catalog.Package) (string, []string) {
+	var method string
+	var packages []string
+
+	if pkg.Install.Linux.Method != "" {
+		method = pkg.Install.Linux.Method
+		packages = pkg.Install.Linux.Packages
+	} else if pkg.Install.Darwin.Method != "" {
+		method = pkg.Install.Darwin.Method
+		packages = pkg.Install.Darwin.Packages
+	} else if pkg.Install.Windows.Method != "" {
+		method = pkg.Install.Windows.Method
+		packages = pkg.Install.Windows.Packages
+	}
+
+	switch method {
+	case "npm":
+		if len(packages) > 0 {
+			return "npm", packages
+		}
+		return "npm", []string{pkg.ID}
+	case "pip":
+		if len(packages) > 0 {
+			return "PyPI", packages
+		}
+		return "PyPI", []string{pkg.ID}
+	case "cargo":
+		if len(packages) > 0 {
+			return "crates.io", packages
+		}
+		return "crates.io", []string{pkg.ID}
+	}
+
+	if pkg.Category == "Languages" {
+		if pkg.ID == "go" {
+			return "Go", []string{"stdlib"}
+		}
+		if pkg.ID == "rust" {
+			return "crates.io", []string{"rustc"}
+		}
+	}
+
+	if pkg.ID == "pnpm" {
+		return "npm", []string{"pnpm"}
+	}
+	if pkg.ID == "nodejs" {
+		return "npm", []string{"node"}
+	}
+
+	return "npm", []string{pkg.ID}
+}
+
 
 func newUpdateCmd() *cobra.Command {
 	return &cobra.Command{

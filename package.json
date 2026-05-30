@@ -1,6 +1,6 @@
 {
   "name": "autodev",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "Clone. Scan. Install. Build. — Open-source developer environment bootstrapper",
   "scripts": {
@@ -13,7 +13,8 @@
     "website": "pnpm --filter=website dev",
     "cli:build": "cd packages/cli && go build -o bin/autodev ./main.go",
     "cli:test": "cd packages/cli && go test ./...",
-    "cli:install": "cd packages/cli && go install ./..."
+    "cli:install": "cd packages/cli && go install ./...",
+    "npm:test": "pnpm --filter=@heetmehta18/autodev test"
   },
   "devDependencies": {
     "turbo": "^2.5.4",

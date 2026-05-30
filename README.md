@@ -71,6 +71,7 @@ autodev setup
 |---------|-------------|
 | `autodev scan` | Scan current repo for languages, frameworks, package managers |
 | `autodev setup` | Install all missing runtimes and dependencies |
+| `autodev audit` | Audit repository dependencies for security vulnerabilities (OSV.dev) |
 | `autodev github <USER>` | Scan all public repos of a GitHub user |
 | `autodev doctor` | Check environment health |
 | `autodev report` | Generate HTML/PDF/JSON environment report |
@@ -82,31 +83,51 @@ autodev setup
 
 ---
 
-## 🧠 Detection Engine
+## ⚔️ Why AutoDev?
 
-AutoDev scans your repository and detects:
+How does AutoDev compare to existing developer tools? Here is the matrix:
 
-**Languages:** Node.js · Python · Go · Rust · Java · Kotlin · PHP · Ruby · C/C++ · .NET · Flutter · Dart  
-**Frameworks:** React · Next.js · Angular · Vue · Svelte · Laravel · Rails · Spring Boot · Gin  
-**Package Managers:** npm · pnpm · yarn · bun · pip · poetry · cargo · maven · gradle · composer  
-**Containers:** Docker · Docker Compose · Kubernetes · Helm  
-**Databases:** PostgreSQL · MySQL · MongoDB · Redis · SQLite  
-**Cloud:** Firebase · Supabase · Terraform · Nginx · Apache  
+| Feature | AutoDev ⚡ | Dev Containers | Nix / Devenv | Homebrew / ASDF |
+|:---|:---:|:---:|:---:|:---:|
+| **Zero-Config Setup** | **Yes (Automatic)** | No (Requires JSON/Docker) | No (Requires Nix expressions) | No (Manual installs) |
+| **Monorepo Polyglot Scan** | **Yes** | No | No | No |
+| **Git-History Skill Intelligence** | **Yes** | No | No | No |
+| **Interactive Terminal TUI** | **Yes** | No | No | No |
+| **Lightweight (No VM/Docker needed)**| **Yes** | No (Requires Docker) | Yes | Yes |
 
 ---
 
-## 📦 Installation Methods
+## 🤖 Integrations & AI Agent Adoption
 
-| Method | Command |
-|--------|---------|
-| Shell | `curl -fsSL https://raw.githubusercontent.com/HEETMEHTA18/autodev/main/scripts/install.sh \| bash` |
-| NPX | `npx autodev` |
-| PNPM | `pnpm dlx autodev` |
-| Homebrew | `brew install HEETMEHTA18/tap/autodev` |
-| Scoop | `scoop install autodev` |
-| Chocolatey | `choco install autodev` |
-| Docker | `docker run ghcr.io/heetmehta18/autodev` |
-| Binary | [GitHub Releases](https://github.com/HEETMEHTA18/autodev/releases) |
+AutoDev is built to be the local runtime automation layer for developers and modern **AI agents / Coding Tools** (like Cursor, Windsurf, Devin, and custom Model Context Protocol servers).
+
+### Programmatic Usage
+AI agents can invoke `autodev` to query or resolve the local environment:
+- **Environment Discovery:** Run `autodev scan --json` to detect what tech stack the repo uses.
+- **Environment Bootstrapping:** Run `autodev setup --dry-run` to identify missing runtimes, and `autodev setup` to install them automatically.
+- **Automated Doctor:** Run `autodev doctor --json` to inspect compiler paths and library health.
+
+---
+
+## 🗺️ Product Roadmap
+
+```mermaid
+graph TD
+    A[v0.1.0 Foundation] --> B[v0.2.0 Ecosystem]
+    B --> C[v0.3.0 Intelligence]
+    
+    subgraph v0.2.0 Features
+    B1[Homebrew / Scoop / Chocolatey Taps]
+    B2[skills.sh Sync API]
+    B3[Docker/Kubernetes Manifest Detection]
+    end
+    
+    subgraph v0.3.0 Features
+    C1[VS Code Extension]
+    C2[Plugin SDK for custom detectors]
+    C3[AutoDev Doctor --fix auto-remediation]
+    end
+```
 
 ---
 

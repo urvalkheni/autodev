@@ -92,3 +92,6 @@ venv/
 
 # Go workspace sum
 go.work.sum
+
+# Jetro canvas cache
+.jetro/

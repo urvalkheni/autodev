@@ -139,5 +139,6 @@ func runSetup(path string, isDryRun, skipConfirm bool) error {
 		fmt.Println(warnStyle.Render("  Setup completed with errors. See above for details."))
 		os.Exit(exitCode)
 	}
+	PrintGitHubCTA()
 	return nil
 }

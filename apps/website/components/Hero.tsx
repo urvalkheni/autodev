@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { Copy, Check } from "lucide-react";
 
 const container = {
   hidden: {},
@@ -11,12 +12,20 @@ const item = {
   show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
 };
 
+const words = ["DEVELOPERS.", "ENGINEERS.", "BUILDERS.", "HACKERS.", "CREATORS."];
+
 export default function Hero() {
   const [text, setText] = useState("");
-  const words = ["DEVELOPERS.", "ENGINEERS.", "BUILDERS.", "HACKERS.", "CREATORS."];
   const [wordIndex, setWordIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
   const [typingSpeed, setTypingSpeed] = useState(150);
+  const [copiedQuickInstall, setCopiedQuickInstall] = useState(false);
+
+  const handleCopyQuickInstall = () => {
+    navigator.clipboard.writeText("curl -fsSL https://raw.githubusercontent.com/HEETMEHTA18/autodev/main/scripts/install.sh | bash");
+    setCopiedQuickInstall(true);
+    setTimeout(() => setCopiedQuickInstall(false), 1800);
+  };
 
   useEffect(() => {
     const currentWord = words[wordIndex];
@@ -37,9 +46,11 @@ export default function Hero() {
     if (!isDeleting && text === currentWord) {
       timer = setTimeout(() => setIsDeleting(true), 2000);
     } else if (isDeleting && text === "") {
-      setIsDeleting(false);
-      setWordIndex((prev) => (prev + 1) % words.length);
-      setTypingSpeed(300);
+      timer = setTimeout(() => {
+        setIsDeleting(false);
+        setWordIndex((prev) => (prev + 1) % words.length);
+        setTypingSpeed(300);
+      }, 0);
     }
 
     return () => clearTimeout(timer);
@@ -93,16 +104,35 @@ export default function Hero() {
         </motion.div>
 
         {/* Quick install */}
-        <motion.div variants={item}>
+        <motion.div variants={item} className="w-full max-w-xl">
           <p className="text-xs text-[#555] mb-2 uppercase tracking-widest font-semibold">Quick install</p>
-          <div className="terminal inline-block rounded-none">
-            <div className="terminal-bar">
-              <span className="terminal-dot bg-[#FF5F56]" />
-              <span className="terminal-dot bg-[#FFBD2E]" />
-              <span className="terminal-dot bg-[#27C93F]" />
-              <span className="text-xs text-[#666] ml-2 font-mono">bash</span>
+          <div className="terminal w-full rounded-none relative">
+            <div className="terminal-bar flex justify-between items-center pr-3 w-full">
+              <div className="flex items-center gap-1.5">
+                <span className="terminal-dot bg-[#FF5F56]" />
+                <span className="terminal-dot bg-[#FFBD2E]" />
+                <span className="terminal-dot bg-[#27C93F]" />
+                <span className="text-xs text-[#666] ml-2 font-mono">bash</span>
+              </div>
+              <button
+                onClick={handleCopyQuickInstall}
+                className="text-[#666] hover:text-[#FFD700] transition-colors p-1 flex items-center gap-1 rounded bg-[#1e1e1e] border border-[#2a2a2a] cursor-pointer"
+                title="Copy install command"
+              >
+                {copiedQuickInstall ? (
+                  <>
+                    <Check className="w-3.5 h-3.5 text-[#00FF87]" />
+                    <span className="text-[10px] text-[#00FF87] font-mono pr-0.5">Copied!</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-3.5 h-3.5" />
+                    <span className="text-[10px] text-[#666] font-mono pr-0.5">Copy</span>
+                  </>
+                )}
+              </button>
             </div>
-            <div className="px-6 py-4 font-mono text-sm text-[#00FF87]">
+            <div className="px-6 py-4 font-mono text-sm text-[#00FF87] overflow-x-auto whitespace-nowrap">
               <span className="text-[#555]">$ </span>
               curl -fsSL https://raw.githubusercontent.com/HEETMEHTA18/autodev/main/scripts/install.sh | bash
             </div>

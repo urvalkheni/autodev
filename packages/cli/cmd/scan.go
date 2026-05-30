@@ -60,6 +60,7 @@ func runScan(path string, asJSON bool) error {
 	}
 
 	printScanResult(result, elapsed)
+	PrintGitHubCTA()
 	return nil
 }
 
@@ -144,5 +145,6 @@ func printScanResult(result *scanner.ScanResult, elapsed time.Duration) {
 	fmt.Println(dimStyle.Render(fmt.Sprintf("  Scanned in %s | %d technologies detected", elapsed.Round(time.Millisecond), len(result.Technologies))))
 	fmt.Println()
 	fmt.Println(dimStyle.Render("  Run 'autodev setup' to install all missing tools."))
+	fmt.Println(dimStyle.Render("  Run 'autodev audit' to check dependencies for security risks."))
 	fmt.Println()
 }

@@ -79,13 +79,25 @@ if [ "${AUTODEV_VERSION}" = "latest" ]; then
   fi
 
   # Parse version tag
-  AUTODEV_VERSION=$(echo "${RELEASE_JSON}" | grep '"tag_name"' | sed -E 's/.*"v([^"]+)".*/\1/' || echo "")
-  if [ -z "${AUTODEV_VERSION}" ]; then
-    AUTODEV_VERSION=$(echo "${RELEASE_JSON}" | grep '"tag_name"' | sed -E 's/.*"tag_name":\s*"([^"]+)".*/\1/' || echo "")
+  TAG_NAME=$(echo "${RELEASE_JSON}" | sed -n -E 's/.*"tag_name":[[:space:]]*"([^"]+)".*/\1/p' || echo "")
+
+  if [ -z "${TAG_NAME}" ]; then
+    error "Could not parse version tag from GitHub API response. Please check if the release exists."
   fi
 
-  if [ -z "${AUTODEV_VERSION}" ]; then
-    error "Could not parse version tag from GitHub API response. Please check if the release exists."
+  # Normalize version for display (remove leading 'v')
+  AUTODEV_VERSION="${TAG_NAME#v}"
+else
+  # User manually specified AUTODEV_VERSION
+  if [[ "${AUTODEV_VERSION}" == v* ]]; then
+    TAG_NAME="${AUTODEV_VERSION}"
+    AUTODEV_VERSION="${AUTODEV_VERSION#v}"
+  else
+    if [[ "${AUTODEV_VERSION}" =~ ^[0-9] ]]; then
+      TAG_NAME="v${AUTODEV_VERSION}"
+    else
+      TAG_NAME="${AUTODEV_VERSION}"
+    fi
   fi
 fi
 
@@ -99,7 +111,7 @@ else
   ARCHIVE_EXT="tar.gz"
 fi
 
-DOWNLOAD_URL="${RELEASES_URL}/download/v${AUTODEV_VERSION}/${ARCHIVE_NAME}.${ARCHIVE_EXT}"
+DOWNLOAD_URL="${RELEASES_URL}/download/${TAG_NAME}/${ARCHIVE_NAME}.${ARCHIVE_EXT}"
 TMP_DIR=$(mktemp -d)
 ARCHIVE_PATH="${TMP_DIR}/autodev.${ARCHIVE_EXT}"
 

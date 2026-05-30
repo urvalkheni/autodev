@@ -1,7 +1,7 @@
 "use client";
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, Check, X, Terminal as TerminalIcon, Info, Sparkles, BookOpen, Layers, Download, CheckCircle, Package } from "lucide-react";
+import { Search, Check, X, Terminal as TerminalIcon, Info, Sparkles, Layers, CheckCircle, Copy } from "lucide-react";
 
 // Package definition
 interface DevPackage {
@@ -251,6 +251,8 @@ export default function Categories() {
   const [activeCategory, setActiveCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedApp, setSelectedApp] = useState<DevPackage | null>(null);
+  const [copiedCompiler, setCopiedCompiler] = useState(false);
+  const [copiedModalSnippet, setCopiedModalSnippet] = useState(false);
   
   // App states: "uninstalled", "installing", "installed"
   const [appStates, setAppStates] = useState<Record<string, "uninstalled" | "installing" | "installed">>({
@@ -335,12 +337,6 @@ export default function Categories() {
     return Object.values(appStates).filter(state => state === "installed").length;
   }, [appStates]);
 
-  const selectedPackagesForCliCommand = useMemo(() => {
-    return Object.entries(appStates)
-      .filter(([_, state]) => state === "installed")
-      .map(([id]) => id)
-      .join(" ");
-  }, [appStates]);
 
   return (
     <section id="features" className="py-20 px-6 max-w-7xl mx-auto scroll-mt-24">
@@ -401,13 +397,13 @@ export default function Categories() {
         <div className="grid grid-cols-1 lg:grid-cols-[240px_1fr] min-h-[500px]">
           
           {/* Sidebar */}
-          <div className="border-b-4 lg:border-b-0 lg:border-r-4 border-[#2A2A2A] bg-[#0E0E0E] p-4 space-y-2">
-            <p className="text-[10px] font-bold text-[#555] uppercase tracking-wider pl-2 mb-2 font-mono">Categories</p>
+          <div className="border-b-4 lg:border-b-0 lg:border-r-4 border-[#2A2A2A] bg-[#0E0E0E] p-4 flex flex-row lg:flex-col overflow-x-auto lg:overflow-x-visible gap-2 lg:space-y-2 scrollbar-none whitespace-nowrap lg:whitespace-normal">
+            <p className="hidden lg:block text-[10px] font-bold text-[#555] uppercase tracking-wider pl-2 mb-2 font-mono">Categories</p>
             {categories.map((cat) => (
               <button
                 key={cat.id}
                 onClick={() => setActiveCategory(cat.id)}
-                className={`w-full text-left px-3 py-2.5 font-bold text-xs flex items-center justify-between border-2 transition-all
+                className={`flex-shrink-0 px-3 py-2.5 font-bold text-xs flex items-center justify-between border-2 transition-all gap-4
                   ${activeCategory === cat.id
                     ? "border-[#FFD700] text-[#FFD700] bg-[#FFD70010]"
                     : "border-transparent text-[#888] hover:border-[#2A2A2A] hover:text-white"
@@ -417,7 +413,7 @@ export default function Categories() {
                   <span className="text-base">{cat.icon}</span>
                   <span>{cat.label}</span>
                 </div>
-                <span className="font-mono text-[10px] bg-black border border-[#2A2A2A] text-[#555] px-1.5 py-0.5 font-bold rounded">
+                <span className="font-mono text-[10px] bg-black border border-[#2A2A2A] text-[#555] px-1.5 py-0.5 font-bold rounded ml-2">
                   {cat.id === "all" 
                     ? packages.length 
                     : packages.filter(p => p.category === cat.id).length
@@ -426,28 +422,29 @@ export default function Categories() {
               </button>
             ))}
 
-            <div className="pt-4 border-t border-[#2A2A2A] mt-4 space-y-1">
-              <p className="text-[10px] font-bold text-[#555] uppercase tracking-wider pl-2 mb-2 font-mono">Smart Collections</p>
-              <button
-                onClick={() => {
-                  setActiveCategory("installed");
-                  setSearchQuery("");
-                }}
-                className={`w-full text-left px-3 py-2.5 font-bold text-xs flex items-center justify-between border-2 transition-all
-                  ${activeCategory === "installed"
-                    ? "border-[#00FF87] text-[#00FF87] bg-[#00FF8710]"
-                    : "border-transparent text-[#888] hover:border-[#2A2A2A] hover:text-white"
-                  }`}
-              >
-                <div className="flex items-center gap-2.5">
-                  <span>📦</span>
-                  <span>Installed locally</span>
-                </div>
-                <span className="font-mono text-[10px] bg-black border border-[#2A2A2A] text-[#555] px-1.5 py-0.5 font-bold rounded">
-                  {installedCount}
-                </span>
-              </button>
-            </div>
+            {/* Smart Collections Divider / Text */}
+            <div className="hidden lg:block pt-4 border-t border-[#2A2A2A] mt-4" />
+            <p className="hidden lg:block text-[10px] font-bold text-[#555] uppercase tracking-wider pl-2 mb-2 font-mono">Smart Collections</p>
+            
+            <button
+              onClick={() => {
+                setActiveCategory("installed");
+                setSearchQuery("");
+              }}
+              className={`flex-shrink-0 px-3 py-2.5 font-bold text-xs flex items-center justify-between border-2 transition-all gap-4
+                ${activeCategory === "installed"
+                  ? "border-[#00FF87] text-[#00FF87] bg-[#00FF8710]"
+                  : "border-transparent text-[#888] hover:border-[#2A2A2A] hover:text-white"
+                }`}
+            >
+              <div className="flex items-center gap-2.5">
+                <span>📦</span>
+                <span>Installed</span>
+              </div>
+              <span className="font-mono text-[10px] bg-black border border-[#2A2A2A] text-[#555] px-1.5 py-0.5 font-bold rounded ml-2">
+                {installedCount}
+              </span>
+            </button>
           </div>
 
           {/* Main Grid */}
@@ -588,13 +585,37 @@ export default function Categories() {
             </p>
 
             <div className="terminal w-full">
-              <div className="terminal-bar py-1.5 px-3">
-                <div className="flex gap-1">
-                  <span className="w-2 h-2 rounded-full bg-[#FF5F56]" />
-                  <span className="w-2 h-2 rounded-full bg-[#FFBD2E]" />
-                  <span className="w-2 h-2 rounded-full bg-[#27C93F]" />
+              <div className="terminal-bar py-1.5 px-3 flex justify-between items-center pr-3">
+                <div className="flex items-center gap-1.5">
+                  <div className="flex gap-1">
+                    <span className="w-2 h-2 rounded-full bg-[#FF5F56]" />
+                    <span className="w-2 h-2 rounded-full bg-[#FFBD2E]" />
+                    <span className="w-2 h-2 rounded-full bg-[#27C93F]" />
+                  </div>
+                  <span className="text-[10px] text-[#555] ml-2 font-mono">autodev cli compiler</span>
                 </div>
-                <span className="text-[10px] text-[#555] ml-2 font-mono">autodev cli compiler</span>
+                <button
+                  onClick={() => {
+                    const cmd = `curl -fsSL https://autodev.dev/install.sh | bash -s -- --install ${selectedPackagesForCliCommand || "nodejs git"}`;
+                    navigator.clipboard.writeText(cmd);
+                    setCopiedCompiler(true);
+                    setTimeout(() => setCopiedCompiler(false), 1800);
+                  }}
+                  className="text-[#666] hover:text-[#FFD700] transition-colors p-1.5 flex items-center gap-1 rounded bg-[#1e1e1e] border border-[#2a2a2a] cursor-pointer"
+                  title="Copy installation command"
+                >
+                  {copiedCompiler ? (
+                    <>
+                      <Check className="w-3.5 h-3.5 text-[#00FF87]" />
+                      <span className="text-[10px] text-[#00FF87] font-mono pr-0.5">Copied!</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-3.5 h-3.5" />
+                      <span className="text-[10px] text-[#666] font-mono pr-0.5">Copy</span>
+                    </>
+                  )}
+                </button>
               </div>
               <div className="px-4 py-3 font-mono text-xs md:text-sm text-[#00FF87] flex flex-col md:flex-row md:items-center justify-between gap-4 overflow-x-auto bg-black">
                 <code className="whitespace-nowrap">
@@ -603,16 +624,6 @@ export default function Categories() {
                     {selectedPackagesForCliCommand || "nodejs git"}
                   </span>
                 </code>
-                <button
-                  onClick={() => {
-                    const cmd = `curl -fsSL https://autodev.dev/install.sh | bash -s -- --install ${selectedPackagesForCliCommand || "nodejs git"}`;
-                    navigator.clipboard.writeText(cmd);
-                    alert("Installation command copied to clipboard!");
-                  }}
-                  className="px-3 py-1 bg-[#222] border border-[#444] text-white hover:bg-[#FFD700] hover:text-black hover:border-[#FFD700] text-xs font-bold transition-all shrink-0 uppercase tracking-wider"
-                >
-                  Copy Command
-                </button>
               </div>
             </div>
           </div>
@@ -647,7 +658,7 @@ export default function Categories() {
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
-              className="w-full max-w-2xl border-4 border-[#FFD700] bg-[#0A0A0A] p-6 md:p-8 relative overflow-hidden"
+              className="w-full max-w-2xl border-4 border-[#FFD700] bg-[#0A0A0A] p-6 md:p-8 relative overflow-y-auto max-h-[90vh]"
             >
               {/* Close button */}
               <button
@@ -753,15 +764,26 @@ export default function Categories() {
                 <div className="space-y-2">
                   <h5 className="text-xs font-bold uppercase tracking-wider text-[#FFD700] font-mono">Run / Execute Example</h5>
                   <div className="bg-[#111] border border-[#2A2A2A] p-3 text-xs font-mono text-[#888] flex items-center justify-between gap-4">
-                    <code>{selectedApp.snippet}</code>
+                    <code className="break-all">{selectedApp.snippet}</code>
                     <button
                       onClick={() => {
                         navigator.clipboard.writeText(selectedApp.snippet);
-                        alert("Example command copied!");
+                        setCopiedModalSnippet(true);
+                        setTimeout(() => setCopiedModalSnippet(false), 1800);
                       }}
-                      className="text-[#FFD700] hover:underline"
+                      className="text-xs text-[#FFD700] hover:text-[#00FF87] font-mono bg-[#1E1E1E] px-2.5 py-1.5 rounded border border-[#333] flex items-center gap-1.5 transition-colors cursor-pointer shrink-0"
                     >
-                      Copy
+                      {copiedModalSnippet ? (
+                        <>
+                          <Check className="w-3.5 h-3.5 text-[#00FF87]" />
+                          <span>Copied!</span>
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="w-3.5 h-3.5" />
+                          <span>Copy</span>
+                        </>
+                      )}
                     </button>
                   </div>
                 </div>

@@ -1,6 +1,6 @@
 "use client";
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
+import { motion, useInView } from "framer-motion";
 
 const lines = [
   { delay: 0,    text: "$ autodev",                          color: "#00FF87" },
@@ -31,35 +31,68 @@ const lines = [
 
 export default function Terminal() {
   const [visible, setVisible] = useState(0);
+  const [runKey, setRunKey] = useState(0);
+  
+  const containerRef = useRef<HTMLDivElement>(null);
+  const outputRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(containerRef, { once: true, amount: 0.1 });
 
   useEffect(() => {
+    if (!isInView) return;
+
     const timers = lines.map((l, i) =>
       setTimeout(() => setVisible(i + 1), l.delay)
     );
     return () => timers.forEach(clearTimeout);
-  }, []);
+  }, [isInView, runKey]);
+
+  // Auto-scroll to bottom of terminal output as text prints
+  useEffect(() => {
+    if (outputRef.current) {
+      outputRef.current.scrollTop = outputRef.current.scrollHeight;
+    }
+  }, [visible]);
+
+  const isRunning = visible > 0 && visible < lines.length;
 
   return (
-    <section className="py-20 px-6 bg-[#0D0D0D] border-y-2 border-[#2A2A2A]">
+    <section ref={containerRef} className="py-20 px-6 bg-[#0D0D0D] border-y-2 border-[#2A2A2A]">
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-black text-white mb-3">
             SEE IT IN ACTION
           </h2>
-          <p className="text-[#666]">Run <code className="text-[#FFD700] font-mono">autodev</code> and the interactive installer opens.</p>
+          <p className="text-[#666]">
+            Run <code className="text-[#FFD700] font-mono">autodev</code> and the interactive installer opens.
+          </p>
         </div>
 
         <div className="terminal">
           {/* Title bar */}
-          <div className="terminal-bar">
-            <span className="terminal-dot bg-[#FF5F56]" />
-            <span className="terminal-dot bg-[#FFBD2E]" />
-            <span className="terminal-dot bg-[#27C93F]" />
-            <span className="text-xs text-[#555] ml-3 font-mono">autodev — bash</span>
+          <div className="terminal-bar flex justify-between items-center">
+            <div className="flex items-center gap-2">
+              <span className="terminal-dot bg-[#FF5F56]" />
+              <span className="terminal-dot bg-[#FFBD2E]" />
+              <span className="terminal-dot bg-[#27C93F]" />
+              <span className="text-xs text-[#555] ml-3 font-mono">autodev — bash</span>
+            </div>
+            <button 
+              onClick={() => {
+                setVisible(0);
+                setRunKey(prev => prev + 1);
+              }}
+              disabled={isRunning}
+              className="text-xs text-[#FFD700] disabled:text-[#555] disabled:border-[#222] disabled:cursor-not-allowed hover:text-[#00FF87] hover:border-[#00FF87] font-mono bg-[#1E1E1E] px-2.5 py-1 rounded border border-[#333] transition-colors cursor-pointer"
+            >
+              {isRunning ? "Running..." : "Run Command"}
+            </button>
           </div>
 
           {/* Output */}
-          <div className="px-6 py-5 space-y-1 min-h-[400px]">
+          <div 
+            ref={outputRef} 
+            className="px-6 py-5 space-y-1 h-[400px] overflow-y-auto scroll-smooth"
+          >
             {lines.slice(0, visible).map((line, i) => (
               <motion.div
                 key={i}
@@ -82,3 +115,4 @@ export default function Terminal() {
     </section>
   );
 }
+

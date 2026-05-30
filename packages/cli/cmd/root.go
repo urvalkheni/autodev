@@ -81,6 +81,8 @@ func init() {
 		newCloneCmd(),
 		newAuditCmd(),
 		newMCPCmd(),
+		newCreateCmd(),
+		newBenchmarkCmd(),
 	)
 }
 

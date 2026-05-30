@@ -13,6 +13,7 @@ import (
 
 func newScanCmd() *cobra.Command {
 	var path string
+	var tui bool
 
 	cmd := &cobra.Command{
 		Use:   "scan [path]",
@@ -20,7 +21,8 @@ func newScanCmd() *cobra.Command {
 		Long:  `Scan the specified directory (or current directory) to detect all technologies, frameworks, package managers, databases, and infrastructure requirements.`,
 		Example: `  autodev scan
   autodev scan ./my-project
-  autodev scan --json ./my-project`,
+  autodev scan --json ./my-project
+  autodev scan --tui ./my-project`,
 		Args: cobra.MaximumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if len(args) > 0 {
@@ -30,11 +32,15 @@ func newScanCmd() *cobra.Command {
 				path = "."
 			}
 
+			if tui {
+				return runScanTUI(path)
+			}
 			return runScan(path, jsonOut)
 		},
 	}
 
 	cmd.Flags().StringVarP(&path, "path", "p", ".", "path to scan")
+	cmd.Flags().BoolVar(&tui, "tui", false, "open interactive directory dependency tree TUI")
 	return cmd
 }
 

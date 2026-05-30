@@ -65,35 +65,3 @@ release:
     See [CHANGELOG.md](https://github.com/autodev-sh/autodev/blob/main/CHANGELOG.md) for details.
   footer: |
     **Full Changelog**: https://github.com/autodev-sh/autodev/compare/{{ .PreviousTag }}...{{ .Tag }}
-
-brews:
-  - name: autodev
-    repository:
-      owner: HEETMEHTA18
-      name: homebrew-tap
-      token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
-    homepage: "https://autodev.dev"
-    description: "The App Store for Developers — Clone. Scan. Install. Build."
-    license: MIT
-    test: |
-      system "#{bin}/autodev --version"
-
-scoops:
-  - repository:
-      owner: HEETMEHTA18
-      name: scoop-bucket
-    homepage: "https://autodev.dev"
-    description: "The App Store for Developers"
-    license: MIT
-
-dockers:
-  - image_templates:
-      - "ghcr.io/heetmehta18/autodev:{{ .Tag }}-amd64"
-    use: buildx
-    build_flag_templates:
-      - "--platform=linux/amd64"
-    dockerfile: ../../Dockerfile
-
-announce:
-  twitter:
-    enabled: false

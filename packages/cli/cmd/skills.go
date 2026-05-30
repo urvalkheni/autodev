@@ -823,7 +823,6 @@ func generateSVGExport(roadmap *skills.Roadmap) string {
 	} else {
 		b.WriteString(fmt.Sprintf(`	<text x="25" y="%d" font-family="system-ui, sans-serif" font-size="12" fill="#8b949e" italic="true">No telemetry statistics detected in workspace.</text>
 `, yOffset+20))
-		yOffset += cardHeight
 	}
 
 	b.WriteString(fmt.Sprintf(`

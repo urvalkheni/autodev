@@ -355,7 +355,7 @@ packages/cli/bin/
 				}
 
 				// Attempt auto-linting fixes
-				cmd := exec.Command(cmdName, "run", "lint")
+				var cmd *exec.Cmd
 				if cmdName == "pnpm" {
 					cmd = exec.Command("pnpm", "run", "lint", "--fix")
 				} else {

@@ -80,6 +80,7 @@ func init() {
 		newUICmd(),
 		newCloneCmd(),
 		newAuditCmd(),
+		newMCPCmd(),
 	)
 }
 

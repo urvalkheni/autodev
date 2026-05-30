@@ -9,20 +9,25 @@ import (
 	"time"
 
 	"github.com/autodev-sh/autodev/core/osinfo"
+	"github.com/autodev-sh/autodev/installer"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/spf13/cobra"
 )
 
 func newDoctorCmd() *cobra.Command {
-	return &cobra.Command{
+	var fix bool
+	cmd := &cobra.Command{
 		Use:     "doctor",
 		Short:   "Check the health of your development environment",
 		Long:    `Verify that all common development tools are installed and working correctly. Reports versions, warns about missing tools, and suggests fixes.`,
-		Example: `  autodev doctor`,
+		Example: `  autodev doctor
+  autodev doctor --fix`,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return runDoctor()
+			return runDoctor(fix)
 		},
 	}
+	cmd.Flags().BoolVar(&fix, "fix", false, "automatically attempt to install missing tools")
+	return cmd
 }
 
 type check struct {
@@ -53,7 +58,7 @@ var checks = []check{
 	{name: "Ruby", cmd: "ruby", args: []string{"--version"}, hint: "autodev install ruby"},
 }
 
-func runDoctor() error {
+func runDoctor(fix bool) error {
 	titleStyle := lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("#FFD700"))
 	okStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("#00FF87"))
 	warnStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("#FF6B6B"))
@@ -133,6 +138,24 @@ func runDoctor() error {
 		// Timeout to keep doctor command extremely fast, cutting off hung check processes
 	}
 
+	checkToRuntime := map[string]string{
+		"Node.js":    "nodejs",
+		"pnpm":       "pnpm",
+		"Bun":        "bun",
+		"Go":         "go",
+		"Python 3":   "python",
+		"Rust":       "rust",
+		"Docker":     "docker",
+		"kubectl":    "kubectl",
+		"Terraform":  "terraform",
+		"Flutter":    "flutter",
+		"Java":       "java",
+		"PHP":        "php",
+		"Ruby":       "ruby",
+	}
+
+	var missingRuntimes []string
+
 	for i, c := range checks {
 		mu.Lock()
 		res, exists := results[i]
@@ -145,6 +168,9 @@ func runDoctor() error {
 				dimStyle.Render(fmt.Sprintf("not found — %s", c.hint)),
 			)
 			missing++
+			if rt, ok := checkToRuntime[c.name]; ok {
+				missingRuntimes = append(missingRuntimes, rt)
+			}
 		} else {
 			version := res.version
 			// Trim verbose output
@@ -167,8 +193,23 @@ func runDoctor() error {
 	)
 
 	if missing > 0 {
-		fmt.Println()
-		fmt.Println(dimStyle.Render("  Run 'autodev setup' to install missing tools."))
+		if fix && len(missingRuntimes) > 0 {
+			fmt.Println()
+			fmt.Println(titleStyle.Render("🔧 Attempting auto-remediation (--fix)..."))
+			inst := installer.New(false)
+			for _, rtName := range missingRuntimes {
+				rt, _ := installer.GetRuntime(rtName)
+				fmt.Printf("\n  Installing %s...\n", rt.Name)
+				if err := inst.Install(rtName); err != nil {
+					fmt.Printf("  %s Failed to install %s: %v\n", warnStyle.Render("✗"), rt.Name, err)
+				} else {
+					fmt.Printf("  %s %s installed successfully\n", okStyle.Render("✓"), rt.Name)
+				}
+			}
+		} else {
+			fmt.Println()
+			fmt.Println(dimStyle.Render("  Run 'autodev doctor --fix' to automatically install missing tools."))
+		}
 	}
 	fmt.Println()
 

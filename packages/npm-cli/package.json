@@ -1,6 +1,6 @@
 {
   "name": "@heetmehta18/autodev",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "The App Store for Developers. Install languages, frameworks, and databases with a single command.",
   "main": "bin/index.js",
   "bin": {

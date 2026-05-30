@@ -16,25 +16,26 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AutoDev — The App Store for Developers",
+  metadataBase: new URL("https://autodevs.dev"),
+  title: "AutoDevs — The App Store for Developers",
   description:
     "Clone. Scan. Install. Build. An open-source cross-platform developer environment bootstrapper. Install any language, framework, or tool with a single command.",
-  keywords: ["developer tools", "CLI", "package manager", "environment setup", "autodev"],
+  keywords: ["developer tools", "CLI", "package manager", "environment setup", "autodev", "autodevs"],
   icons: {
     icon: "/favicon.ico",
     shortcut: "/favicon.ico",
     apple: "/apple-touch-icon.png",
   },
   openGraph: {
-    title: "AutoDev — The App Store for Developers",
+    title: "AutoDevs — The App Store for Developers",
     description: "Clone. Scan. Install. Build.",
-    url: "https://github.com/HEETMEHTA18/autodev",
-    siteName: "AutoDev",
+    url: "https://autodevs.dev",
+    siteName: "AutoDevs",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "AutoDev — The App Store for Developers",
+    title: "AutoDevs — The App Store for Developers",
     description: "Clone. Scan. Install. Build.",
   },
 };
@@ -51,6 +52,24 @@ export default function RootLayout({
       className={`${spaceGrotesk.variable} ${jetbrainsMono.variable}`}
     >
       <body className="font-space antialiased">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "SoftwareApplication",
+              "name": "AutoDevs",
+              "applicationCategory": "DeveloperApplication",
+              "operatingSystem": "Linux, macOS, Windows",
+              "url": "https://autodevs.dev",
+              "offers": {
+                "@type": "Offer",
+                "price": "0.00",
+                "priceCurrency": "USD"
+              }
+            }),
+          }}
+        />
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"

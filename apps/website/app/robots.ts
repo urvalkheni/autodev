@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: [],
     },
-    sitemap: "https://autodev.dev/sitemap.xml",
+    sitemap: "https://autodevs.dev/sitemap.xml",
   };
 }

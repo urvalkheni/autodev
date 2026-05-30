@@ -286,11 +286,38 @@ func runDoctorMCP(fix bool) string {
 		"Ruby":       "ruby",
 	}
 
+	type mcpCheck struct {
+		name string
+		cmd  string
+		hint string
+	}
+
+	mcpChecks := []mcpCheck{
+		{name: "Git", cmd: "git", hint: "https://git-scm.com/downloads"},
+		{name: "Node.js", cmd: "node", hint: "autodev install nodejs"},
+		{name: "npm", cmd: "npm", hint: "Comes with Node.js"},
+		{name: "pnpm", cmd: "pnpm", hint: "npm install -g pnpm"},
+		{name: "yarn", cmd: "yarn", hint: "npm install -g yarn"},
+		{name: "Bun", cmd: "bun", hint: "https://bun.sh"},
+		{name: "Go", cmd: "go", hint: "autodev install go"},
+		{name: "Python 3", cmd: "python3", hint: "autodev install python"},
+		{name: "pip", cmd: "pip3", hint: "Comes with Python 3"},
+		{name: "Rust", cmd: "rustc", hint: "autodev install rust"},
+		{name: "Docker", cmd: "docker", hint: "autodev install docker"},
+		{name: "docker compose", cmd: "docker", hint: "Upgrade Docker Desktop"},
+		{name: "kubectl", cmd: "kubectl", hint: "autodev install kubectl"},
+		{name: "Terraform", cmd: "terraform", hint: "autodev install terraform"},
+		{name: "Flutter", cmd: "flutter", hint: "autodev install flutter"},
+		{name: "Java", cmd: "java", hint: "autodev install java"},
+		{name: "PHP", cmd: "php", hint: "autodev install php"},
+		{name: "Ruby", cmd: "ruby", hint: "autodev install ruby"},
+	}
+
 	installed := 0
 	missing := 0
 	var missingRuntimes []string
 
-	for _, c := range checks {
+	for _, c := range mcpChecks {
 		_, err := exec.LookPath(c.cmd)
 		if err != nil {
 			report.WriteString(fmt.Sprintf("[MISSING] %-15s - %s\n", c.name, c.hint))

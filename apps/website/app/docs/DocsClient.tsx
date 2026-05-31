@@ -118,17 +118,30 @@ export default function DocsClient() {
         <>
           <h1 className="text-4xl font-black text-white mb-6 uppercase tracking-tight">Installation Methods</h1>
           <p className="text-neutral-300 leading-relaxed mb-6">
-            AutoDev is distributed as a pre-built binary. Pick the method that fits your platform.
+            AutoDev is available via NPM, Shell scripts, Homebrew, Scoop, and Docker. Pick the method that fits your workflow.
           </p>
 
-          <Callout type="warning" title="npm / npx not available">
-            The <code className="font-mono text-neutral-300">autodev</code> package name on npm is owned by a different author. Do <strong>not</strong> use <code className="font-mono text-neutral-300">npm install -g autodev</code> or <code className="font-mono text-neutral-300">npx autodev</code> — they will install the wrong tool. Use one of the methods below instead.
+          <Callout type="warning" title="Important Npm Naming Notice">
+            The unscoped <code className="font-mono text-neutral-300">autodev</code> package on npm is owned by an unrelated author. 
+            Do <strong>not</strong> install <code className="font-mono text-neutral-300">autodev</code>. Instead, always use the scoped package: <strong><code className="font-mono text-neutral-200">@heetmehta18/autodev</code></strong>.
           </Callout>
 
           <div className="space-y-6">
             <div>
+              <h3 className="text-lg font-bold text-white mb-1">NPM (Global Install)</h3>
+              <p className="text-neutral-400 text-sm mb-2">Install the official CLI globally via npm:</p>
+              {renderCodeBlock("inst-npm", "npm install -g @heetmehta18/autodev")}
+            </div>
+
+            <div>
+              <h3 className="text-lg font-bold text-white mb-1">NPX (Run instantly)</h3>
+              <p className="text-neutral-400 text-sm mb-2">Run the interactive setup on the fly without permanent installation:</p>
+              {renderCodeBlock("inst-npx", "npx @heetmehta18/autodev setup")}
+            </div>
+
+            <div>
               <h3 className="text-lg font-bold text-white mb-1">Shell Script (Linux & macOS) — Recommended</h3>
-              <p className="text-neutral-400 text-sm mb-2">Downloads and installs the binary directly from GitHub:</p>
+              <p className="text-neutral-400 text-sm mb-2">Downloads and installs the pre-compiled binary directly from GitHub:</p>
               {renderCodeBlock("inst-curl", "curl -fsSL https://raw.githubusercontent.com/HEETMEHTA18/autodev/main/scripts/install.sh | bash")}
             </div>
 

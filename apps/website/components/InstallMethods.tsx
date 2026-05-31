@@ -3,6 +3,8 @@ import { useState } from "react";
 import { Copy, Check } from "lucide-react";
 
 const methods = [
+  { label: "NPM",      desc: "Install globally via npm",       cmd: "npm install -g @heetmehta18/autodev",                   icon: "📦" },
+  { label: "NPX",      desc: "Run without local install",      cmd: "npx @heetmehta18/autodev setup",                        icon: "🚀" },
   { label: "Shell",    desc: "Linux & macOS — recommended",  cmd: "curl -fsSL https://raw.githubusercontent.com/HEETMEHTA18/autodev/main/scripts/install.sh | bash", icon: "🐚" },
   { label: "Homebrew", desc: "macOS & Linux",                  cmd: "brew install HEETMEHTA18/tap/autodev",                   icon: "🍺" },
   { label: "Scoop",    desc: "Windows — add bucket first",      cmd: "scoop bucket add autodev https://github.com/HEETMEHTA18/scoop-bucket && scoop install autodev", icon: "🪣" },

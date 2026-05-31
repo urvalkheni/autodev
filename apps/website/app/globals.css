@@ -292,6 +292,31 @@ html.light code .text-\[\#FFD700\] {
   color: #FFD700 !important;
 }
 
+/* Docs code block — always dark regardless of page theme */
+html.light .docs-code-block {
+  background-color: #050505 !important;
+  border-color: #2A2A2A !important;
+  color: #E2E8F0 !important;
+}
+html.light .docs-code-block pre {
+  background-color: transparent !important;
+  border: none !important;
+  color: #E2E8F0 !important;
+}
+html.light .docs-code-block .text-neutral-200 {
+  color: #E5E5E5 !important;
+}
+html.light .docs-code-copy {
+  background-color: #1A1A1A !important;
+  border-color: #2A2A2A !important;
+  color: #A3A3A3 !important;
+}
+html.light .docs-code-copy:hover {
+  background-color: #FFD700 !important;
+  color: #000000 !important;
+  border-color: #FFD700 !important;
+}
+
 
 /* ── Neo-Brutalist Utilities ─────────────────────────────────────────── */
 .nb-border {

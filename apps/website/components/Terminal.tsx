@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 
 const lines = [
-  { delay: 0,    text: "$ autodev",                          color: "#00FF87" },
+  { delay: 0,    text: "$ autodev setup",                    color: "#00FF87" },
   { delay: 600,  text: "",                                   color: "#888" },
   { delay: 800,  text: "  ⚡ AUTODEV · Clone. Scan. Install. Build.",  color: "#FFD700" },
   { delay: 1000, text: "",                                   color: "#888" },
@@ -26,7 +26,7 @@ const lines = [
   { delay: 4300, text: "  Installing 🟢 Node.js...",        color: "#FFD700" },
   { delay: 4800, text: "  ✓ Node.js LTS installed",         color: "#00FF87" },
   { delay: 5000, text: "",                                   color: "#888" },
-  { delay: 5100, text: "  ✓ Setup complete! Run 'autodev doctor' to verify.", color: "#00FF87" },
+  { delay: 5100, text: "  ✓ All done! Run 'autodev doctor' to verify your setup.", color: "#00FF87" },
 ];
 
 export default function Terminal() {
@@ -63,7 +63,7 @@ export default function Terminal() {
             SEE IT IN ACTION
           </h2>
           <p className="text-[#666]">
-            Run <code className="text-[#FFD700] font-mono">autodev</code> and the interactive installer opens.
+            Run <code className="text-[#FFD700] font-mono">autodev setup</code> in any project and the interactive installer opens.
           </p>
         </div>
 

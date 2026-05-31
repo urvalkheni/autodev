@@ -42,10 +42,10 @@ export default function DocsClient() {
   };
 
   const renderCodeBlock = (id: string, code: string) => (
-    <div key={id} className="relative group border-2 border-[#2A2A2A] bg-[#050505] p-4 font-mono text-sm my-4 rounded-md overflow-x-auto pr-24">
+    <div key={id} className="docs-code-block relative group border-2 border-[#2A2A2A] bg-[#050505] p-4 font-mono text-sm my-4 rounded-md overflow-x-auto pr-24">
       <button
         onClick={() => handleCopy(code, id)}
-        className="absolute top-2.5 right-2.5 text-xs bg-[#111] hover:bg-[#FFD700] hover:text-black hover:border-[#FFD700] border border-[#2A2A2A] px-2.5 py-1.5 rounded transition-all text-neutral-400 font-mono flex items-center gap-1.5 cursor-pointer"
+        className="docs-code-copy absolute top-2.5 right-2.5 text-xs bg-[#111] hover:bg-[#FFD700] hover:text-black hover:border-[#FFD700] border border-[#2A2A2A] px-2.5 py-1.5 rounded transition-all text-neutral-400 font-mono flex items-center gap-1.5 cursor-pointer"
       >
         {copiedId === id ? (
           <>
@@ -59,7 +59,7 @@ export default function DocsClient() {
           </>
         )}
       </button>
-      <pre className="text-neutral-200">{code}</pre>
+      <pre className="text-neutral-200 bg-transparent border-0 p-0 m-0">{code}</pre>
     </div>
   );
 
@@ -118,20 +118,18 @@ export default function DocsClient() {
         <>
           <h1 className="text-4xl font-black text-white mb-6 uppercase tracking-tight">Installation Methods</h1>
           <p className="text-neutral-300 leading-relaxed mb-6">
-            AutoDev supports multiple package managers and platforms. Pick the one that fits your workflow.
+            AutoDev is distributed as a pre-built binary. Pick the method that fits your platform.
           </p>
+
+          <Callout type="warning" title="npm / npx not available">
+            The <code className="font-mono text-neutral-300">autodev</code> package name on npm is owned by a different author. Do <strong>not</strong> use <code className="font-mono text-neutral-300">npm install -g autodev</code> or <code className="font-mono text-neutral-300">npx autodev</code> — they will install the wrong tool. Use one of the methods below instead.
+          </Callout>
 
           <div className="space-y-6">
             <div>
-              <h3 className="text-lg font-bold text-white mb-1">Node.js (NPX)</h3>
-              <p className="text-neutral-400 text-sm mb-2">Run without local binary installation:</p>
-              {renderCodeBlock("inst-npx", "npx autodev setup")}
-            </div>
-
-            <div>
-              <h3 className="text-lg font-bold text-white mb-1">PNPM</h3>
-              <p className="text-neutral-400 text-sm mb-2">Execute on the fly with PNPM:</p>
-              {renderCodeBlock("inst-pnpm", "pnpm dlx autodev setup")}
+              <h3 className="text-lg font-bold text-white mb-1">Shell Script (Linux & macOS) — Recommended</h3>
+              <p className="text-neutral-400 text-sm mb-2">Downloads and installs the binary directly from GitHub:</p>
+              {renderCodeBlock("inst-curl", "curl -fsSL https://raw.githubusercontent.com/HEETMEHTA18/autodev/main/scripts/install.sh | bash")}
             </div>
 
             <div>
@@ -142,7 +140,8 @@ export default function DocsClient() {
 
             <div>
               <h3 className="text-lg font-bold text-white mb-1">Scoop (Windows)</h3>
-              <p className="text-neutral-400 text-sm mb-2">Install on Windows systems using Scoop:</p>
+              <p className="text-neutral-400 text-sm mb-2">Add the AutoDev bucket, then install:</p>
+              {renderCodeBlock("inst-scoop-bucket", "scoop bucket add autodev https://github.com/HEETMEHTA18/scoop-bucket")}
               {renderCodeBlock("inst-scoop", "scoop install autodev")}
             </div>
 
@@ -155,6 +154,7 @@ export default function DocsClient() {
         </>
       ),
     },
+
     {
       id: "cmd-doctor",
       category: "Commands",

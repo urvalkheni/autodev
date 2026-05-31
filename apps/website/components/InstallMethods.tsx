@@ -3,12 +3,10 @@ import { useState } from "react";
 import { Copy, Check } from "lucide-react";
 
 const methods = [
-  { label: "Shell",       cmd: "curl -fsSL https://raw.githubusercontent.com/HEETMEHTA18/autodev/main/scripts/install.sh | bash",   icon: "🐚" },
-  { label: "NPX",         cmd: "npx autodev",                                          icon: "📦" },
-  { label: "PNPM",        cmd: "pnpm dlx autodev",                                     icon: "⚡" },
-  { label: "Homebrew",    cmd: "brew install HEETMEHTA18/tap/autodev",                  icon: "🍺" },
-  { label: "Scoop",       cmd: "scoop install autodev",                                icon: "🪣" },
-  { label: "Docker",      cmd: "docker run --rm -v $(pwd):/w ghcr.io/heetmehta18/autodev", icon: "🐳" },
+  { label: "Shell",    desc: "Linux & macOS — recommended",  cmd: "curl -fsSL https://raw.githubusercontent.com/HEETMEHTA18/autodev/main/scripts/install.sh | bash", icon: "🐚" },
+  { label: "Homebrew", desc: "macOS & Linux",                  cmd: "brew install HEETMEHTA18/tap/autodev",                   icon: "🍺" },
+  { label: "Scoop",    desc: "Windows — add bucket first",      cmd: "scoop bucket add autodev https://github.com/HEETMEHTA18/scoop-bucket && scoop install autodev", icon: "🪣" },
+  { label: "Docker",   desc: "No local install required",      cmd: "docker run --rm -v $(pwd):/workspace ghcr.io/heetmehta18/autodev setup", icon: "🐳" },
 ];
 
 export default function InstallMethods() {
@@ -33,7 +31,7 @@ export default function InstallMethods() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {methods.map((m) => (
           <div key={m.label} className="nb-card p-5 cursor-pointer group" onClick={() => copy(m.cmd)}>
-            <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center justify-between mb-1">
               <div className="flex items-center gap-2">
                 <span className="text-xl">{m.icon}</span>
                 <span className="font-bold text-white text-sm">{m.label}</span>
@@ -52,7 +50,11 @@ export default function InstallMethods() {
                 )}
               </div>
             </div>
-            <div className="font-mono text-xs text-[#00FF87] bg-[#0D0D0D] border border-[#222] px-3 py-2 truncate">
+            <p className="text-[10px] text-[#555] font-sans mb-3 ml-7">{m.desc}</p>
+            <div
+              className="font-mono text-xs text-[#00FF87] bg-[#0D0D0D] border border-[#222] px-3 py-2 truncate"
+              title={m.cmd}
+            >
               {m.cmd}
             </div>
           </div>

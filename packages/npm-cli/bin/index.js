@@ -138,7 +138,7 @@ async function downloadBinary() {
     console.log(`[autodev] Downloading from: ${url}`);
     await download(url, tempFile);
   } catch (err) {
-    const stableFallback = 'v0.1.5';
+    const stableFallback = 'v0.2.0';
     if (version !== stableFallback) {
       console.warn(`\n[autodev] Failed to download version ${version}: ${err.message}`);
       console.warn(`[autodev] Falling back to last known stable release: ${stableFallback}...`);

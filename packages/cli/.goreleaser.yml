@@ -75,6 +75,7 @@ brews:
     repository:
       owner: HEETMEHTA18
       name: homebrew-tap
+      token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
     directory: Formula
     homepage: "https://github.com/HEETMEHTA18/autodev"
     description: "The App Store for Developers"
@@ -87,6 +88,7 @@ scoops:
     repository:
       owner: HEETMEHTA18
       name: scoop-bucket
+      token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
     directory: bucket
     homepage: "https://github.com/HEETMEHTA18/autodev"
     description: "The App Store for Developers"

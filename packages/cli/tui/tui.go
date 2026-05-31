@@ -565,7 +565,6 @@ func (m Model) renderHeader() string {
 	return b.String()
 }
 
-
 // buildInstallCmd builds an *exec.Cmd for a package, with stdin/stdout/stderr
 // connected to the real terminal (so sudo password prompts work).
 func buildInstallCmd(pkg *catalog.Package) *exec.Cmd {

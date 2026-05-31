@@ -116,9 +116,9 @@ func runCatalogInstall(c *catalog.Catalog, id string) error {
 			fmt.Println(warnStyle.Render("    [dry-run] skipped"))
 			continue
 		}
-		
+
 		if p.IsInstalled() {
-			fmt.Println(okStyle.Render(fmt.Sprintf("    ✓ Already installed")))
+			fmt.Println(okStyle.Render("    ✓ Already installed"))
 			installedPkgs = append(installedPkgs, p)
 			continue
 		}
@@ -278,7 +278,7 @@ func runBumblebeeSafetyCheck(pkgs []*catalog.Package) {
 	}
 
 	fmt.Println(warnStyle.Render(fmt.Sprintf("  ✗ Found %d security vulnerabilities across downloaded packages:", totalVulns)))
-	
+
 	// Group results by catalog package name
 	byPkg := make(map[string][]auditResult)
 	for _, r := range results {
@@ -321,7 +321,7 @@ func getVersionFromVerify(pkg *catalog.Package) string {
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
-	
+
 	// Create command with shell to run the verification
 	cmd := exec.CommandContext(ctx, "sh", "-c", pkg.Verify)
 	out, err := cmd.Output()
@@ -411,7 +411,6 @@ func determineOsvEcosystemAndNames(pkg *catalog.Package) (string, []string) {
 
 	return "npm", []string{pkg.ID}
 }
-
 
 func newUpdateCmd() *cobra.Command {
 	return &cobra.Command{

@@ -61,17 +61,17 @@ func runCreateReactTS(projectName string) error {
 	}
 
 	files := map[string]string{
-		"package.json":      packageJsonContent,
-		"tsconfig.json":    tsconfigContent,
-		"vite.config.ts":    viteConfigContent,
+		"package.json":       packageJsonContent,
+		"tsconfig.json":      tsconfigContent,
+		"vite.config.ts":     viteConfigContent,
 		"tailwind.config.js": tailwindConfigContent,
-		"postcss.config.js": postcssConfigContent,
-		".eslintrc.json":    eslintContent,
-		".prettierrc":       prettierContent,
-		"index.html":        indexHtmlContent,
-		"src/main.tsx":      mainTsxContent,
-		"src/index.css":     indexCssContent,
-		"src/App.tsx":       appTsxContent,
+		"postcss.config.js":  postcssConfigContent,
+		".eslintrc.json":     eslintContent,
+		".prettierrc":        prettierContent,
+		"index.html":         indexHtmlContent,
+		"src/main.tsx":       mainTsxContent,
+		"src/index.css":      indexCssContent,
+		"src/App.tsx":        appTsxContent,
 	}
 
 	for relPath, content := range files {

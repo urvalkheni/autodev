@@ -77,12 +77,12 @@ func runMCPGuide() error {
 
 	fmt.Println(goldStyle.Render("  📋 MANUAL CONFIGURATION GUIDE:"))
 	fmt.Println("  To connect with Cursor, Windsurf, or custom AI clients, add a command-based MCP server:")
-	
+
 	executablePath, err := os.Executable()
 	if err != nil || strings.Contains(executablePath, "go-build") || strings.Contains(executablePath, "exe/main") || strings.Contains(executablePath, "/tmp") {
 		executablePath = "autodev"
 	}
-	
+
 	fmt.Printf("  • Server Command: %s\n", greenStyle.Render(executablePath))
 	fmt.Printf("  • Arguments:      %s\n", greenStyle.Render("mcp start"))
 	fmt.Println()
@@ -304,7 +304,7 @@ func sendError(w io.Writer, id interface{}, code int, message string) {
 func runMCPServer() error {
 	reader := bufio.NewReader(os.Stdin)
 	writer := os.Stdout
-	
+
 	fmt.Fprintln(os.Stderr, "AutoDev MCP Server starting...")
 
 	for {
@@ -436,7 +436,7 @@ func handleToolCall(name string, args map[string]interface{}) mcpToolCallResult 
 		if p, ok := args["path"].(string); ok && p != "" {
 			path = p
 		}
-		
+
 		s := scanner.New(path)
 		res, err := s.Scan()
 		if err != nil {
@@ -445,7 +445,7 @@ func handleToolCall(name string, args map[string]interface{}) mcpToolCallResult 
 				IsError: true,
 			}
 		}
-		
+
 		output, _ := json.MarshalIndent(res, "", "  ")
 		return mcpToolCallResult{
 			Content: []mcpTextContent{
@@ -458,7 +458,7 @@ func handleToolCall(name string, args map[string]interface{}) mcpToolCallResult 
 		if f, ok := args["fix"].(bool); ok {
 			fix = f
 		}
-		
+
 		diagnostics := runDoctorMCP(fix)
 		return mcpToolCallResult{
 			Content: []mcpTextContent{
@@ -474,7 +474,7 @@ func handleToolCall(name string, args map[string]interface{}) mcpToolCallResult 
 				IsError: true,
 			}
 		}
-		
+
 		inst := installer.New(false)
 		err := inst.Install(tool)
 		if err != nil {
@@ -483,7 +483,7 @@ func handleToolCall(name string, args map[string]interface{}) mcpToolCallResult 
 				IsError: true,
 			}
 		}
-		
+
 		return mcpToolCallResult{
 			Content: []mcpTextContent{
 				{Type: "text", Text: fmt.Sprintf("Successfully installed runtime: %s", tool) + newGitHubCTAForMCP()},
@@ -502,7 +502,7 @@ func handleToolCall(name string, args map[string]interface{}) mcpToolCallResult 
 				IsError: true,
 			}
 		}
-		
+
 		var output strings.Builder
 		output.WriteString("AutoDev Supply-Chain Safety Audit\n\n")
 		if len(resList) == 0 {
@@ -540,19 +540,19 @@ func runDoctorMCP(fix bool) string {
 	report.WriteString("AUTODEV DOCTOR - ENVIRONMENT DIAGNOSTICS\n\n")
 
 	checkToRuntime := map[string]string{
-		"Node.js":    "nodejs",
-		"pnpm":       "pnpm",
-		"Bun":        "bun",
-		"Go":         "go",
-		"Python 3":   "python",
-		"Rust":       "rust",
-		"Docker":     "docker",
-		"kubectl":    "kubectl",
-		"Terraform":  "terraform",
-		"Flutter":    "flutter",
-		"Java":       "java",
-		"PHP":        "php",
-		"Ruby":       "ruby",
+		"Node.js":   "nodejs",
+		"pnpm":      "pnpm",
+		"Bun":       "bun",
+		"Go":        "go",
+		"Python 3":  "python",
+		"Rust":      "rust",
+		"Docker":    "docker",
+		"kubectl":   "kubectl",
+		"Terraform": "terraform",
+		"Flutter":   "flutter",
+		"Java":      "java",
+		"PHP":       "php",
+		"Ruby":      "ruby",
 	}
 
 	type mcpCheck struct {

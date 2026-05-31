@@ -18,9 +18,9 @@ import (
 func newDoctorCmd() *cobra.Command {
 	var fix bool
 	cmd := &cobra.Command{
-		Use:     "doctor",
-		Short:   "Check the health and security of your codebase",
-		Long:    `Verify that your codebase is healthy, secure, has correct git configurations, is free of exposed secrets, and matches standard linting and environment variables.`,
+		Use:   "doctor",
+		Short: "Check the health and security of your codebase",
+		Long:  `Verify that your codebase is healthy, secure, has correct git configurations, is free of exposed secrets, and matches standard linting and environment variables.`,
 		Example: `  autodev doctor
   autodev doctor --fix`,
 		RunE: func(cmd *cobra.Command, args []string) error {

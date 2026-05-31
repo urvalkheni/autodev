@@ -65,34 +65,34 @@ func runBenchmark() error {
 
 	// Dynamic scan of current directory
 	fmt.Println(purpleStyle.Render("  📊 DYNAMIC REAL-TIME BENCHMARK FOR CURRENT WORKSPACE"))
-	
+
 	wd, err := os.Getwd()
 	if err != nil {
 		wd = "."
 	}
-	
+
 	s := scanner.New(wd)
 	scanRes, err := s.Scan()
 	if err == nil {
 		fileCount, locCount, configSize, _ := countWorkspaceMetrics(wd)
-		
+
 		jsonBytes, _ := json.Marshal(scanRes)
 		autoDevTokens := len(jsonBytes) / 4
 		if autoDevTokens < 100 {
 			autoDevTokens = 100
 		}
-		
+
 		tradTokens := int(float64(locCount)*9.5 + float64(fileCount)*150)
 		if tradTokens < 5000 {
 			tradTokens = 5000 + fileCount*100
 		}
-		
+
 		savedTokens := tradTokens - autoDevTokens
 		if savedTokens < 0 {
 			savedTokens = 0
 		}
 		pctSaved := (float64(savedTokens) / float64(tradTokens)) * 100
-		
+
 		techs := []string{}
 		for _, t := range scanRes.Technologies {
 			techs = append(techs, t.Name)
@@ -104,14 +104,14 @@ func runBenchmark() error {
 
 		infoText := fmt.Sprintf(
 			"Workspace Path:  %s\n"+
-			"Detected Stack:  %s\n"+
-			"Files Scanned:   %d files\n"+
-			"Lines of Code:   %d lines\n"+
-			"Config Size:     %.2f KB\n\n"+
-			"Token Overhead Comparison:\n"+
-			"• Traditional full context prompting: %s tokens\n"+
-			"• AutoDev Telemetry Configuration:    %s tokens\n\n"+
-			"🏆 Token Savings: %s (%.1f%%)",
+				"Detected Stack:  %s\n"+
+				"Files Scanned:   %d files\n"+
+				"Lines of Code:   %d lines\n"+
+				"Config Size:     %.2f KB\n\n"+
+				"Token Overhead Comparison:\n"+
+				"• Traditional full context prompting: %s tokens\n"+
+				"• AutoDev Telemetry Configuration:    %s tokens\n\n"+
+				"🏆 Token Savings: %s (%.1f%%)",
 			wd,
 			cyanStyle.Render(techsStr),
 			fileCount,
@@ -122,7 +122,7 @@ func runBenchmark() error {
 			greenStyle.Render(fmt.Sprintf("%d tokens", savedTokens)),
 			pctSaved,
 		)
-		
+
 		fmt.Println(borderStyle.Render(infoText))
 		fmt.Println()
 	}

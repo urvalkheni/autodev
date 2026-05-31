@@ -66,7 +66,7 @@ export default function Hero() {
         {/* Badge */}
         <motion.div variants={item} className="mb-8">
           <span className="inline-block border-2 border-[#FFD700] text-[#FFD700] text-xs font-bold px-3 py-1 uppercase tracking-widest">
-            v0.1.6 — Open Source
+            v0.2.0 — Open Source
           </span>
         </motion.div>
 

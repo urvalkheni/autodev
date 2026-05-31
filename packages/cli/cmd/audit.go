@@ -39,7 +39,7 @@ func runAudit(path string) error {
 	warnStyle := lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("#FF6B6B"))
 	infoStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("#4A90E2")).Bold(true)
 	dimStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("#888888"))
-	
+
 	criticalStyle := lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("#FF2A2A"))
 	highStyle := lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("#FF6B6B"))
 	moderateStyle := lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("#FFD700"))
@@ -75,7 +75,7 @@ func runAudit(path string) error {
 	for _, res := range results {
 		pkgHeader := fmt.Sprintf("📦 %s@%s (%s)", res.Package.Name, res.Package.Version, res.Package.Ecosystem)
 		fmt.Println(infoStyle.Render(pkgHeader))
-		
+
 		for _, v := range res.Vulnerabilities {
 			var sevBadge string
 			switch v.Severity {
@@ -88,12 +88,12 @@ func runAudit(path string) error {
 			default:
 				sevBadge = lowStyle.Render(fmt.Sprintf("[%s]", v.Severity))
 			}
-			
+
 			alias := ""
 			if len(v.Aliases) > 0 {
 				alias = fmt.Sprintf(" (%s)", v.Aliases[0])
 			}
-			
+
 			fmt.Printf("  - %s %s%s: %s\n", sevBadge, v.ID, alias, v.Summary)
 		}
 		fmt.Println()
@@ -101,7 +101,7 @@ func runAudit(path string) error {
 
 	fmt.Println(dimStyle.Render(fmt.Sprintf("  Audited in %s", elapsed.Round(time.Millisecond))))
 	fmt.Println()
-	
+
 	PrintGitHubCTA()
 	return nil
 }

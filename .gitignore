@@ -95,3 +95,8 @@ go.work.sum
 
 # Jetro canvas cache
 .jetro/
+
+# Release tap/bucket repos and temp logs
+/homebrew-tap/
+/scoop-bucket/
+/token-save.txt

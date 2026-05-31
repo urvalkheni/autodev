@@ -205,7 +205,7 @@ func runSkills(path string, deep bool, exportFmt string, syncProfile bool, inter
 		if visual {
 			var items []skills.Skill
 			var sections []string
-			
+
 			for _, s := range roadmap.CurrentSkills {
 				items = append(items, s)
 				sections = append(sections, "Detected")
@@ -218,7 +218,7 @@ func runSkills(path string, deep bool, exportFmt string, syncProfile bool, inter
 				items = append(items, s)
 				sections = append(sections, "Long-term")
 			}
-			
+
 			if len(items) == 0 {
 				fmt.Println("  No skills detected or recommended. Exiting.")
 				return nil
@@ -458,8 +458,6 @@ func getCategoryForTech(name string) string {
 	return "Tool"
 }
 
-
-
 // ──────────────────────────────────────────────────────────────────────────────
 // Sync to skills.sh (Live HTTP API Synchronization)
 // ──────────────────────────────────────────────────────────────────────────────
@@ -497,7 +495,7 @@ func syncToSkillsSh(roadmap *skills.Roadmap) error {
 	}
 
 	fmt.Println("  [sync] Sending profile to skills.sh API...")
-	
+
 	// Create HTTP client with timeout
 	client := &http.Client{
 		Timeout: 10 * time.Second,
@@ -906,7 +904,6 @@ func AutoGenerateRulesSilent(dir string) {
 		_ = os.WriteFile(rulesPath, []byte(rulesContent), 0644)
 	}
 }
-
 
 func generateSVGExport(roadmap *skills.Roadmap) string {
 	var b strings.Builder

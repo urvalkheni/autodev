@@ -7,6 +7,7 @@ import GithubScanner from "@/components/GithubScanner";
 import Skills from "@/components/Skills";
 import InstallMethods from "@/components/InstallMethods";
 import Footer from "@/components/Footer";
+import UpdatePopup from "@/components/UpdatePopup";
 
 export default function Home() {
   return (
@@ -20,6 +21,7 @@ export default function Home() {
       <Skills />
       <InstallMethods />
       <Footer />
+      <UpdatePopup />
     </main>
   );
 }

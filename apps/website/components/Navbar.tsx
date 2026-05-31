@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
-import { Eye, Menu, X, Star, Sun, Moon } from "lucide-react";
+import { Eye, Menu, X, Star, Sun, Moon, Bell } from "lucide-react";
 import { useTheme } from "next-themes";
 
 export default function Navbar() {
@@ -106,6 +106,17 @@ export default function Navbar() {
             )}
           </a>
 
+          {/* Release / What's New Notification */}
+          <button
+            onClick={() => window.dispatchEvent(new Event("autodev_open_update_modal"))}
+            className="relative p-1.5 border-2 border-[#2A2A2A] bg-[#111] hover:border-[#FFD700] text-[#FFD700] transition-colors cursor-pointer"
+            title="What's New in v0.2.0"
+          >
+            <Bell className="w-4 h-4" />
+            <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-[#FFD700] rounded-full animate-ping" />
+            <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-[#FFD700] rounded-full" />
+          </button>
+
           {/* Desktop Theme Toggle */}
           {mounted && (
             <button
@@ -139,6 +150,17 @@ export default function Navbar() {
             <Star className="w-3 h-3 fill-current" />
             {stars !== null && <span>{stars}</span>}
           </a>
+
+          {/* Mobile Release Notification */}
+          <button
+            onClick={() => window.dispatchEvent(new Event("autodev_open_update_modal"))}
+            className="relative p-1.5 border-2 border-[#2A2A2A] bg-[#111] hover:border-[#FFD700] text-white transition-colors cursor-pointer"
+            title="What's New in v0.2.0"
+          >
+            <Bell className="w-5 h-5" />
+            <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-[#FFD700] rounded-full animate-ping" />
+            <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-[#FFD700] rounded-full" />
+          </button>
 
           {/* Theme Toggle — only render after client mount to avoid SSR mismatch */}
           {mounted && (

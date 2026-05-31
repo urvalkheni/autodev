@@ -23,7 +23,8 @@ pnpm-store/
 
 # Go
 vendor/
-bin/
+/bin/
+/packages/cli/bin/
 *.exe
 *.test
 *.out

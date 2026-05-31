@@ -2,11 +2,13 @@
 package installer
 
 import (
+	"bytes"
 	"fmt"
 	"os"
 	"os/exec"
 	"runtime"
 	"strings"
+	"time"
 )
 
 // Runtime represents a installable runtime or tool.
@@ -139,6 +141,48 @@ var runtimes = map[string]Runtime{
 		MacCmd:     []string{"brew install ruby"},
 		WindowsCmd: []string{"winget install RubyInstallerTeam.Ruby"},
 	},
+	"composer": {
+		Name:       "Composer (PHP)",
+		CheckCmd:   "composer --version",
+		LinuxCmd:   []string{"curl -sS https://getcomposer.org/installer | php", "sudo mv composer.phar /usr/local/bin/composer"},
+		MacCmd:     []string{"brew install composer"},
+		WindowsCmd: []string{"winget install Composer.Composer"},
+	},
+	"bundler": {
+		Name:       "Bundler (Ruby)",
+		CheckCmd:   "bundle --version",
+		LinuxCmd:   []string{"sudo gem install bundler"},
+		MacCmd:     []string{"gem install bundler"},
+		WindowsCmd: []string{"gem install bundler"},
+	},
+	"maven": {
+		Name:       "Apache Maven (Java)",
+		CheckCmd:   "mvn -version",
+		LinuxCmd:   []string{"sudo apt-get install -y maven"},
+		MacCmd:     []string{"brew install maven"},
+		WindowsCmd: []string{"winget install Apache.Maven"},
+	},
+	"gradle": {
+		Name:       "Gradle (Java)",
+		CheckCmd:   "gradle -v",
+		LinuxCmd:   []string{"sudo apt-get install -y gradle"},
+		MacCmd:     []string{"brew install gradle"},
+		WindowsCmd: []string{"winget install Gradle.Gradle"},
+	},
+	"helm": {
+		Name:       "Helm (Kubernetes)",
+		CheckCmd:   "helm version",
+		LinuxCmd:   []string{"curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash"},
+		MacCmd:     []string{"brew install helm"},
+		WindowsCmd: []string{"winget install Helm.Helm"},
+	},
+	"android-sdk": {
+		Name:       "Android SDK (Flutter)",
+		CheckCmd:   "sdkmanager --version",
+		LinuxCmd:   []string{"sudo apt-get install -y android-sdk"},
+		MacCmd:     []string{"brew install --cask android-sdk"},
+		WindowsCmd: []string{"winget install Google.AndroidSDK"},
+	},
 }
 
 // CheckStatus checks whether a runtime is installed and returns its version.
@@ -149,11 +193,32 @@ func (i *Installer) CheckStatus(name string) Status {
 	}
 
 	parts := strings.Fields(rt.CheckCmd)
-	out, err := exec.Command(parts[0], parts[1:]...).CombinedOutput()
-	if err != nil {
+	cmd := exec.Command(parts[0], parts[1:]...)
+	
+	var stdout bytes.Buffer
+	cmd.Stdout = &stdout
+
+	if err := cmd.Start(); err != nil {
 		return Status{Runtime: rt, Installed: false}
 	}
-	return Status{Runtime: rt, Installed: true, Version: strings.TrimSpace(string(out))}
+
+	done := make(chan error, 1)
+	go func() {
+		done <- cmd.Wait()
+	}()
+
+	select {
+	case err := <-done:
+		if err != nil {
+			return Status{Runtime: rt, Installed: false}
+		}
+		return Status{Runtime: rt, Installed: true, Version: strings.TrimSpace(stdout.String())}
+	case <-time.After(1 * time.Second):
+		if cmd.Process != nil {
+			_ = cmd.Process.Kill()
+		}
+		return Status{Runtime: rt, Installed: false}
+	}
 }
 
 // Install installs the given runtime using the platform-appropriate command.

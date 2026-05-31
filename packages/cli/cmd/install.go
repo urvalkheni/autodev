@@ -2,14 +2,18 @@ package cmd
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 	"os/exec"
 	"strings"
 	"sync"
 	"time"
 
 	"github.com/autodev-sh/autodev/catalog"
+	"github.com/autodev-sh/autodev/core/osinfo"
+	"github.com/autodev-sh/autodev/installer"
 	"github.com/autodev-sh/autodev/scanner"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/spf13/cobra"
@@ -112,6 +116,13 @@ func runCatalogInstall(c *catalog.Catalog, id string) error {
 			fmt.Println(warnStyle.Render("    [dry-run] skipped"))
 			continue
 		}
+		
+		if p.IsInstalled() {
+			fmt.Println(okStyle.Render(fmt.Sprintf("    ✓ Already installed")))
+			installedPkgs = append(installedPkgs, p)
+			continue
+		}
+
 		if err := execInstall(p); err != nil {
 			fmt.Println(warnStyle.Render(fmt.Sprintf("  [FAIL] %s: %v", p.Name, err)))
 		} else {
@@ -430,15 +441,75 @@ func newCleanCmd() *cobra.Command {
 	}
 }
 
+type Lockfile struct {
+	OS          string            `json:"os"`
+	Arch        string            `json:"arch"`
+	Exporter    string            `json:"exporter"`
+	ExportedAt  string            `json:"exported_at"`
+	Environment map[string]string `json:"environment"`
+}
+
 func newExportCmd() *cobra.Command {
 	var outFile string
 	cmd := &cobra.Command{
 		Use:   "export",
 		Short: "Export environment as a reproducible JSON lockfile",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return runReport(".", "json", ".")
+			return runExport(outFile)
 		},
 	}
 	cmd.Flags().StringVarP(&outFile, "output", "o", ".autodev.lock.json", "output file")
 	return cmd
+}
+
+func runExport(outFile string) error {
+	titleStyle := lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("#FFD700"))
+	okStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("#00FF87")).Bold(true)
+	dimStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("#888888"))
+
+	fmt.Println()
+	fmt.Println(titleStyle.Render("  Generating Environment Lockfile..."))
+
+	info, err := osinfo.Detect()
+	if err != nil {
+		info = &osinfo.Info{OS: "unknown", Arch: "unknown"}
+	}
+
+	inst := installer.New(false)
+	names := installer.AllRuntimeNames()
+
+	envMap := make(map[string]string)
+	for _, name := range names {
+		status := inst.CheckStatus(name)
+		if status.Installed {
+			version := status.Version
+			if idx := strings.Index(version, "\n"); idx != -1 {
+				version = version[:idx]
+			}
+			envMap[name] = strings.TrimSpace(version)
+		}
+	}
+
+	lock := Lockfile{
+		OS:          info.OS,
+		Arch:        info.Arch,
+		Exporter:    "AutoDev CLI v0.2.0",
+		ExportedAt:  time.Now().Format(time.RFC3339),
+		Environment: envMap,
+	}
+
+	data, err := json.MarshalIndent(lock, "", "  ")
+	if err != nil {
+		return fmt.Errorf("marshal lockfile: %w", err)
+	}
+
+	err = os.WriteFile(outFile, data, 0644)
+	if err != nil {
+		return fmt.Errorf("write lockfile: %w", err)
+	}
+
+	fmt.Println(okStyle.Render(fmt.Sprintf("  [OK] Reproducible environment lockfile saved to: %s", outFile)))
+	fmt.Println(dimStyle.Render(fmt.Sprintf("  %d active runtimes and build tools exported", len(envMap))))
+	fmt.Println()
+	return nil
 }

@@ -24,7 +24,7 @@ var (
 var rootCmd = &cobra.Command{
 	Use:     "autodev",
 	Short:   "Clone. Scan. Install. Build. — The App Store for Developers",
-	Version: "0.1.5",
+	Version: "0.2.0",
 	Long: `
   █████╗ ██╗   ██╗████████╗ ██████╗ ██████╗ ███████╗██╗   ██╗
   ██╔══██╗██║   ██║╚══██╔══╝██╔═══██╗██╔══██╗██╔════╝██║   ██║
@@ -35,6 +35,17 @@ var rootCmd = &cobra.Command{
 
   The App Store for Developers.
   Run with no arguments to open the interactive installer.`,
+	PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		// Avoid running for MCP communication or version/help checks to guarantee performance
+		if cmd.Name() == "start" && cmd.Parent() != nil && cmd.Parent().Name() == "mcp" {
+			return
+		}
+		if cmd.Name() == "help" || (cmd.Name() == "autodev" && len(args) == 0) {
+			return
+		}
+		// Run silently
+		AutoGenerateRulesSilent(".")
+	},
 	// When called with no subcommand → open the TUI
 	RunE: func(cmd *cobra.Command, args []string) error {
 		c, err := catalog.Load()

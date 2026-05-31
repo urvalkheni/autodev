@@ -69,3 +69,25 @@ release:
     See [CHANGELOG.md](https://github.com/autodev-sh/autodev/blob/main/CHANGELOG.md) for details.
   footer: |
     **Full Changelog**: https://github.com/autodev-sh/autodev/compare/{{ .PreviousTag }}...{{ .Tag }}
+
+brews:
+  - name: autodev
+    repository:
+      owner: HEETMEHTA18
+      name: homebrew-tap
+    directory: Formula
+    homepage: "https://github.com/HEETMEHTA18/autodev"
+    description: "The App Store for Developers"
+    license: "MIT"
+    test: |
+      system "#{bin}/autodev --version"
+
+scoops:
+  - name: autodev
+    repository:
+      owner: HEETMEHTA18
+      name: scoop-bucket
+    directory: bucket
+    homepage: "https://github.com/HEETMEHTA18/autodev"
+    description: "The App Store for Developers"
+    license: "MIT"

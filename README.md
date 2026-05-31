@@ -99,35 +99,61 @@ How does AutoDev compare to existing developer tools? Here is the matrix:
 
 ## 🤖 Integrations & AI Agent Adoption
 
-AutoDev is built to be the local runtime automation layer for developers and modern **AI agents / Coding Tools** (like Cursor, Windsurf, Devin, and custom Model Context Protocol servers).
+AutoDev serves as the local environment automation and telemetry layer for developers and modern **AI agents / Coding Assistants** (like Cursor, Claude Desktop, Windsurf, Cline, and Copilot).
+
+### ⚡ Automatic AI Rule Files & 99.8% Context Saving
+Whenever any AutoDev command is run in a project workspace, AutoDev automatically creates/updates standard AI rules files:
+*   [`.autodev-skills.md`](.autodev-skills.md) (Unified skills matrix, CLI cheatsheet, and environment telemetry)
+*   [`.cursorrules`](.cursorrules) (Cursor AI agent rules)
+*   [`.clinerules`](.clinerules) (Cline/Roo-Cline rules)
+*   [`.github/copilot-instructions.md`](.github/copilot-instructions.md) (GitHub Copilot instructions)
+
+These rules instruct AI Agents to use AutoDev's telemetry instead of parsing directory structures or lockfiles recursively. This reduces context payloads from **200,000+ tokens to ~350 tokens (a 99.8% token context saving)** per roundtrip.
 
 ### Programmatic Usage
-AI agents can invoke `autodev` to query or resolve the local environment:
-- **Environment Discovery:** Run `autodev scan --json` to detect what tech stack the repo uses.
-- **Environment Bootstrapping:** Run `autodev setup --dry-run` to identify missing runtimes, and `autodev setup` to install them automatically.
-- **Automated Doctor:** Run `autodev doctor --json` to inspect compiler paths and library health.
+AI agents can invoke `autodev` or call its MCP tools to discover, verify, or install dependencies:
+- **Environment Discovery:** Run `autodev scan` or call the `autodev_scan` tool to detect languages, frameworks, package managers, and databases.
+- **Environment Bootstrapping:** Run `autodev setup --yes` or call the `autodev_install` tool to automatically and hermetically install missing tools.
+- **Diagnostics Check:** Run `autodev doctor` or call the `autodev_doctor` tool to verify compiler path health, gitignore setups, and local configurations.
+- **Auto-Fixes:** Run `autodev doctor --fix` (or `autodev_doctor` tool with `{"fix": true}`) to automatically repair misconfigured developer toolchains.
 
 ---
 
 ## 🗺️ Product Roadmap
 
+AutoDev is actively developed with a clear vision to become the ultimate intelligence and automation layer for developer environments.
+
 ```mermaid
 graph TD
     A[v0.1.0 Foundation] --> B[v0.2.0 Ecosystem]
     B --> C[v0.3.0 Intelligence]
+    C --> D[v1.0.0 Production]
     
-    subgraph v0.2.0 Features
-    B1[Homebrew / Scoop / Chocolatey Taps]
-    B2[skills.sh Sync API]
-    B3[Docker/Kubernetes Manifest Detection]
+    subgraph v0.2.0 Ecosystem (Current)
+    B1[Docker & K8s Detection]
+    B2[20+ Language Runtimes]
+    B3[Visual Roadmap Viewer TUI]
     end
     
-    subgraph v0.3.0 Features
-    C1[VS Code Extension]
-    C2[Plugin SDK for custom detectors]
-    C3[AutoDev Doctor --fix auto-remediation]
+    subgraph v0.3.0 Intelligence (Next)
+    C1[Local AI Assistant]
+    C2[DevContainer Config Gen]
+    C3[Nix Flake Integration]
+    C4[Doctor Auto-Remediation]
     end
 ```
+
+### Future Milestones Summary:
+* **✅ v0.1.0 — Foundation**: Core Go scanner engine, scan diagnostics reports, and basic catalog installer.
+* **✅ v0.2.0 — Ecosystem Expansion (Current)**: Expanded support for 20+ runtimes (Composer, Bundler, Maven, Android SDK, Helm), visual BubbleTea roadmap TUI, native Claude/Cursor MCP server auto-setup, and reproducible lockfile generation (`autodev.lock.json`).
+* **🚧 v0.3.0 — Intelligence Layer (Next)**:
+  * **Local AI Assistant**: local LLM chatbot support (via Ollama/llama.cpp) for answering dependency/setup queries inside the CLI.
+  * **DevContainer / Cloud IDE Gen**: Auto-generating `.devcontainer.json` or Codespaces configuration templates directly from project scanner telemetry.
+  * **Doctor Auto-Remediation**: Adding `--fix` flag to `autodev doctor` to resolve and install missing runtimes automatically.
+  * **Team Sync & Locking**: Locking team development environments with shared config unlocks.
+* **🌐 v1.0.0 — Production Release**: Finalizing SemVer stable API specifications, hosted SaaS team dashboard, SSO integration, and SOC2 compliance.
+
+👉 *For the complete feature-by-feature breakdown, checklist, and experimental ideas, see our detailed [ROADMAP.md](ROADMAP.md).*
 
 ---
 

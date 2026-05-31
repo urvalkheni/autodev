@@ -7,10 +7,13 @@ import (
 	"io"
 	"os"
 	"os/exec"
+	"path/filepath"
+	"runtime"
 	"strings"
 
 	"github.com/autodev-sh/autodev/installer"
 	"github.com/autodev-sh/autodev/scanner"
+	"github.com/charmbracelet/lipgloss"
 	"github.com/spf13/cobra"
 )
 
@@ -21,8 +24,11 @@ func newGitHubCTAForMCP() string {
 func newMCPCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "mcp",
-		Short: "Start a Model Context Protocol (MCP) server",
+		Short: "Model Context Protocol (MCP) server integration",
 		Long:  `Run a native Model Context Protocol (MCP) server over stdin/stdout, allowing AI coding tools like Claude Desktop or Cursor to interface directly with your dev environment.`,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return runMCPGuide()
+		},
 	}
 
 	cmd.AddCommand(&cobra.Command{
@@ -33,7 +39,218 @@ func newMCPCmd() *cobra.Command {
 		},
 	})
 
+	cmd.AddCommand(&cobra.Command{
+		Use:   "setup",
+		Short: "Automatically configure Claude Desktop to use AutoDev MCP server",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return runMCPSetup()
+		},
+	})
+
 	return cmd
+}
+
+func runMCPGuide() error {
+	goldStyle := lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("#FFD700"))
+	cyanStyle := lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("#00E5FF"))
+	greenStyle := lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("#00FF87"))
+	dimStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("#888888"))
+	borderStyle := lipgloss.NewStyle().Border(lipgloss.RoundedBorder()).BorderForeground(lipgloss.Color("#00E5FF")).Padding(1, 2)
+
+	fmt.Printf("\n  %s\n", goldStyle.Render("🔌 AUTODEV MODEL CONTEXT PROTOCOL (MCP) INTEGRATION"))
+	fmt.Println("  Connect your AI coding tools directly to your local development environment.")
+	fmt.Println()
+
+	toolsText := "🛠️  Available AI Tools through AutoDev MCP:\n\n" +
+		fmt.Sprintf("• %s: Scan repo structure and technology stack.\n", cyanStyle.Render("autodev_scan")) +
+		fmt.Sprintf("• %s: Check system compilers & runtime health.\n", cyanStyle.Render("autodev_doctor")) +
+		fmt.Sprintf("• %s: Install missing developer runtimes locally.\n", cyanStyle.Render("autodev_install")) +
+		fmt.Sprintf("• %s: Audit package dependencies for security issues.\n", cyanStyle.Render("autodev_audit"))
+
+	fmt.Println(borderStyle.Render(toolsText))
+	fmt.Println()
+
+	fmt.Println(goldStyle.Render("  🚀 QUICK CONNECT WITH CLAUDE DESKTOP:"))
+	fmt.Println("  You can automatically write configuration for Claude Desktop with one command:")
+	fmt.Println("    " + greenStyle.Render("autodev mcp setup"))
+	fmt.Println()
+
+	fmt.Println(goldStyle.Render("  📋 MANUAL CONFIGURATION GUIDE:"))
+	fmt.Println("  To connect with Cursor, Windsurf, or custom AI clients, add a command-based MCP server:")
+	
+	executablePath, err := os.Executable()
+	if err != nil || strings.Contains(executablePath, "go-build") || strings.Contains(executablePath, "exe/main") || strings.Contains(executablePath, "/tmp") {
+		executablePath = "autodev"
+	}
+	
+	fmt.Printf("  • Server Command: %s\n", greenStyle.Render(executablePath))
+	fmt.Printf("  • Arguments:      %s\n", greenStyle.Render("mcp start"))
+	fmt.Println()
+
+	fmt.Println(dimStyle.Render("  Run 'autodev mcp start' to start the server over stdin/stdout manual pipe."))
+	fmt.Println()
+	return nil
+}
+
+func getClaudeDesktopConfigPath() (string, error) {
+	home, err := os.UserHomeDir()
+	if err != nil {
+		return "", err
+	}
+
+	var path string
+	switch runtime.GOOS {
+	case "windows":
+		appdata := os.Getenv("APPDATA")
+		if appdata == "" {
+			appdata = filepath.Join(home, "AppData", "Roaming")
+		}
+		path = filepath.Join(appdata, "Claude", "claude_desktop_config.json")
+	case "darwin":
+		path = filepath.Join(home, "Library", "Application Support", "Claude", "claude_desktop_config.json")
+	default: // linux
+		path = filepath.Join(home, ".config", "Claude", "claude_desktop_config.json")
+	}
+	return path, nil
+}
+
+func runMCPSetup() error {
+	configPath, err := getClaudeDesktopConfigPath()
+	if err != nil {
+		return fmt.Errorf("failed to determine Claude config path: %w", err)
+	}
+
+	fmt.Printf("🔍 Locating Claude Desktop configuration...\n")
+	fmt.Printf("   Config file path: %s\n", configPath)
+
+	configDir := filepath.Dir(configPath)
+	if err := os.MkdirAll(configDir, 0755); err != nil {
+		return fmt.Errorf("failed to create config directory: %w", err)
+	}
+
+	var configData map[string]interface{}
+	fileBytes, err := os.ReadFile(configPath)
+	if err != nil {
+		if os.IsNotExist(err) {
+			configData = make(map[string]interface{})
+		} else {
+			return fmt.Errorf("failed to read config file: %w", err)
+		}
+	} else {
+		if err := json.Unmarshal(fileBytes, &configData); err != nil {
+			backupPath := configPath + ".bak"
+			_ = os.WriteFile(backupPath, fileBytes, 0644)
+			fmt.Printf("⚠️  Existing config was invalid JSON. Backed up to %s and creating new config.\n", backupPath)
+			configData = make(map[string]interface{})
+		}
+	}
+
+	mcpServersRaw, ok := configData["mcpServers"]
+	var mcpServers map[string]interface{}
+	if !ok {
+		mcpServers = make(map[string]interface{})
+	} else {
+		mcpServers, ok = mcpServersRaw.(map[string]interface{})
+		if !ok {
+			mcpServers = make(map[string]interface{})
+		}
+	}
+
+	executablePath, err := os.Executable()
+	if err != nil || strings.Contains(executablePath, "go-build") || strings.Contains(executablePath, "exe/main") || strings.Contains(executablePath, "/tmp") {
+		executablePath = "autodev"
+	}
+
+	mcpServers["autodev"] = map[string]interface{}{
+		"command": executablePath,
+		"args":    []string{"mcp", "start"},
+	}
+
+	configData["mcpServers"] = mcpServers
+
+	newBytes, err := json.MarshalIndent(configData, "", "  ")
+	if err != nil {
+		return fmt.Errorf("failed to serialize updated config: %w", err)
+	}
+
+	if err := os.WriteFile(configPath, newBytes, 0644); err != nil {
+		return fmt.Errorf("failed to write updated config file: %w", err)
+	}
+
+	// Helper to update any .mcp.json file format
+	updateMcpJsonFile := func(filePath string, execPath string) bool {
+		if _, err := os.Stat(filePath); err != nil {
+			return false
+		}
+		fileBytes, err := os.ReadFile(filePath)
+		if err != nil {
+			return false
+		}
+		var data map[string]interface{}
+		if err := json.Unmarshal(fileBytes, &data); err != nil {
+			return false
+		}
+		mcpServersRaw, ok := data["mcpServers"]
+		var mcpServers map[string]interface{}
+		if !ok {
+			mcpServers = make(map[string]interface{})
+		} else {
+			mcpServers, ok = mcpServersRaw.(map[string]interface{})
+			if !ok {
+				mcpServers = make(map[string]interface{})
+			}
+		}
+		mcpServers["autodev"] = map[string]interface{}{
+			"type":    "stdio",
+			"command": execPath,
+			"args":    []string{"mcp", "start"},
+		}
+		data["mcpServers"] = mcpServers
+		newBytes, err := json.MarshalIndent(data, "", "  ")
+		if err != nil {
+			return false
+		}
+		return os.WriteFile(filePath, newBytes, 0644) == nil
+	}
+
+	// Update local and global config files
+	home, homeErr := os.UserHomeDir()
+	configPaths := []string{".mcp.json"}
+	if homeErr == nil {
+		configPaths = append(configPaths,
+			filepath.Join(home, ".mcp.json"),
+			filepath.Join(home, ".cursor", "mcp.json"),
+		)
+	}
+
+	mcpUpdatedCount := 0
+	for _, p := range configPaths {
+		if updateMcpJsonFile(p, executablePath) {
+			mcpUpdatedCount++
+		}
+	}
+
+	greenStyle := lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("#00FF87"))
+	goldStyle := lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("#FFD700"))
+	cyanStyle := lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("#00E5FF"))
+	dimStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("#888888"))
+
+	fmt.Println()
+	fmt.Println(greenStyle.Render("  ✓ Successfully added AutoDev MCP Server to Claude Desktop!"))
+	if mcpUpdatedCount > 0 {
+		fmt.Printf("  ✓ Successfully configured %d Cursor Agent config file(s)!\n", mcpUpdatedCount)
+	}
+	fmt.Println(dimStyle.Render("  Please restart your AI client (Claude or Cursor) to load the new tools."))
+	fmt.Println()
+	fmt.Println(goldStyle.Render("  👉 TO CONNECT CURSOR OR COGNITION WINDSURF MANUALLY:"))
+	fmt.Println("  1. Open Cursor Settings > Features > MCP.")
+	fmt.Println("  2. Click '+ Add New MCP Server'.")
+	fmt.Println("  3. Set Name to: " + cyanStyle.Render("autodev"))
+	fmt.Println("  4. Set Type to: " + cyanStyle.Render("command"))
+	fmt.Printf("  5. Set Command to: %s\n", cyanStyle.Render(fmt.Sprintf("%s mcp start", executablePath)))
+	fmt.Println()
+
+	return nil
 }
 
 // JSON-RPC basic types
@@ -88,7 +305,6 @@ func runMCPServer() error {
 	reader := bufio.NewReader(os.Stdin)
 	writer := os.Stdout
 	
-	// Print start status to stderr so it doesn't pollute stdout json stream
 	fmt.Fprintln(os.Stderr, "AutoDev MCP Server starting...")
 
 	for {
@@ -122,10 +338,13 @@ func runMCPServer() error {
 				},
 				"serverInfo": map[string]interface{}{
 					"name":    "autodev-mcp",
-					"version": "0.1.6",
+					"version": "0.2.0",
 				},
 			}
 			sendResponse(writer, req.ID, result)
+
+		case "ping":
+			sendResponse(writer, req.ID, map[string]interface{}{})
 
 		case "tools/list":
 			tools := []map[string]interface{}{
@@ -167,6 +386,19 @@ func runMCPServer() error {
 							},
 						},
 						"required": []string{"tool"},
+					},
+				},
+				{
+					"name":        "autodev_audit",
+					"description": "Scan codebase dependencies and find security vulnerabilities using OSV database.",
+					"inputSchema": map[string]interface{}{
+						"type": "object",
+						"properties": map[string]interface{}{
+							"path": map[string]interface{}{
+								"type":        "string",
+								"description": "Optional path to the project repository. Defaults to current directory.",
+							},
+						},
 					},
 				},
 			}
@@ -255,6 +487,43 @@ func handleToolCall(name string, args map[string]interface{}) mcpToolCallResult 
 		return mcpToolCallResult{
 			Content: []mcpTextContent{
 				{Type: "text", Text: fmt.Sprintf("Successfully installed runtime: %s", tool) + newGitHubCTAForMCP()},
+			},
+		}
+
+	case "autodev_audit":
+		path := "."
+		if p, ok := args["path"].(string); ok && p != "" {
+			path = p
+		}
+		resList, err := scanner.AuditRepository(path)
+		if err != nil {
+			return mcpToolCallResult{
+				Content: []mcpTextContent{{Type: "text", Text: fmt.Sprintf("Audit failed: %v", err)}},
+				IsError: true,
+			}
+		}
+		
+		var output strings.Builder
+		output.WriteString("AutoDev Supply-Chain Safety Audit\n\n")
+		if len(resList) == 0 {
+			output.WriteString("✓ No known security vulnerabilities found! All dependencies are safe.\n")
+		} else {
+			output.WriteString(fmt.Sprintf("✗ Found vulnerabilities across %d packages:\n\n", len(resList)))
+			for _, res := range resList {
+				output.WriteString(fmt.Sprintf("📦 %s@%s (%s)\n", res.Package.Name, res.Package.Version, res.Package.Ecosystem))
+				for _, v := range res.Vulnerabilities {
+					alias := ""
+					if len(v.Aliases) > 0 {
+						alias = " (" + v.Aliases[0] + ")"
+					}
+					output.WriteString(fmt.Sprintf("  - [%s] %s%s: %s\n", v.Severity, v.ID, alias, v.Summary))
+				}
+				output.WriteString("\n")
+			}
+		}
+		return mcpToolCallResult{
+			Content: []mcpTextContent{
+				{Type: "text", Text: output.String() + newGitHubCTAForMCP()},
 			},
 		}
 

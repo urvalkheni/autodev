@@ -131,7 +131,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case screenConfirm:
 			return m.updateConfirm(msg)
 		case screenDone:
-			if msg.String() == "q" || msg.String() == "enter" {
+			if msg.String() == "esc" || msg.String() == "enter" {
 				return m, tea.Quit
 			}
 		}
@@ -161,7 +161,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 func (m Model) updateMenu(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	switch msg.String() {
-	case "q", "ctrl+c":
+	case "esc", "ctrl+c":
 		return m, tea.Quit
 	case "up", "k":
 		m.menuCursor--
@@ -223,7 +223,7 @@ func (m Model) updateMenu(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 
 func (m Model) updateCategory(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	switch msg.String() {
-	case "q", "esc":
+	case "esc":
 		m.screen = screenMenu
 	case "up", "k":
 		if m.catCursor > 0 {
@@ -252,7 +252,7 @@ func (m Model) updateCategory(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 
 func (m Model) updateProfile(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	switch msg.String() {
-	case "q", "esc":
+	case "esc":
 		m.screen = screenMenu
 	case "up", "k":
 		if m.catCursor > 0 {
@@ -291,7 +291,7 @@ func (m Model) updateConfirm(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		m.installLog = nil
 		// Start the first install — TUI suspends, full terminal given to installer
 		return m, m.execNextInstall()
-	case "n", "N", "esc", "q":
+	case "n", "N", "esc":
 		m.screen = screenMenu
 	}
 	return m, nil
@@ -304,6 +304,13 @@ func (m Model) execNextInstall() tea.Cmd {
 		return nil
 	}
 	pkg := m.toInstall[m.installIdx]
+
+	if pkg.IsInstalled() {
+		return func() tea.Msg {
+			return installDoneMsg{pkg: pkg, err: nil}
+		}
+	}
+
 	cmd := buildInstallCmd(pkg)
 
 	// Print a header so the user knows what's installing while TUI is suspended
@@ -529,7 +536,7 @@ func (m Model) viewDone() string {
 	b.WriteString("\n")
 	b.WriteString(styleDim.Render("  Run 'autodev skills' to see your learning roadmap."))
 	b.WriteString("\n\n")
-	b.WriteString(styleHint.Render("  press q or enter to exit"))
+	b.WriteString(styleHint.Render("  press esc or enter to exit"))
 	b.WriteString("\n")
 	return b.String()
 }
@@ -605,7 +612,12 @@ func buildInstallCmd(pkg *catalog.Package) *exec.Cmd {
 		cmd = exec.Command("npm", append([]string{"install", "-g"}, steps.Packages...)...)
 
 	case "pip":
-		cmd = exec.Command("pip3", append([]string{"install", "--upgrade"}, steps.Packages...)...)
+		args := []string{"install", "--upgrade"}
+		if runtime.GOOS == "linux" || runtime.GOOS == "darwin" {
+			args = append(args, "--break-system-packages")
+		}
+		args = append(args, steps.Packages...)
+		cmd = exec.Command("pip3", args...)
 
 	case "cargo":
 		cmd = exec.Command("cargo", append([]string{"install"}, steps.Packages...)...)

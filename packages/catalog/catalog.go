@@ -3,8 +3,12 @@
 package catalog
 
 import (
+	"context"
 	_ "embed"
 	"fmt"
+	"os/exec"
+	"strings"
+	"time"
 
 	"gopkg.in/yaml.v3"
 )
@@ -142,4 +146,29 @@ func (c *Catalog) ResolveProfile(profileID string) ([]*Package, error) {
 		return nil, fmt.Errorf("unknown profile: %q", profileID)
 	}
 	return c.Resolve(prof.Packages)
+}
+
+// IsInstalled checks if the package is already installed on the system using its Verify command.
+func (p *Package) IsInstalled() bool {
+	if p.Verify == "" {
+		return false
+	}
+	
+	parts := strings.Fields(p.Verify)
+	if len(parts) == 0 {
+		return false
+	}
+	
+	// Check if the binary executable exists in PATH
+	_, err := exec.LookPath(parts[0])
+	if err != nil {
+		return false
+	}
+	
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	defer cancel()
+	
+	cmd := exec.CommandContext(ctx, "sh", "-c", p.Verify)
+	err = cmd.Run()
+	return err == nil
 }

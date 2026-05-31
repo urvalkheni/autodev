@@ -46,7 +46,12 @@ func execInstall(pkg *catalog.Package) error {
 		return shellRun("npm", append([]string{"install", "-g"}, steps.Packages...)...)
 
 	case "pip":
-		return shellRun("pip3", append([]string{"install", "--upgrade"}, steps.Packages...)...)
+		args := []string{"install", "--upgrade"}
+		if runtime.GOOS == "linux" || runtime.GOOS == "darwin" {
+			args = append(args, "--break-system-packages")
+		}
+		args = append(args, steps.Packages...)
+		return shellRun("pip3", args...)
 
 	case "cargo":
 		return shellRun("cargo", append([]string{"install"}, steps.Packages...)...)

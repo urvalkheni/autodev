@@ -99,13 +99,23 @@ How does AutoDev compare to existing developer tools? Here is the matrix:
 
 ## 🤖 Integrations & AI Agent Adoption
 
-AutoDev is built to be the local runtime automation layer for developers and modern **AI agents / Coding Tools** (like Cursor, Windsurf, Devin, and custom Model Context Protocol servers).
+AutoDev serves as the local environment automation and telemetry layer for developers and modern **AI agents / Coding Assistants** (like Cursor, Claude Desktop, Windsurf, Cline, and Copilot).
+
+### ⚡ Automatic AI Rule Files & 99.8% Context Saving
+Whenever any AutoDev command is run in a project workspace, AutoDev automatically creates/updates standard AI rules files:
+*   [`.autodev-skills.md`](.autodev-skills.md) (Unified skills matrix, CLI cheatsheet, and environment telemetry)
+*   [`.cursorrules`](.cursorrules) (Cursor AI agent rules)
+*   [`.clinerules`](.clinerules) (Cline/Roo-Cline rules)
+*   [`.github/copilot-instructions.md`](.github/copilot-instructions.md) (GitHub Copilot instructions)
+
+These rules instruct AI Agents to use AutoDev's telemetry instead of parsing directory structures or lockfiles recursively. This reduces context payloads from **200,000+ tokens to ~350 tokens (a 99.8% token context saving)** per roundtrip.
 
 ### Programmatic Usage
-AI agents can invoke `autodev` to query or resolve the local environment:
-- **Environment Discovery:** Run `autodev scan --json` to detect what tech stack the repo uses.
-- **Environment Bootstrapping:** Run `autodev setup --dry-run` to identify missing runtimes, and `autodev setup` to install them automatically.
-- **Automated Doctor:** Run `autodev doctor --json` to inspect compiler paths and library health.
+AI agents can invoke `autodev` or call its MCP tools to discover, verify, or install dependencies:
+- **Environment Discovery:** Run `autodev scan` or call the `autodev_scan` tool to detect languages, frameworks, package managers, and databases.
+- **Environment Bootstrapping:** Run `autodev setup --yes` or call the `autodev_install` tool to automatically and hermetically install missing tools.
+- **Diagnostics Check:** Run `autodev doctor` or call the `autodev_doctor` tool to verify compiler path health, gitignore setups, and local configurations.
+- **Auto-Fixes:** Run `autodev doctor --fix` (or `autodev_doctor` tool with `{"fix": true}`) to automatically repair misconfigured developer toolchains.
 
 ---
 

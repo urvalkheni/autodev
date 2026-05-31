@@ -20,9 +20,13 @@ export default function Hero() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [typingSpeed, setTypingSpeed] = useState(150);
   const [copiedQuickInstall, setCopiedQuickInstall] = useState(false);
+  const [activeTab, setActiveTab] = useState<"npx" | "curl">("npx");
 
   const handleCopyQuickInstall = () => {
-    navigator.clipboard.writeText("curl -fsSL https://raw.githubusercontent.com/HEETMEHTA18/autodev/main/scripts/install.sh | bash");
+    const cmd = activeTab === "npx"
+      ? "npx @heetmehta18/autodev"
+      : "curl -fsSL https://raw.githubusercontent.com/HEETMEHTA18/autodev/main/scripts/install.sh | bash";
+    navigator.clipboard.writeText(cmd);
     setCopiedQuickInstall(true);
     setTimeout(() => setCopiedQuickInstall(false), 1800);
   };
@@ -112,7 +116,28 @@ export default function Hero() {
                 <span className="terminal-dot bg-[#FF5F56]" />
                 <span className="terminal-dot bg-[#FFBD2E]" />
                 <span className="terminal-dot bg-[#27C93F]" />
-                <span className="text-xs text-[#666] ml-2 font-mono">bash</span>
+                <div className="flex gap-2 ml-4">
+                  <button
+                    onClick={() => setActiveTab("npx")}
+                    className={`text-xs px-2 py-0.5 font-mono rounded cursor-pointer transition-all border ${
+                      activeTab === "npx"
+                        ? "bg-[#FFD700] text-black font-bold border-[#FFD700]"
+                        : "text-[#666] border-transparent hover:text-white"
+                    }`}
+                  >
+                    npx
+                  </button>
+                  <button
+                    onClick={() => setActiveTab("curl")}
+                    className={`text-xs px-2 py-0.5 font-mono rounded cursor-pointer transition-all border ${
+                      activeTab === "curl"
+                        ? "bg-[#FFD700] text-black font-bold border-[#FFD700]"
+                        : "text-[#666] border-transparent hover:text-white"
+                    }`}
+                  >
+                    curl
+                  </button>
+                </div>
               </div>
               <button
                 onClick={handleCopyQuickInstall}
@@ -134,7 +159,9 @@ export default function Hero() {
             </div>
             <div className="px-6 py-4 font-mono text-sm text-[#00FF87] overflow-x-auto whitespace-nowrap">
               <span className="text-[#555]">$ </span>
-              curl -fsSL https://raw.githubusercontent.com/HEETMEHTA18/autodev/main/scripts/install.sh | bash
+              {activeTab === "npx"
+                ? "npx @heetmehta18/autodev"
+                : "curl -fsSL https://raw.githubusercontent.com/HEETMEHTA18/autodev/main/scripts/install.sh | bash"}
             </div>
           </div>
         </motion.div>

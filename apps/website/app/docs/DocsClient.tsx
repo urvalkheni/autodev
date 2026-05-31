@@ -94,14 +94,18 @@ export default function DocsClient() {
         <>
           <h1 className="text-4xl font-black text-white mb-6 uppercase tracking-tight">Quick Start</h1>
           <p className="text-neutral-300 leading-relaxed mb-4">
-            Get up and running with AutoDev instantly. Run the bootstrap script for your platform, or run it directly using Node.js or Docker without installation.
+            Get up and running with AutoDev instantly. Run the bootstrap script for your platform, run it directly via Node.js (npx), or run it inside Docker without installation.
           </p>
           <h2 className="text-2xl font-bold text-[#FFD700] mt-8 mb-4">One-line Shell Install</h2>
           <p className="text-neutral-300 mb-2">For Linux and macOS, install using curl:</p>
           {renderCodeBlock("qs-curl", "curl -fsSL https://raw.githubusercontent.com/HEETMEHTA18/autodev/main/scripts/install.sh | bash")}
 
+          <h2 className="text-2xl font-bold text-[#FFD700] mt-8 mb-4">Run via NPX</h2>
+          <p className="text-neutral-300 mb-2">Run the interactive bootstrapper setup instantly using Node.js:</p>
+          {renderCodeBlock("qs-npx", "npx @heetmehta18/autodev setup")}
+
           <h2 className="text-2xl font-bold text-[#FFD700] mt-8 mb-4">Interactive Setup</h2>
-          <p className="text-neutral-300 mb-2">Once installed, enter your project&apos;s directory and run:</p>
+          <p className="text-neutral-300 mb-2">Once installed via shell/package manager, enter your project&apos;s directory and run:</p>
           {renderCodeBlock("qs-setup", "autodev setup")}
 
           <p className="text-neutral-300 leading-relaxed mt-4">

@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"bufio"
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -10,7 +11,9 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
+	"sync"
 
+	"github.com/autodev-sh/autodev/catalog"
 	"github.com/autodev-sh/autodev/installer"
 	"github.com/autodev-sh/autodev/scanner"
 	"github.com/charmbracelet/lipgloss"
@@ -338,7 +341,7 @@ func runMCPServer() error {
 				},
 				"serverInfo": map[string]interface{}{
 					"name":    "autodev-mcp",
-					"version": "0.3.0",
+					"version": "0.3.2",
 				},
 			}
 			sendResponse(writer, req.ID, result)
@@ -401,6 +404,110 @@ func runMCPServer() error {
 						},
 					},
 				},
+				{
+					"name":        "autodev_clone",
+					"description": "Clone a Git repository, scan it, and install all missing dependencies.",
+					"inputSchema": map[string]interface{}{
+						"type": "object",
+						"properties": map[string]interface{}{
+							"repository_url": map[string]interface{}{
+								"type":        "string",
+								"description": "The Git repository URL to clone.",
+							},
+							"target_directory": map[string]interface{}{
+								"type":        "string",
+								"description": "Optional target directory name. Defaults to repository name.",
+							},
+							"skip_confirm": map[string]interface{}{
+								"type":        "boolean",
+								"description": "Skip confirmation prompts. Defaults to true.",
+							},
+						},
+						"required": []string{"repository_url"},
+					},
+				},
+				{
+					"name":        "autodev_containerize",
+					"description": "Generate DevContainer and VSCode workspace configuration for a project.",
+					"inputSchema": map[string]interface{}{
+						"type": "object",
+						"properties": map[string]interface{}{
+							"path": map[string]interface{}{
+								"type":        "string",
+								"description": "Optional path to project directory. Defaults to current directory.",
+							},
+						},
+					},
+				},
+				{
+					"name":        "autodev_create",
+					"description": "Create a new pre-configured boilerplate project from a template.",
+					"inputSchema": map[string]interface{}{
+						"type": "object",
+						"properties": map[string]interface{}{
+							"template": map[string]interface{}{
+								"type":        "string",
+								"description": "Boilerplate template: react-ts, nextjs, ai-chatbot, mern-stack, flutter.",
+							},
+							"project_name": map[string]interface{}{
+								"type":        "string",
+								"description": "Optional name of the project folder. Defaults to autodev-app.",
+							},
+						},
+						"required": []string{"template"},
+					},
+				},
+				{
+					"name":        "autodev_profile",
+					"description": "List available developer profiles or install a role-based tool set.",
+					"inputSchema": map[string]interface{}{
+						"type": "object",
+						"properties": map[string]interface{}{
+							"profile_id": map[string]interface{}{
+								"type":        "string",
+								"description": "Optional profile ID (e.g. web-dev, ml-engineer). If omitted, lists all profiles.",
+							},
+							"skip_confirm": map[string]interface{}{
+								"type":        "boolean",
+								"description": "Skip confirmation prompts during profile installation. Defaults to true.",
+							},
+						},
+					},
+				},
+				{
+					"name":        "autodev_benchmark",
+					"description": "Display AI token and efficiency benchmarks comparing traditional prompting and AutoDev.",
+					"inputSchema": map[string]interface{}{
+						"type": "object",
+					},
+				},
+				{
+					"name":        "autodev_migrate",
+					"description": "Migrate legacy JSON configuration files to the new YAML schema.",
+					"inputSchema": map[string]interface{}{
+						"type": "object",
+					},
+				},
+				{
+					"name":        "autodev_export",
+					"description": "Export the current environment profile to a reproducible JSON lockfile.",
+					"inputSchema": map[string]interface{}{
+						"type": "object",
+						"properties": map[string]interface{}{
+							"output": map[string]interface{}{
+								"type":        "string",
+								"description": "Optional output path. Defaults to .autodev.lock.json.",
+							},
+						},
+					},
+				},
+				{
+					"name":        "autodev_clean",
+					"description": "Remove AutoDev cache and temporary files.",
+					"inputSchema": map[string]interface{}{
+						"type": "object",
+					},
+				},
 			}
 			sendResponse(writer, req.ID, map[string]interface{}{
 				"tools": tools,
@@ -427,6 +534,40 @@ func runMCPServer() error {
 	}
 
 	return nil
+}
+
+func captureStdoutStderr(fn func()) string {
+	oldStdout := os.Stdout
+	oldStderr := os.Stderr
+
+	r, w, err := os.Pipe()
+	if err != nil {
+		fn()
+		return ""
+	}
+
+	os.Stdout = w
+	os.Stderr = w
+
+	var buf bytes.Buffer
+	var wg sync.WaitGroup
+	wg.Add(1)
+
+	go func() {
+		defer wg.Done()
+		_, _ = io.Copy(&buf, r)
+	}()
+
+	fn()
+
+	w.Close()
+	os.Stdout = oldStdout
+	os.Stderr = oldStderr
+
+	wg.Wait()
+	r.Close()
+
+	return buf.String()
 }
 
 func handleToolCall(name string, args map[string]interface{}) mcpToolCallResult {
@@ -459,10 +600,19 @@ func handleToolCall(name string, args map[string]interface{}) mcpToolCallResult 
 			fix = f
 		}
 
-		diagnostics := runDoctorMCP(fix)
+		var diagnostics string
+		captured := captureStdoutStderr(func() {
+			diagnostics = runDoctorMCP(fix)
+		})
+
+		text := diagnostics
+		if captured != "" {
+			text += "\nInstallation Output:\n" + captured
+		}
+
 		return mcpToolCallResult{
 			Content: []mcpTextContent{
-				{Type: "text", Text: diagnostics + newGitHubCTAForMCP()},
+				{Type: "text", Text: text + newGitHubCTAForMCP()},
 			},
 		}
 
@@ -475,18 +625,22 @@ func handleToolCall(name string, args map[string]interface{}) mcpToolCallResult 
 			}
 		}
 
-		inst := installer.New(false)
-		err := inst.Install(tool)
-		if err != nil {
+		var installErr error
+		captured := captureStdoutStderr(func() {
+			inst := installer.New(false)
+			installErr = inst.Install(tool)
+		})
+
+		if installErr != nil {
 			return mcpToolCallResult{
-				Content: []mcpTextContent{{Type: "text", Text: fmt.Sprintf("Installation failed for %s: %v", tool, err)}},
+				Content: []mcpTextContent{{Type: "text", Text: fmt.Sprintf("Installation failed for %s: %v\nOutput:\n%s", tool, installErr, captured)}},
 				IsError: true,
 			}
 		}
 
 		return mcpToolCallResult{
 			Content: []mcpTextContent{
-				{Type: "text", Text: fmt.Sprintf("Successfully installed runtime: %s", tool) + newGitHubCTAForMCP()},
+				{Type: "text", Text: fmt.Sprintf("Successfully installed runtime: %s\nOutput:\n%s", tool, captured) + newGitHubCTAForMCP()},
 			},
 		}
 
@@ -524,6 +678,223 @@ func handleToolCall(name string, args map[string]interface{}) mcpToolCallResult 
 		return mcpToolCallResult{
 			Content: []mcpTextContent{
 				{Type: "text", Text: output.String() + newGitHubCTAForMCP()},
+			},
+		}
+
+	case "autodev_clone":
+		repoURL, ok := args["repository_url"].(string)
+		if !ok || repoURL == "" {
+			return mcpToolCallResult{
+				Content: []mcpTextContent{{Type: "text", Text: "Missing 'repository_url' parameter"}},
+				IsError: true,
+			}
+		}
+		targetDir, _ := args["target_directory"].(string)
+		skipConfirm := true
+		if sc, ok := args["skip_confirm"].(bool); ok {
+			skipConfirm = sc
+		}
+
+		var cloneErr error
+		captured := captureStdoutStderr(func() {
+			cloneErr = runClone(repoURL, targetDir, skipConfirm)
+		})
+
+		if cloneErr != nil {
+			return mcpToolCallResult{
+				Content: []mcpTextContent{{Type: "text", Text: fmt.Sprintf("Clone failed: %v\nOutput:\n%s", cloneErr, captured)}},
+				IsError: true,
+			}
+		}
+
+		return mcpToolCallResult{
+			Content: []mcpTextContent{
+				{Type: "text", Text: fmt.Sprintf("Successfully cloned repository!\nOutput:\n%s", captured) + newGitHubCTAForMCP()},
+			},
+		}
+
+	case "autodev_containerize":
+		path := "."
+		if p, ok := args["path"].(string); ok && p != "" {
+			path = p
+		}
+
+		var containerizeErr error
+		captured := captureStdoutStderr(func() {
+			containerizeErr = runContainerize(path)
+		})
+
+		if containerizeErr != nil {
+			return mcpToolCallResult{
+				Content: []mcpTextContent{{Type: "text", Text: fmt.Sprintf("Containerization failed: %v\nOutput:\n%s", containerizeErr, captured)}},
+				IsError: true,
+			}
+		}
+
+		return mcpToolCallResult{
+			Content: []mcpTextContent{
+				{Type: "text", Text: fmt.Sprintf("Successfully generated devcontainer configuration!\nOutput:\n%s", captured) + newGitHubCTAForMCP()},
+			},
+		}
+
+	case "autodev_create":
+		template, ok := args["template"].(string)
+		if !ok || template == "" {
+			return mcpToolCallResult{
+				Content: []mcpTextContent{{Type: "text", Text: "Missing 'template' parameter"}},
+				IsError: true,
+			}
+		}
+		projectName := "autodev-app"
+		if p, ok := args["project_name"].(string); ok && p != "" {
+			projectName = p
+		}
+
+		var createErr error
+		captured := captureStdoutStderr(func() {
+			switch strings.ToLower(template) {
+			case "react-ts", "react", "react-app":
+				createErr = runCreateReactTS(projectName)
+			case "nextjs", "next":
+				createErr = runCreateNextJS(projectName)
+			case "ai-chatbot", "ai-agent":
+				createErr = runCreateAIChatbot(projectName)
+			case "mern-stack", "mern":
+				createErr = runCreateMERNStack(projectName)
+			case "flutter-app", "flutter":
+				createErr = runCreateFlutterApp(projectName)
+			default:
+				createErr = fmt.Errorf("unsupported template: %s (supported: react-ts, nextjs, ai-chatbot, mern-stack, flutter)", template)
+			}
+			if createErr == nil {
+				installDependencies(projectName)
+			}
+		})
+
+		if createErr != nil {
+			return mcpToolCallResult{
+				Content: []mcpTextContent{{Type: "text", Text: fmt.Sprintf("Project creation failed: %v\nOutput:\n%s", createErr, captured)}},
+				IsError: true,
+			}
+		}
+
+		return mcpToolCallResult{
+			Content: []mcpTextContent{
+				{Type: "text", Text: fmt.Sprintf("Successfully created project %q from template %q!\nOutput:\n%s", projectName, template, captured) + newGitHubCTAForMCP()},
+			},
+		}
+
+	case "autodev_profile":
+		profileID, _ := args["profile_id"].(string)
+		
+		c, err := catalog.Load()
+		if err != nil {
+			return mcpToolCallResult{
+				Content: []mcpTextContent{{Type: "text", Text: fmt.Sprintf("Failed to load catalog: %v", err)}},
+				IsError: true,
+			}
+		}
+
+		var runErr error
+		captured := captureStdoutStderr(func() {
+			if profileID == "" {
+				runErr = printProfiles(c)
+			} else {
+				runErr = runProfileNoConfirm(c, profileID)
+			}
+		})
+
+		if runErr != nil {
+			return mcpToolCallResult{
+				Content: []mcpTextContent{{Type: "text", Text: fmt.Sprintf("Profile action failed: %v\nOutput:\n%s", runErr, captured)}},
+				IsError: true,
+			}
+		}
+
+		return mcpToolCallResult{
+			Content: []mcpTextContent{
+				{Type: "text", Text: captured + newGitHubCTAForMCP()},
+			},
+		}
+
+	case "autodev_benchmark":
+		var benchmarkErr error
+		captured := captureStdoutStderr(func() {
+			benchmarkErr = runBenchmark()
+		})
+
+		if benchmarkErr != nil {
+			return mcpToolCallResult{
+				Content: []mcpTextContent{{Type: "text", Text: fmt.Sprintf("Benchmark failed: %v\nOutput:\n%s", benchmarkErr, captured)}},
+				IsError: true,
+			}
+		}
+
+		return mcpToolCallResult{
+			Content: []mcpTextContent{
+				{Type: "text", Text: captured + newGitHubCTAForMCP()},
+			},
+		}
+
+	case "autodev_migrate":
+		var migrateErr error
+		captured := captureStdoutStderr(func() {
+			migrateErr = runMigrate()
+		})
+
+		if migrateErr != nil {
+			return mcpToolCallResult{
+				Content: []mcpTextContent{{Type: "text", Text: fmt.Sprintf("Migration failed: %v\nOutput:\n%s", migrateErr, captured)}},
+				IsError: true,
+			}
+		}
+
+		return mcpToolCallResult{
+			Content: []mcpTextContent{
+				{Type: "text", Text: captured + newGitHubCTAForMCP()},
+			},
+		}
+
+	case "autodev_export":
+		outputFile := ".autodev.lock.json"
+		if o, ok := args["output"].(string); ok && o != "" {
+			outputFile = o
+		}
+
+		var exportErr error
+		captured := captureStdoutStderr(func() {
+			exportErr = runExport(outputFile)
+		})
+
+		if exportErr != nil {
+			return mcpToolCallResult{
+				Content: []mcpTextContent{{Type: "text", Text: fmt.Sprintf("Export failed: %v\nOutput:\n%s", exportErr, captured)}},
+				IsError: true,
+			}
+		}
+
+		return mcpToolCallResult{
+			Content: []mcpTextContent{
+				{Type: "text", Text: captured + newGitHubCTAForMCP()},
+			},
+		}
+
+	case "autodev_clean":
+		var cleanErr error
+		captured := captureStdoutStderr(func() {
+			cleanErr = newCleanCmd().RunE(nil, nil)
+		})
+
+		if cleanErr != nil {
+			return mcpToolCallResult{
+				Content: []mcpTextContent{{Type: "text", Text: fmt.Sprintf("Clean failed: %v\nOutput:\n%s", cleanErr, captured)}},
+				IsError: true,
+			}
+		}
+
+		return mcpToolCallResult{
+			Content: []mcpTextContent{
+				{Type: "text", Text: captured + newGitHubCTAForMCP()},
 			},
 		}
 

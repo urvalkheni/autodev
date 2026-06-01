@@ -127,3 +127,49 @@ func runProfile(c *catalog.Catalog, profileID string) error {
 func installCatalogPackage(pkg *catalog.Package) error {
 	return execInstall(pkg)
 }
+
+func runProfileNoConfirm(c *catalog.Catalog, profileID string) error {
+	titleStyle := lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("#FFD700"))
+	okStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("#00FF87")).Bold(true)
+	dimStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("#888888"))
+	warnStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("#FF6B6B"))
+
+	prof, ok := c.GetProfile(profileID)
+	if !ok {
+		return fmt.Errorf("unknown profile %q", profileID)
+	}
+
+	fmt.Println()
+	fmt.Printf("  %s %s\n", titleStyle.Render(prof.Name), dimStyle.Render("profile"))
+	fmt.Println(dimStyle.Render("  " + prof.Description))
+	fmt.Println()
+
+	resolved, err := c.ResolveProfile(profileID)
+	if err != nil {
+		return err
+	}
+
+	fmt.Println(titleStyle.Render(fmt.Sprintf("  %d packages to install:", len(resolved))))
+	for _, pkg := range resolved {
+		fmt.Printf("  %-20s  %s\n", pkg.Name, dimStyle.Render(pkg.Description))
+	}
+	fmt.Println()
+
+	for _, pkg := range resolved {
+		fmt.Printf(titleStyle.Render("\n  Installing %s...\n"), pkg.Name)
+		if pkg.IsInstalled() {
+			fmt.Println(okStyle.Render("    ✓ Already installed"))
+			continue
+		}
+		if err := installCatalogPackage(pkg); err != nil {
+			fmt.Println(warnStyle.Render(fmt.Sprintf("  [FAIL] %s: %v", pkg.Name, err)))
+		} else {
+			fmt.Println(okStyle.Render(fmt.Sprintf("  [OK] %s installed", pkg.Name)))
+		}
+	}
+
+	fmt.Println()
+	fmt.Println(okStyle.Render("  [OK] Profile installation complete!"))
+	fmt.Println()
+	return nil
+}

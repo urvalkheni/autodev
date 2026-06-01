@@ -252,8 +252,7 @@ func runClone(repoURL, targetDir string, skipConfirm bool) error {
 	if exitCode == 0 {
 		fmt.Println(okStyle.Render("  ✓ Environment configured successfully! All runtimes are ready."))
 	} else {
-		fmt.Println(warnStyle.Render("  Some runtimes failed to install. Please review errors above."))
-		os.Exit(exitCode)
+		return fmt.Errorf("some runtimes failed to install; please review errors above")
 	}
 
 	return nil

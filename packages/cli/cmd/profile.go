@@ -105,6 +105,10 @@ func runProfile(c *catalog.Catalog, profileID string) error {
 
 	for _, pkg := range resolved {
 		fmt.Printf(titleStyle.Render("\n  Installing %s...\n"), pkg.Name)
+		if pkg.IsInstalled() {
+			fmt.Println(okStyle.Render("    ✓ Already installed"))
+			continue
+		}
 		if err := installCatalogPackage(pkg); err != nil {
 			fmt.Println(warnStyle.Render(fmt.Sprintf("  [FAIL] %s: %v", pkg.Name, err)))
 		} else {

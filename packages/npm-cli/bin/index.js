@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const { spawnSync, execSync } = require('child_process');
+const { spawn, spawnSync, execSync } = require('child_process');
 const path = require('path');
 const fs = require('fs');
 const os = require('os');
@@ -213,11 +213,36 @@ async function main() {
     await downloadBinary();
   }
 
-  // Forward execution
+  // Forward execution asynchronously to handle long-running / interactive processes properly
   const args = process.argv.slice(2);
-  const result = spawnSync(activeBinaryPath, args, { stdio: 'inherit' });
+  const child = spawn(activeBinaryPath, args, { stdio: 'inherit' });
 
-  process.exit(result.status ?? 0);
+  // Forward termination signals to the child process (critical for long-running servers / MCP)
+  const signals = ['SIGINT', 'SIGTERM', 'SIGHUP', 'SIGQUIT'];
+  signals.forEach((signal) => {
+    process.on(signal, () => {
+      if (!child.killed) {
+        child.kill(signal);
+      }
+    });
+  });
+
+  child.on('close', (code, signal) => {
+    if (code !== null) {
+      process.exit(code);
+    } else if (signal) {
+      // Exit with standard 128 + signal number
+      const signalCodes = { SIGINT: 2, SIGTERM: 15, SIGHUP: 1, SIGQUIT: 3 };
+      process.exit(128 + (signalCodes[signal] || 0));
+    } else {
+      process.exit(0);
+    }
+  });
+
+  child.on('error', (err) => {
+    console.error(`[autodev] Failed to run binary: ${err.message}`);
+    process.exit(1);
+  });
 }
 
 main().catch((err) => {

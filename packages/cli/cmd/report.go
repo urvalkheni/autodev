@@ -94,7 +94,10 @@ func writeJSONReport(result *scanner.ScanResult, path string) error {
 	defer f.Close()
 	enc := json.NewEncoder(f)
 	enc.SetIndent("", "  ")
-	return enc.Encode(result)
+	if err := enc.Encode(result); err != nil {
+		return err
+	}
+	return f.Close()
 }
 
 func writeMarkdownReport(result *scanner.ScanResult, path string) error {
@@ -147,7 +150,7 @@ func writeMarkdownReport(result *scanner.ScanResult, path string) error {
 		fmt.Fprintf(f, "%d. `%s`\n", i+1, step)
 	}
 
-	return nil
+	return f.Close()
 }
 
 const htmlTemplate = `<!DOCTYPE html>
@@ -271,5 +274,9 @@ func writeHTMLReport(result *scanner.ScanResult, path string) error {
 		SetupPlan:       result.RecommendedSetup,
 	}
 
-	return tmpl.Execute(f, data)
+	if err := tmpl.Execute(f, data); err != nil {
+		return err
+	}
+
+	return f.Close()
 }

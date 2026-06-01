@@ -135,6 +135,7 @@ func runSetup(path string, isDryRun, skipConfirm bool) error {
 	fmt.Println()
 	if exitCode == 0 {
 		fmt.Println(okStyle.Render("  ✓ Setup complete! Run 'autodev doctor' to verify your environment."))
+		trackCLIMetric("setup_complete")
 	} else {
 		fmt.Println(warnStyle.Render("  Setup completed with errors. See above for details."))
 		os.Exit(exitCode)

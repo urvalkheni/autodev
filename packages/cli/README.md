@@ -5,10 +5,9 @@
   ██╔══██╗██║   ██║╚══██╔══╝██╔═══██╗██╔══██╗██╔════╝██║   ██║
   ███████║██║   ██║   ██║   ██║   ██║██║  ██║█████╗  ██║   ██║
   ██╔══██║██║   ██║   ██║   ██║   ██║██║  ██║██╔══╝  ╚██╗ ██╔╝
-  ██║  ██║╚██████╔╝   ██║   ╚██████╔╝██████╔╝███████╗ ╚████╔╝ 
-  ╚═╝  ╚═╝ ╚═════╝    ╚═╝    ╚══════╝ ╚═════╝ ╚══════╝  ╚═══╝ 
+  ██║  ██║╚██████╔╝   ██║   ╚██████╔╝██████╔╝███████╗ ╚████╔╝
+  ╚═╝  ╚═╝ ╚═════╝    ╚═╝    ╚══════╝ ╚═════╝ ╚══════╝  ╚═══╝
 ```
-
 
 <p align="center">
   <strong>Clone. Scan. Install. Build.</strong>
@@ -67,19 +66,19 @@ autodev setup
 
 ## 🔍 What It Does
 
-| Command | Description |
-|---------|-------------|
-| `autodev scan` | Scan current repo for languages, frameworks, package managers |
-| `autodev setup` | Install all missing runtimes and dependencies |
-| `autodev audit` | Audit repository dependencies for security vulnerabilities (OSV.dev) |
-| `autodev github <USER>` | Scan all public repos of a GitHub user |
-| `autodev doctor` | Check environment health |
-| `autodev report` | Generate HTML/PDF/JSON environment report |
-| `autodev skills` | Show personalized learning roadmap |
-| `autodev install <tool>` | Install a specific runtime or tool |
-| `autodev update` | Update all managed runtimes |
-| `autodev clean` | Remove cached downloads and temp files |
-| `autodev export` | Export environment config as reproducible JSON |
+| Command                  | Description                                                          |
+| ------------------------ | -------------------------------------------------------------------- |
+| `autodev scan`           | Scan current repo for languages, frameworks, package managers        |
+| `autodev setup`          | Install all missing runtimes and dependencies                        |
+| `autodev audit`          | Audit repository dependencies for security vulnerabilities (OSV.dev) |
+| `autodev github <USER>`  | Scan all public repos of a GitHub user                               |
+| `autodev doctor`         | Check environment health                                             |
+| `autodev report`         | Generate HTML/PDF/JSON environment report                            |
+| `autodev skills`         | Show personalized learning roadmap                                   |
+| `autodev install <tool>` | Install a specific runtime or tool                                   |
+| `autodev update`         | Update all managed runtimes                                          |
+| `autodev clean`          | Remove cached downloads and temp files                               |
+| `autodev export`         | Export environment config as reproducible JSON                       |
 
 ---
 
@@ -87,13 +86,13 @@ autodev setup
 
 How does AutoDev compare to existing developer tools? Here is the matrix:
 
-| Feature | AutoDev ⚡ | Dev Containers | Nix / Devenv | Homebrew / ASDF |
-|:---|:---:|:---:|:---:|:---:|
-| **Zero-Config Setup** | **Yes (Automatic)** | No (Requires JSON/Docker) | No (Requires Nix expressions) | No (Manual installs) |
-| **Monorepo Polyglot Scan** | **Yes** | No | No | No |
-| **Git-History Skill Intelligence** | **Yes** | No | No | No |
-| **Interactive Terminal TUI** | **Yes** | No | No | No |
-| **Lightweight (No VM/Docker needed)**| **Yes** | No (Requires Docker) | Yes | Yes |
+| Feature                               |     AutoDev ⚡      |      Dev Containers       |         Nix / Devenv          |   Homebrew / ASDF    |
+| :------------------------------------ | :-----------------: | :-----------------------: | :---------------------------: | :------------------: |
+| **Zero-Config Setup**                 | **Yes (Automatic)** | No (Requires JSON/Docker) | No (Requires Nix expressions) | No (Manual installs) |
+| **Monorepo Polyglot Scan**            |       **Yes**       |            No             |              No               |          No          |
+| **Git-History Skill Intelligence**    |       **Yes**       |            No             |              No               |          No          |
+| **Interactive Terminal TUI**          |       **Yes**       |            No             |              No               |          No          |
+| **Lightweight (No VM/Docker needed)** |       **Yes**       |   No (Requires Docker)    |              Yes              |         Yes          |
 
 ---
 
@@ -102,16 +101,20 @@ How does AutoDev compare to existing developer tools? Here is the matrix:
 AutoDev serves as the local environment automation and telemetry layer for developers and modern **AI agents / Coding Assistants** (like Cursor, Claude Desktop, Windsurf, Cline, and Copilot).
 
 ### ⚡ Automatic AI Rule Files & 99.8% Context Saving
+
 Whenever any AutoDev command is run in a project workspace, AutoDev automatically creates/updates standard AI rules files:
-*   [`.autodev-skills.md`](.autodev-skills.md) (Unified skills matrix, CLI cheatsheet, and environment telemetry)
-*   [`.cursorrules`](.cursorrules) (Cursor AI agent rules)
-*   [`.clinerules`](.clinerules) (Cline/Roo-Cline rules)
-*   [`.github/copilot-instructions.md`](.github/copilot-instructions.md) (GitHub Copilot instructions)
+
+- [`.autodev-skills.md`](.autodev-skills.md) (Unified skills matrix, CLI cheatsheet, and environment telemetry)
+- [`.cursorrules`](.cursorrules) (Cursor AI agent rules)
+- [`.clinerules`](.clinerules) (Cline/Roo-Cline rules)
+- [`.github/copilot-instructions.md`](.github/copilot-instructions.md) (GitHub Copilot instructions)
 
 These rules instruct AI Agents to use AutoDev's telemetry instead of parsing directory structures or lockfiles recursively. This reduces context payloads from **200,000+ tokens to ~350 tokens (a 99.8% token context saving)** per roundtrip.
 
 ### Programmatic Usage
+
 AI agents can invoke `autodev` or call its MCP tools to discover, verify, or install dependencies:
+
 - **Environment Discovery:** Run `autodev scan` or call the `autodev_scan` tool to detect languages, frameworks, package managers, and databases.
 - **Environment Bootstrapping:** Run `autodev setup --yes` or call the `autodev_install` tool to automatically and hermetically install missing tools.
 - **Diagnostics Check:** Run `autodev doctor` or call the `autodev_doctor` tool to verify compiler path health, gitignore setups, and local configurations.
@@ -125,14 +128,14 @@ AI agents can invoke `autodev` or call its MCP tools to discover, verify, or ins
 graph TD
     A[v0.1.0 Foundation] --> B[v0.2.0 Ecosystem]
     B --> C[v0.3.0 Intelligence]
-    
-    subgraph v0.2.0 Features
+
+    subgraph v0_2_0 ["v0.2.0 Features"]
     B1[Homebrew / Scoop / Chocolatey Taps]
     B2[skills.sh Sync API]
     B3[Docker/Kubernetes Manifest Detection]
     end
-    
-    subgraph v0.3.0 Features
+
+    subgraph v0_3_0 ["v0.3.0 Features"]
     C1[VS Code Extension]
     C2[Plugin SDK for custom detectors]
     C3[AutoDev Doctor --fix auto-remediation]

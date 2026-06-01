@@ -181,8 +181,13 @@ packages/cli/bin/
 						return false, err
 					}
 					defer f.Close()
-					_, err = f.WriteString("\n# Added by AutoDev Doctor\n" + strings.Join(toAppend, "\n") + "\n")
-					return err == nil, err
+					if _, err = f.WriteString("\n# Added by AutoDev Doctor\n" + strings.Join(toAppend, "\n") + "\n"); err != nil {
+						return false, err
+					}
+					if err := f.Close(); err != nil {
+						return false, err
+					}
+					return true, nil
 				}
 				return true, nil
 			},

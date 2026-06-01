@@ -101,3 +101,6 @@ go.work.sum
 /homebrew-tap/
 /scoop-bucket/
 /token-save.txt
+
+# Antigravity CLI config
+.antigravitycli/

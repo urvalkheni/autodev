@@ -15,7 +15,8 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: "Documentation — AutoDev",
-    description: "Learn how to use AutoDev to bootstrap your developer workspaces.",
+    description:
+      "Learn how to use AutoDev to bootstrap your developer workspaces.",
     url: "https://github.com/HEETMEHTA18/autodev/tree/main/apps/website",
     type: "article",
   },

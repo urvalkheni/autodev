@@ -34,7 +34,8 @@ function checkScannerCooldown(): { waitSecs: number | null; now: number } {
   }
   const lastScan = localStorage.getItem("autodev_last_scan_time");
   const now = Date.now();
-  if (lastScan && now - parseInt(lastScan, 10) < 10000) { // 10 second cooldown
+  if (lastScan && now - parseInt(lastScan, 10) < 10000) {
+    // 10 second cooldown
     const waitSecs = Math.ceil((10000 - (now - parseInt(lastScan, 10))) / 1000);
     return { waitSecs, now };
   }
@@ -53,7 +54,7 @@ export default function GithubScanner() {
     `  Detecting languages and frameworks...`,
     `  Recommended Environment compiled.`,
     `  Install all required tools? [Y/n] y`,
-    `✓ Environment ready!`
+    `✓ Environment ready!`,
   ]);
 
   const handleScanSubmit = async (e: FormEvent) => {
@@ -66,12 +67,13 @@ export default function GithubScanner() {
     setScanResult(null);
     setTerminalLines([
       `🐙 GitHub Scanner — @${targetUser}`,
-      `  Initializing security check...`
+      `  Initializing security check...`,
     ]);
 
     try {
       // 1. Sanitize GitHub username (GitHub username rules: alphanumeric and single hyphens, 1-39 chars)
-      const githubUsernameRegex = /^[a-zA-Z0-9](?:[a-zA-Z0-9]|-(?=[a-zA-Z0-9])){0,38}$/;
+      const githubUsernameRegex =
+        /^[a-zA-Z0-9](?:[a-zA-Z0-9]|-(?=[a-zA-Z0-9])){0,38}$/;
       if (!githubUsernameRegex.test(targetUser)) {
         throw new Error("Invalid GitHub username format.");
       }
@@ -79,21 +81,23 @@ export default function GithubScanner() {
       // 2. Cooldown check (prevent bot spamming / API abuse)
       const { waitSecs, now } = checkScannerCooldown();
       if (waitSecs !== null) {
-        throw new Error(`Rate limit: Please wait ${waitSecs}s before scanning again.`);
+        throw new Error(
+          `Rate limit: Please wait ${waitSecs}s before scanning again.`,
+        );
       }
       if (typeof window !== "undefined") {
         localStorage.setItem("autodev_last_scan_time", now.toString());
       }
 
       await delay(200);
-      setTerminalLines(prev => [...prev, `  Connecting to GitHub API...`]);
+      setTerminalLines((prev) => [...prev, `  Connecting to GitHub API...`]);
       await delay(300);
 
       // 3. Fetch repositories (1st page, up to 100 repositories to optimize rate limits and speed)
       const res = await fetch(
-        `https://api.github.com/users/${encodeURIComponent(targetUser)}/repos?per_page=100&type=public`
+        `https://api.github.com/users/${encodeURIComponent(targetUser)}/repos?per_page=100&type=public`,
       );
-      
+
       if (!res.ok) {
         if (res.status === 404) {
           throw new Error("GitHub user not found");
@@ -103,14 +107,17 @@ export default function GithubScanner() {
         }
         throw new Error(`GitHub API error: ${res.statusText}`);
       }
-      
+
       const repos = await res.json();
-      
+
       // Simulate terminal progress steps for better immersion
       await delay(400);
-      setTerminalLines(prev => [...prev, `  Fetching public repositories...`]);
+      setTerminalLines((prev) => [
+        ...prev,
+        `  Fetching public repositories...`,
+      ]);
       await delay(400);
-      
+
       const allRepos = repos as GithubRepo[];
       if (allRepos.length === 0) {
         throw new Error("No public repositories found for this user.");
@@ -128,9 +135,15 @@ export default function GithubScanner() {
         }
       });
 
-      setTerminalLines(prev => [...prev, `  Found ${totalRepos} repositories (excluding forks).`]);
+      setTerminalLines((prev) => [
+        ...prev,
+        `  Found ${totalRepos} repositories (excluding forks).`,
+      ]);
       await delay(450);
-      setTerminalLines(prev => [...prev, `  Detecting languages and frameworks...`]);
+      setTerminalLines((prev) => [
+        ...prev,
+        `  Detecting languages and frameworks...`,
+      ]);
 
       // Detect frameworks/runtimes
       const detectedSet = new Set<string>();
@@ -140,23 +153,23 @@ export default function GithubScanner() {
       const envMap: { [key: string]: string } = {
         JavaScript: "Node.js 22",
         TypeScript: "Node.js 22 + TypeScript",
-        Python:     "Python 3.12 + pip",
-        Go:         "Go 1.22",
-        Rust:       "Rust (rustup)",
-        Java:       "OpenJDK 21 + Maven/Gradle",
-        Kotlin:     "Kotlin + OpenJDK 21",
-        PHP:        "PHP 8.3 + Composer",
-        Ruby:       "Ruby 3.3 + Bundler",
-        Dart:       "Flutter SDK + Dart",
-        Swift:      "Xcode + Swift Toolchain",
-        "C#":       ".NET 8 SDK",
-        "C++":      "GCC / Clang + CMake",
-        Shell:      "Bash / Zsh",
-        HTML:       "Web Browser",
-        CSS:        "Web Browser",
+        Python: "Python 3.12 + pip",
+        Go: "Go 1.22",
+        Rust: "Rust (rustup)",
+        Java: "OpenJDK 21 + Maven/Gradle",
+        Kotlin: "Kotlin + OpenJDK 21",
+        PHP: "PHP 8.3 + Composer",
+        Ruby: "Ruby 3.3 + Bundler",
+        Dart: "Flutter SDK + Dart",
+        Swift: "Xcode + Swift Toolchain",
+        "C#": ".NET 8 SDK",
+        "C++": "GCC / Clang + CMake",
+        Shell: "Bash / Zsh",
+        HTML: "Web Browser",
+        CSS: "Web Browser",
       };
 
-      Object.keys(languages).forEach(lang => {
+      Object.keys(languages).forEach((lang) => {
         detectedSet.add(lang);
         if (envMap[lang]) {
           recommendedSet.add(envMap[lang]);
@@ -186,8 +199,12 @@ export default function GithubScanner() {
         const name = repo.name.toLowerCase();
         const topics = (repo.topics || []).map((t: string) => t.toLowerCase());
 
-        Object.keys(frameworksMap).forEach(key => {
-          if (topics.includes(key) || name.includes(key) || desc.includes(key)) {
+        Object.keys(frameworksMap).forEach((key) => {
+          if (
+            topics.includes(key) ||
+            name.includes(key) ||
+            desc.includes(key)
+          ) {
             const [frameworkName, runtimeName] = frameworksMap[key];
             detectedSet.add(frameworkName);
             recommendedSet.add(runtimeName);
@@ -199,16 +216,16 @@ export default function GithubScanner() {
       const gaps: { [key: string]: string[] } = {
         JavaScript: ["TypeScript", "Docker", "CI/CD"],
         TypeScript: ["Docker", "Kubernetes", "Go"],
-        Python:     ["Docker", "FastAPI", "Celery"],
-        Go:         ["Kubernetes", "gRPC", "Terraform"],
-        Java:       ["Spring Boot", "Docker", "Kubernetes"],
-        Rust:       ["WebAssembly", "async-std", "tokio"],
+        Python: ["Docker", "FastAPI", "Celery"],
+        Go: ["Kubernetes", "gRPC", "Terraform"],
+        Java: ["Spring Boot", "Docker", "Kubernetes"],
+        Rust: ["WebAssembly", "async-std", "tokio"],
       };
 
       const skillsSet = new Set<string>();
-      Object.keys(languages).forEach(lang => {
+      Object.keys(languages).forEach((lang) => {
         if (gaps[lang]) {
-          gaps[lang].forEach(s => {
+          gaps[lang].forEach((s) => {
             if (!detectedSet.has(s)) {
               skillsSet.add(s);
             }
@@ -236,28 +253,36 @@ export default function GithubScanner() {
       };
 
       await delay(450);
-      setTerminalLines(prev => [...prev, `  Recommended Environment compiled.`]);
+      setTerminalLines((prev) => [
+        ...prev,
+        `  Recommended Environment compiled.`,
+      ]);
       await delay(400);
-      setTerminalLines(prev => [...prev, `  Install all required tools? [Y/n] y`]);
+      setTerminalLines((prev) => [
+        ...prev,
+        `  Install all required tools? [Y/n] y`,
+      ]);
       await delay(300);
-      setTerminalLines(prev => [...prev, `✓ Environment ready!`]);
-      
+      setTerminalLines((prev) => [...prev, `✓ Environment ready!`]);
+
       setScanResult(result);
     } catch (err: unknown) {
       console.error(err);
-      const errMsg = err instanceof Error ? err.message : "Something went wrong";
+      const errMsg =
+        err instanceof Error ? err.message : "Something went wrong";
       setError(errMsg);
-      setTerminalLines(prev => [
+      setTerminalLines((prev) => [
         ...prev,
         `❌ Error: ${errMsg}`,
-        `Please try again later.`
+        `Please try again later.`,
       ]);
     } finally {
       setLoading(false);
     }
   };
 
-  const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+  const delay = (ms: number) =>
+    new Promise((resolve) => setTimeout(resolve, ms));
 
   // Determine which data to render
   const data = scanResult || defaultData;
@@ -266,12 +291,15 @@ export default function GithubScanner() {
   return (
     <section id="github-scanner" className="py-24 px-6 max-w-7xl mx-auto">
       <div className="mb-16">
-        <span className="text-xs text-[#FFD700] font-bold uppercase tracking-widest font-mono">GitHub Scanner</span>
+        <span className="text-xs text-[#FFD700] font-bold uppercase tracking-widest font-mono">
+          GitHub Scanner
+        </span>
         <h2 className="text-5xl font-black text-white mt-2 mb-4 font-mono">
           SCAN ANY GITHUB USER
         </h2>
         <p className="text-[#888] max-w-xl font-mono text-sm">
-          AutoDev reads all public repos, detects languages, and generates a setup plan.
+          AutoDev reads all public repos, detects languages, and generates a
+          setup plan.
         </p>
       </div>
 
@@ -299,12 +327,17 @@ export default function GithubScanner() {
             </button>
           </form>
           <p className="text-xs text-[#555] font-mono">
-            Or run: <span className="text-[#FFD700]">autodev github {username || "USERNAME"}</span>
+            Or run:{" "}
+            <span className="text-[#FFD700]">
+              autodev github {username || "USERNAME"}
+            </span>
           </p>
 
           {/* Language bars */}
           <div className="mt-8 border-2 border-[#2A2A2A] p-5">
-            <h4 className="font-bold text-white mb-4 text-sm uppercase tracking-wider font-mono">Languages Detected</h4>
+            <h4 className="font-bold text-white mb-4 text-sm uppercase tracking-wider font-mono">
+              Languages Detected
+            </h4>
             {showStats && Object.keys(data.languages).length > 0 ? (
               Object.entries(data.languages)
                 .sort((a, b) => b[1] - a[1])
@@ -373,10 +406,15 @@ export default function GithubScanner() {
             {showStats && !error && (
               <div className="mt-4 pt-4 border-t border-[#1F1F1F] space-y-3">
                 <div>
-                  <div className="text-[#4A90E2] text-xs uppercase tracking-wider mb-1 font-bold">Technologies Detected:</div>
+                  <div className="text-[#4A90E2] text-xs uppercase tracking-wider mb-1 font-bold">
+                    Technologies Detected:
+                  </div>
                   <div className="flex flex-wrap gap-1.5 pl-1">
                     {data.detected.map((t) => (
-                      <span key={t} className="text-xs bg-[#111] border border-[#2A2A2A] px-2 py-0.5 text-[#00FF87]">
+                      <span
+                        key={t}
+                        className="text-xs bg-[#111] border border-[#2A2A2A] px-2 py-0.5 text-[#00FF87]"
+                      >
                         • {t}
                       </span>
                     ))}
@@ -384,10 +422,15 @@ export default function GithubScanner() {
                 </div>
 
                 <div>
-                  <div className="text-[#4A90E2] text-xs uppercase tracking-wider mb-1 font-bold">Recommended Tools:</div>
+                  <div className="text-[#4A90E2] text-xs uppercase tracking-wider mb-1 font-bold">
+                    Recommended Tools:
+                  </div>
                   <div className="flex flex-wrap gap-1.5 pl-1">
                     {data.recommended.map((r) => (
-                      <span key={r} className="text-xs bg-[#111] border border-[#2A2A2A] px-2 py-0.5 text-[#FFD700]">
+                      <span
+                        key={r}
+                        className="text-xs bg-[#111] border border-[#2A2A2A] px-2 py-0.5 text-[#FFD700]"
+                      >
                         → {r}
                       </span>
                     ))}
@@ -395,10 +438,15 @@ export default function GithubScanner() {
                 </div>
 
                 <div>
-                  <div className="text-[#4A90E2] text-xs uppercase tracking-wider mb-1 font-bold">Suggested Skills:</div>
+                  <div className="text-[#4A90E2] text-xs uppercase tracking-wider mb-1 font-bold">
+                    Suggested Skills:
+                  </div>
                   <div className="flex flex-wrap gap-1.5 pl-1">
                     {data.skills.map((s) => (
-                      <span key={s} className="text-xs bg-[#111] border border-[#2A2A2A] px-2 py-0.5 text-[#888]">
+                      <span
+                        key={s}
+                        className="text-xs bg-[#111] border border-[#2A2A2A] px-2 py-0.5 text-[#888]"
+                      >
                         ↗ {s}
                       </span>
                     ))}

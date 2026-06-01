@@ -1,13 +1,36 @@
 "use client";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Copy, Check, Sparkles, Terminal as TermIcon, Download } from "lucide-react";
+import {
+  X,
+  Copy,
+  Check,
+  Sparkles,
+  Terminal as TermIcon,
+  Download,
+} from "lucide-react";
 
 const updateMethods = [
-  { label: "CLI Command", cmd: "autodev update", desc: "AutoDev's built-in self-updater" },
-  { label: "NPM (Global)", cmd: "npm update -g @heetmehta18/autodev", desc: "Upgrade the global NPM wrapper" },
-  { label: "Homebrew", cmd: "brew upgrade autodev", desc: "Update via macOS/Linux brew tap" },
-  { label: "Scoop", cmd: "scoop update autodev", desc: "Upgrade on Windows via Scoop bucket" },
+  {
+    label: "CLI Command",
+    cmd: "autodev update",
+    desc: "AutoDev's built-in self-updater",
+  },
+  {
+    label: "NPM (Global)",
+    cmd: "npm update -g @heetmehta18/autodev",
+    desc: "Upgrade the global NPM wrapper",
+  },
+  {
+    label: "Homebrew",
+    cmd: "brew upgrade autodev",
+    desc: "Update via macOS/Linux brew tap",
+  },
+  {
+    label: "Scoop",
+    cmd: "scoop update autodev",
+    desc: "Upgrade on Windows via Scoop bucket",
+  },
 ];
 
 export default function UpdatePopup() {
@@ -32,7 +55,8 @@ export default function UpdatePopup() {
       setIsOpen(true);
     };
     window.addEventListener("autodev_open_update_modal", handleOpen);
-    return () => window.removeEventListener("autodev_open_update_modal", handleOpen);
+    return () =>
+      window.removeEventListener("autodev_open_update_modal", handleOpen);
   }, []);
 
   const handleDismiss = () => {
@@ -58,7 +82,6 @@ export default function UpdatePopup() {
         >
           {/* Card Border wrapper (Neo-brutalist) */}
           <div className="bg-black border-4 border-[#FFD700] text-white shadow-[8px_8px_0px_0px_#111] p-5 relative">
-            
             {/* Close Button */}
             <button
               onClick={handleDismiss}
@@ -73,7 +96,9 @@ export default function UpdatePopup() {
               <span className="bg-[#FFD700] text-black text-[10px] font-black px-2 py-0.5 tracking-wider uppercase animate-pulse">
                 New Release
               </span>
-              <span className="text-neutral-400 text-xs font-mono font-bold">v0.2.0 is live!</span>
+              <span className="text-neutral-400 text-xs font-mono font-bold">
+                v0.2.0 is live!
+              </span>
             </div>
 
             <h3 className="text-xl font-black tracking-tight text-white mb-2 flex items-center gap-1.5">
@@ -82,7 +107,9 @@ export default function UpdatePopup() {
             </h3>
 
             <p className="text-neutral-400 text-xs leading-relaxed mb-4">
-              Get native Claude/Cursor MCP integration, Docker &amp; Kubernetes auto-toolchains, Android/Flutter SDK setups, and OSV dependency auditing.
+              Get native Claude/Cursor MCP integration, Docker &amp; Kubernetes
+              auto-toolchains, Android/Flutter SDK setups, and OSV dependency
+              auditing.
             </p>
 
             {/* Selector Tabs */}
@@ -153,7 +180,6 @@ export default function UpdatePopup() {
                 Maybe Later
               </button>
             </div>
-            
           </div>
         </motion.div>
       )}

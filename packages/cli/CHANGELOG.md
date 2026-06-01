@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+
 - Initial monorepo structure with Go workspace and PNPM workspaces
 - CLI scaffold with Cobra commands: scan, setup, github, doctor, report, install, update, clean, skills, export
 - Repository scanner for 30+ languages and frameworks
@@ -26,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.1.0] - 2026-05-29
 
 ### Added
+
 - Initial release 🎉
 - Core CLI with `autodev scan` and `autodev setup`
 - Support for Node.js, Python, Go, Rust, Java, Docker detection

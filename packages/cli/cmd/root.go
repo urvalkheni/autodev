@@ -23,7 +23,7 @@ var (
 // rootCmd — running `autodev` with no args opens the interactive TUI.
 var rootCmd = &cobra.Command{
 	Use:     "autodev",
-	Short:   "Clone. Scan. Install. Build. — The App Store for Developers",
+	Short:   "Set up any development environment in one command.",
 	Version: "0.2.0",
 	Long: `
   █████╗ ██╗   ██╗████████╗ ██████╗ ██████╗ ███████╗██╗   ██╗

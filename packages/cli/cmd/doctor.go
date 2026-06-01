@@ -142,9 +142,9 @@ func getCodebaseDiagnostics() []codebaseDiagnostic {
 				}
 				return true, "", nil
 			},
-			fixFn: func(path string) (bool, error) {
+			fixFn: func(path string) (success bool, err error) {
 				gitIgnorePath := filepath.Join(path, ".gitignore")
-				if _, err := os.Stat(gitIgnorePath); os.IsNotExist(err) {
+				if _, statErr := os.Stat(gitIgnorePath); os.IsNotExist(statErr) {
 					defaultGitignore := `# Standard AutoDev Gitignore
 node_modules/
 dist/
@@ -157,14 +157,14 @@ build/
 *.log
 packages/cli/bin/
 `
-					err := os.WriteFile(gitIgnorePath, []byte(defaultGitignore), 0644)
-					return err == nil, err
+					writeErr := os.WriteFile(gitIgnorePath, []byte(defaultGitignore), 0644)
+					return writeErr == nil, writeErr
 				}
 
 				// Append to existing
-				data, err := os.ReadFile(gitIgnorePath)
-				if err != nil {
-					return false, err
+				data, readErr := os.ReadFile(gitIgnorePath)
+				if readErr != nil {
+					return false, readErr
 				}
 				content := string(data)
 				var toAppend []string
@@ -176,18 +176,18 @@ packages/cli/bin/
 				}
 
 				if len(toAppend) > 0 {
-					f, err := os.OpenFile(gitIgnorePath, os.O_APPEND|os.O_WRONLY, 0644)
-					if err != nil {
-						return false, err
+					f, openErr := os.OpenFile(gitIgnorePath, os.O_APPEND|os.O_WRONLY, 0644)
+					if openErr != nil {
+						return false, openErr
 					}
-					defer f.Close()
-					if _, err = f.WriteString("\n# Added by AutoDev Doctor\n" + strings.Join(toAppend, "\n") + "\n"); err != nil {
-						return false, err
+					defer func() {
+						if closeErr := f.Close(); closeErr != nil && err == nil {
+							err = closeErr
+						}
+					}()
+					if _, writeErr := f.WriteString("\n# Added by AutoDev Doctor\n" + strings.Join(toAppend, "\n") + "\n"); writeErr != nil {
+						return false, writeErr
 					}
-					if err := f.Close(); err != nil {
-						return false, err
-					}
-					return true, nil
 				}
 				return true, nil
 			},

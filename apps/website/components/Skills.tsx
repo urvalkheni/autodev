@@ -24,66 +24,253 @@ const scanLines = [
   { text: "$ autodev skills --deep --ai", color: "#00FF87", delay: 0 },
   { text: "", color: "#888", delay: 200 },
   { text: "  ⚡ AutoDev Skills Engine v0.2.0", color: "#FFD700", delay: 400 },
-  { text: "  Powered by skills.sh — https://skills.sh", color: "#888", delay: 600 },
+  {
+    text: "  Powered by skills.sh — https://skills.sh",
+    color: "#888",
+    delay: 600,
+  },
   { text: "", color: "#888", delay: 800 },
-  { text: "  [scan] Indexing git log (2,847 commits across 14 repos)...", color: "#4A90E2", delay: 1000 },
-  { text: "  [scan] Parsing package.json, go.mod, Cargo.toml, requirements.txt...", color: "#4A90E2", delay: 1400 },
-  { text: "  [scan] Analyzing Dockerfile, docker-compose.yml, .github/workflows...", color: "#4A90E2", delay: 1800 },
-  { text: "  [scan] Resolving framework patterns: Next.js, FastAPI, Spring Boot...", color: "#4A90E2", delay: 2200 },
-  { text: "  [scan] Computing skill confidence from code frequency + recency...", color: "#4A90E2", delay: 2600 },
+  {
+    text: "  [scan] Indexing git log (2,847 commits across 14 repos)...",
+    color: "#4A90E2",
+    delay: 1000,
+  },
+  {
+    text: "  [scan] Parsing package.json, go.mod, Cargo.toml, requirements.txt...",
+    color: "#4A90E2",
+    delay: 1400,
+  },
+  {
+    text: "  [scan] Analyzing Dockerfile, docker-compose.yml, .github/workflows...",
+    color: "#4A90E2",
+    delay: 1800,
+  },
+  {
+    text: "  [scan] Resolving framework patterns: Next.js, FastAPI, Spring Boot...",
+    color: "#4A90E2",
+    delay: 2200,
+  },
+  {
+    text: "  [scan] Computing skill confidence from code frequency + recency...",
+    color: "#4A90E2",
+    delay: 2600,
+  },
   { text: "", color: "#888", delay: 3000 },
-  { text: "  ✓ Skill matrix generated: 12 technologies across 6 categories", color: "#00FF87", delay: 3200 },
-  { text: "  ✓ Personalized roadmap: 4 upgrade paths identified", color: "#00FF87", delay: 3400 },
+  {
+    text: "  ✓ Skill matrix generated: 12 technologies across 6 categories",
+    color: "#00FF87",
+    delay: 3200,
+  },
+  {
+    text: "  ✓ Personalized roadmap: 4 upgrade paths identified",
+    color: "#00FF87",
+    delay: 3400,
+  },
   { text: "  ✓ Synced to skills.sh profile", color: "#00FF87", delay: 3600 },
   { text: "", color: "#888", delay: 3800 },
-  { text: "  CURRENT SKILLS (from repo analysis):", color: "#FFD700", delay: 4000 },
-  { text: "  ┌─────────────────────┬───────────┬────────────┬─────────┐", color: "#333", delay: 4200 },
-  { text: "  │ Technology          │ Level     │ Confidence │ Files   │", color: "#888", delay: 4300 },
-  { text: "  ├─────────────────────┼───────────┼────────────┼─────────┤", color: "#333", delay: 4400 },
-  { text: "  │ 🐍 Python           │ Expert    │ 94%        │ 247     │", color: "#00FF87", delay: 4500 },
-  { text: "  │ ⚛️  React/TypeScript │ Expert    │ 91%        │ 189     │", color: "#00FF87", delay: 4600 },
-  { text: "  │ 🟢 Node.js          │ Proficient│ 82%        │ 134     │", color: "#4A90E2", delay: 4700 },
-  { text: "  │ 🐳 Docker           │ Proficient│ 76%        │ 28      │", color: "#4A90E2", delay: 4800 },
-  { text: "  │ 🐘 PostgreSQL       │ Detected  │ 58%        │ 12      │", color: "#FFD700", delay: 4900 },
-  { text: "  │ 🔵 Go               │ Detected  │ 45%        │ 8       │", color: "#FFD700", delay: 5000 },
-  { text: "  └─────────────────────┴───────────┴────────────┴─────────┘", color: "#333", delay: 5100 },
+  {
+    text: "  CURRENT SKILLS (from repo analysis):",
+    color: "#FFD700",
+    delay: 4000,
+  },
+  {
+    text: "  ┌─────────────────────┬───────────┬────────────┬─────────┐",
+    color: "#333",
+    delay: 4200,
+  },
+  {
+    text: "  │ Technology          │ Level     │ Confidence │ Files   │",
+    color: "#888",
+    delay: 4300,
+  },
+  {
+    text: "  ├─────────────────────┼───────────┼────────────┼─────────┤",
+    color: "#333",
+    delay: 4400,
+  },
+  {
+    text: "  │ 🐍 Python           │ Expert    │ 94%        │ 247     │",
+    color: "#00FF87",
+    delay: 4500,
+  },
+  {
+    text: "  │ ⚛️  React/TypeScript │ Expert    │ 91%        │ 189     │",
+    color: "#00FF87",
+    delay: 4600,
+  },
+  {
+    text: "  │ 🟢 Node.js          │ Proficient│ 82%        │ 134     │",
+    color: "#4A90E2",
+    delay: 4700,
+  },
+  {
+    text: "  │ 🐳 Docker           │ Proficient│ 76%        │ 28      │",
+    color: "#4A90E2",
+    delay: 4800,
+  },
+  {
+    text: "  │ 🐘 PostgreSQL       │ Detected  │ 58%        │ 12      │",
+    color: "#FFD700",
+    delay: 4900,
+  },
+  {
+    text: "  │ 🔵 Go               │ Detected  │ 45%        │ 8       │",
+    color: "#FFD700",
+    delay: 5000,
+  },
+  {
+    text: "  └─────────────────────┴───────────┴────────────┴─────────┘",
+    color: "#333",
+    delay: 5100,
+  },
   { text: "", color: "#888", delay: 5200 },
   { text: "  RECOMMENDED NEXT STEPS:", color: "#FFD700", delay: 5400 },
-  { text: "  → Learn Kubernetes (complements your Docker proficiency)", color: "#F0F0F0", delay: 5600 },
-  { text: "  → Deepen PostgreSQL (upgrade from Detected → Proficient)", color: "#F0F0F0", delay: 5800 },
-  { text: "  → Explore Terraform (natural DevOps progression)", color: "#F0F0F0", delay: 6000 },
-  { text: "  → Invest in Go (build on existing foundations)", color: "#F0F0F0", delay: 6200 },
+  {
+    text: "  → Learn Kubernetes (complements your Docker proficiency)",
+    color: "#F0F0F0",
+    delay: 5600,
+  },
+  {
+    text: "  → Deepen PostgreSQL (upgrade from Detected → Proficient)",
+    color: "#F0F0F0",
+    delay: 5800,
+  },
+  {
+    text: "  → Explore Terraform (natural DevOps progression)",
+    color: "#F0F0F0",
+    delay: 6000,
+  },
+  {
+    text: "  → Invest in Go (build on existing foundations)",
+    color: "#F0F0F0",
+    delay: 6200,
+  },
   { text: "", color: "#888", delay: 6400 },
-  { text: "  [AI-POWERED INSIGHTS — Perplexity]", color: "#FFD700", delay: 6600 },
-  { text: "  💡 Your React+TypeScript expertise positions you for senior frontend roles", color: "#F0F0F0", delay: 6800 },
-  { text: "  💡 Docker → Kubernetes is the highest-ROI upgrade for your stack", color: "#F0F0F0", delay: 7000 },
-  { text: "  💡 Full-stack Go+React profiles are in top 5% demand on job markets", color: "#F0F0F0", delay: 7200 },
-  { text: "  💡 Consider adding CI/CD — it unlocks DevOps career trajectories", color: "#F0F0F0", delay: 7400 },
+  {
+    text: "  [AI-POWERED INSIGHTS — Perplexity]",
+    color: "#FFD700",
+    delay: 6600,
+  },
+  {
+    text: "  💡 Your React+TypeScript expertise positions you for senior frontend roles",
+    color: "#F0F0F0",
+    delay: 6800,
+  },
+  {
+    text: "  💡 Docker → Kubernetes is the highest-ROI upgrade for your stack",
+    color: "#F0F0F0",
+    delay: 7000,
+  },
+  {
+    text: "  💡 Full-stack Go+React profiles are in top 5% demand on job markets",
+    color: "#F0F0F0",
+    delay: 7200,
+  },
+  {
+    text: "  💡 Consider adding CI/CD — it unlocks DevOps career trajectories",
+    color: "#F0F0F0",
+    delay: 7400,
+  },
   { text: "", color: "#888", delay: 7600 },
-  { text: "  Run 'autodev skills --export md' to save as Markdown.", color: "#888", delay: 7800 },
+  {
+    text: "  Run 'autodev skills --export md' to save as Markdown.",
+    color: "#888",
+    delay: 7800,
+  },
 ];
 
 const detectedSkills: SkillDetection[] = [
-  { name: "Python", icon: "🐍", level: "Expert", confidence: 94, files: 247, commits: 1420 },
-  { name: "React / TypeScript", icon: "⚛️", level: "Expert", confidence: 91, files: 189, commits: 1180 },
-  { name: "Node.js", icon: "🟢", level: "Proficient", confidence: 82, files: 134, commits: 640 },
-  { name: "Docker", icon: "🐳", level: "Proficient", confidence: 76, files: 28, commits: 210 },
-  { name: "PostgreSQL", icon: "🐘", level: "Detected", confidence: 58, files: 12, commits: 85 },
-  { name: "Go", icon: "🔵", level: "Detected", confidence: 45, files: 8, commits: 42 },
+  {
+    name: "Python",
+    icon: "🐍",
+    level: "Expert",
+    confidence: 94,
+    files: 247,
+    commits: 1420,
+  },
+  {
+    name: "React / TypeScript",
+    icon: "⚛️",
+    level: "Expert",
+    confidence: 91,
+    files: 189,
+    commits: 1180,
+  },
+  {
+    name: "Node.js",
+    icon: "🟢",
+    level: "Proficient",
+    confidence: 82,
+    files: 134,
+    commits: 640,
+  },
+  {
+    name: "Docker",
+    icon: "🐳",
+    level: "Proficient",
+    confidence: 76,
+    files: 28,
+    commits: 210,
+  },
+  {
+    name: "PostgreSQL",
+    icon: "🐘",
+    level: "Detected",
+    confidence: 58,
+    files: 12,
+    commits: 85,
+  },
+  {
+    name: "Go",
+    icon: "🔵",
+    level: "Detected",
+    confidence: 45,
+    files: 8,
+    commits: 42,
+  },
 ];
 
 const roadmapSteps: RoadmapStep[] = [
-  { from: "Docker", to: "Kubernetes", reason: "Natural container orchestration progression", priority: "High" },
-  { from: "PostgreSQL", to: "Advanced SQL", reason: "Upgrade from Detected → Proficient", priority: "High" },
-  { from: "Node.js", to: "Terraform", reason: "DevOps pipeline automation", priority: "Medium" },
-  { from: "Go", to: "Go Microservices", reason: "Build on existing Go foundations", priority: "Low" },
+  {
+    from: "Docker",
+    to: "Kubernetes",
+    reason: "Natural container orchestration progression",
+    priority: "High",
+  },
+  {
+    from: "PostgreSQL",
+    to: "Advanced SQL",
+    reason: "Upgrade from Detected → Proficient",
+    priority: "High",
+  },
+  {
+    from: "Node.js",
+    to: "Terraform",
+    reason: "DevOps pipeline automation",
+    priority: "Medium",
+  },
+  {
+    from: "Go",
+    to: "Go Microservices",
+    reason: "Build on existing Go foundations",
+    priority: "Low",
+  },
 ];
 
 const cliCommands = [
   { cmd: "autodev skills", desc: "Scan repos and generate your skill matrix" },
-  { cmd: "autodev skills --deep", desc: "Deep analysis with git history + commit frequency" },
-  { cmd: "autodev skills --deep --ai", desc: "AI-powered insights via Perplexity API" },
-  { cmd: "autodev skills --export md", desc: "Export roadmap as Markdown / JSON / HTML" },
+  {
+    cmd: "autodev skills --deep",
+    desc: "Deep analysis with git history + commit frequency",
+  },
+  {
+    cmd: "autodev skills --deep --ai",
+    desc: "AI-powered insights via Perplexity API",
+  },
+  {
+    cmd: "autodev skills --export md",
+    desc: "Export roadmap as Markdown / JSON / HTML",
+  },
   { cmd: "autodev skills --sync", desc: "Sync profile to skills.sh" },
 ];
 
@@ -91,7 +278,9 @@ export default function Skills() {
   const [visibleLines, setVisibleLines] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [hasPlayed, setHasPlayed] = useState(false);
-  const [activeTab, setActiveTab] = useState<"terminal" | "matrix" | "roadmap">("terminal");
+  const [activeTab, setActiveTab] = useState<"terminal" | "matrix" | "roadmap">(
+    "terminal",
+  );
   const terminalRef = useRef<HTMLDivElement>(null);
   const [copiedCmd, setCopiedCmd] = useState<string | null>(null);
   const [copiedRoadmapExport, setCopiedRoadmapExport] = useState(false);
@@ -119,49 +308,73 @@ export default function Skills() {
 
   const getLevelColor = (level: string) => {
     switch (level) {
-      case "Expert": return "#00FF87";
-      case "Proficient": return "#4A90E2";
-      case "Detected": return "#FFD700";
-      default: return "#888";
+      case "Expert":
+        return "#00FF87";
+      case "Proficient":
+        return "#4A90E2";
+      case "Detected":
+        return "#FFD700";
+      default:
+        return "#888";
     }
   };
 
   const getPriorityBadge = (p: string) => {
     switch (p) {
-      case "High": return "border-[#FF4444] text-[#FF4444]";
-      case "Medium": return "border-[#FFD700] text-[#FFD700]";
-      case "Low": return "border-[#4A90E2] text-[#4A90E2]";
-      default: return "border-[#888] text-[#888]";
+      case "High":
+        return "border-[#FF4444] text-[#FF4444]";
+      case "Medium":
+        return "border-[#FFD700] text-[#FFD700]";
+      case "Low":
+        return "border-[#4A90E2] text-[#4A90E2]";
+      default:
+        return "border-[#888] text-[#888]";
     }
   };
 
   return (
-    <section id="skills" className="py-24 px-6 bg-[#0D0D0D] border-y-2 border-[#2A2A2A] scroll-mt-24">
+    <section
+      id="skills"
+      className="py-24 px-6 bg-[#0D0D0D] border-y-2 border-[#2A2A2A] scroll-mt-24"
+    >
       <div className="max-w-7xl mx-auto">
-
         {/* Header */}
         <div className="mb-16">
-          <span className="text-xs text-[#FFD700] font-bold uppercase tracking-widest">Skills.sh Integration</span>
+          <span className="text-xs text-[#FFD700] font-bold uppercase tracking-widest">
+            Skills.sh Integration
+          </span>
           <h2 className="text-5xl font-black text-white mt-2 mb-4">
             YOUR LEARNING ROADMAP
           </h2>
           <p className="text-[#888] max-w-2xl">
-            AutoDev scans your repositories — git history, package manifests, Dockerfiles, CI configs — and builds a{" "}
-            <strong className="text-white">confidence-scored skill matrix</strong> with personalized upgrade paths.
-            Powered by <a href="https://skills.sh" className="text-[#FFD700] underline hover:text-white transition-colors">skills.sh</a>.
+            AutoDev scans your repositories — git history, package manifests,
+            Dockerfiles, CI configs — and builds a{" "}
+            <strong className="text-white">
+              confidence-scored skill matrix
+            </strong>{" "}
+            with personalized upgrade paths. Powered by{" "}
+            <a
+              href="https://skills.sh"
+              className="text-[#FFD700] underline hover:text-white transition-colors"
+            >
+              skills.sh
+            </a>
+            .
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-8 items-start">
-
           {/* Main Panel — Tabbed Interface */}
           <div className="border-2 border-[#2A2A2A] bg-[#0A0A0A] overflow-hidden">
-            
             {/* Tab Bar */}
             <div className="border-b-2 border-[#2A2A2A] bg-[#111] flex items-center justify-between">
               <div className="flex">
                 {[
-                  { id: "terminal" as const, label: "Live Terminal Demo", icon: "▶" },
+                  {
+                    id: "terminal" as const,
+                    label: "Live Terminal Demo",
+                    icon: "▶",
+                  },
                   { id: "matrix" as const, label: "Skill Matrix", icon: "◆" },
                   { id: "roadmap" as const, label: "Upgrade Paths", icon: "→" },
                 ].map((tab) => (
@@ -169,9 +382,10 @@ export default function Skills() {
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
                     className={`px-5 py-3 text-xs font-bold uppercase tracking-wider border-b-2 transition-colors
-                      ${activeTab === tab.id
-                        ? "text-[#FFD700] border-[#FFD700] bg-[#FFD70008]"
-                        : "text-[#666] border-transparent hover:text-white"
+                      ${
+                        activeTab === tab.id
+                          ? "text-[#FFD700] border-[#FFD700] bg-[#FFD70008]"
+                          : "text-[#666] border-transparent hover:text-white"
                       }`}
                   >
                     <span className="mr-1.5">{tab.icon}</span>
@@ -179,15 +393,16 @@ export default function Skills() {
                   </button>
                 ))}
               </div>
-              
+
               {activeTab === "terminal" && (
                 <button
                   onClick={startDemo}
                   disabled={isPlaying}
                   className={`mr-4 px-4 py-1.5 text-xs font-bold border-2 uppercase tracking-wider transition-all
-                    ${isPlaying
-                      ? "border-[#888] text-[#888] cursor-not-allowed"
-                      : "border-[#FFD700] bg-[#FFD700] text-black hover:bg-transparent hover:text-[#FFD700]"
+                    ${
+                      isPlaying
+                        ? "border-[#888] text-[#888] cursor-not-allowed"
+                        : "border-[#FFD700] bg-[#FFD700] text-black hover:bg-transparent hover:text-[#FFD700]"
                     }`}
                 >
                   {isPlaying ? "Running..." : hasPlayed ? "Replay" : "Run Demo"}
@@ -197,16 +412,20 @@ export default function Skills() {
 
             {/* Tab Content */}
             <div className="min-h-[480px]">
-              
               {/* Terminal Tab */}
               {activeTab === "terminal" && (
-                <div ref={terminalRef} className="p-6 font-mono text-sm leading-6 overflow-y-auto max-h-[520px] select-text selection:bg-[#FFD700] selection:text-black">
+                <div
+                  ref={terminalRef}
+                  className="p-6 font-mono text-sm leading-6 overflow-y-auto max-h-[520px] select-text selection:bg-[#FFD700] selection:text-black"
+                >
                   {visibleLines === 0 && !isPlaying && (
                     <div className="flex flex-col items-center justify-center h-[400px] text-center gap-4">
                       <div className="text-6xl mb-2">⚡</div>
                       <p className="text-[#888] text-sm max-w-md">
-                        Click <strong className="text-[#FFD700]">Run Demo</strong> to see AutoDev&apos;s Skills Engine
-                        scan a developer&apos;s repositories and generate a live skill matrix.
+                        Click{" "}
+                        <strong className="text-[#FFD700]">Run Demo</strong> to
+                        see AutoDev&apos;s Skills Engine scan a developer&apos;s
+                        repositories and generate a live skill matrix.
                       </p>
                     </div>
                   )}
@@ -232,7 +451,8 @@ export default function Skills() {
                 <div className="p-6 space-y-4">
                   <div className="flex items-center justify-between mb-2">
                     <p className="text-xs text-[#888]">
-                      Confidence scores computed from code frequency, recency, and repository diversity.
+                      Confidence scores computed from code frequency, recency,
+                      and repository diversity.
                     </p>
                     <div className="flex gap-3 text-[10px] font-mono">
                       <span className="text-[#00FF87]">● Expert</span>
@@ -242,28 +462,48 @@ export default function Skills() {
                   </div>
 
                   {detectedSkills.map((skill) => (
-                    <div key={skill.name} className="border border-[#2A2A2A] bg-[#111] p-4 hover:border-[#444] transition-colors">
+                    <div
+                      key={skill.name}
+                      className="border border-[#2A2A2A] bg-[#111] p-4 hover:border-[#444] transition-colors"
+                    >
                       <div className="flex items-center justify-between mb-3">
                         <div className="flex items-center gap-3">
-                          <span className="text-2xl w-10 h-10 bg-black border border-[#2A2A2A] flex items-center justify-center">{skill.icon}</span>
+                          <span className="text-2xl w-10 h-10 bg-black border border-[#2A2A2A] flex items-center justify-center">
+                            {skill.icon}
+                          </span>
                           <div>
-                            <h5 className="font-bold text-white text-sm">{skill.name}</h5>
-                            <span className="text-[10px] font-mono font-bold uppercase tracking-wider" style={{ color: getLevelColor(skill.level) }}>
+                            <h5 className="font-bold text-white text-sm">
+                              {skill.name}
+                            </h5>
+                            <span
+                              className="text-[10px] font-mono font-bold uppercase tracking-wider"
+                              style={{ color: getLevelColor(skill.level) }}
+                            >
                               {skill.level}
                             </span>
                           </div>
                         </div>
                         <div className="text-right">
-                          <div className="text-lg font-black" style={{ color: getLevelColor(skill.level) }}>{skill.confidence}%</div>
-                          <div className="text-[10px] text-[#555] font-mono">{skill.files} files · {skill.commits} commits</div>
+                          <div
+                            className="text-lg font-black"
+                            style={{ color: getLevelColor(skill.level) }}
+                          >
+                            {skill.confidence}%
+                          </div>
+                          <div className="text-[10px] text-[#555] font-mono">
+                            {skill.files} files · {skill.commits} commits
+                          </div>
                         </div>
                       </div>
-                      
+
                       {/* Confidence bar */}
                       <div className="w-full bg-black border border-[#2A2A2A] h-2">
                         <div
                           className="h-full transition-all duration-700"
-                          style={{ width: `${skill.confidence}%`, backgroundColor: getLevelColor(skill.level) }}
+                          style={{
+                            width: `${skill.confidence}%`,
+                            backgroundColor: getLevelColor(skill.level),
+                          }}
                         />
                       </div>
                     </div>
@@ -275,7 +515,8 @@ export default function Skills() {
               {activeTab === "roadmap" && (
                 <div className="p-6 space-y-1">
                   <p className="text-xs text-[#888] mb-6">
-                    Upgrade paths ranked by impact. Recommendations based on your existing skill adjacencies.
+                    Upgrade paths ranked by impact. Recommendations based on
+                    your existing skill adjacencies.
                   </p>
 
                   {roadmapSteps.map((step, i) => (
@@ -288,13 +529,23 @@ export default function Skills() {
                     >
                       <div className="flex items-center gap-5 flex-1">
                         <div className="flex items-center gap-2 min-w-0">
-                          <span className="text-sm font-bold text-[#888] whitespace-nowrap">{step.from}</span>
-                          <span className="text-[#FFD700] text-lg font-bold">→</span>
-                          <span className="text-sm font-bold text-white whitespace-nowrap">{step.to}</span>
+                          <span className="text-sm font-bold text-[#888] whitespace-nowrap">
+                            {step.from}
+                          </span>
+                          <span className="text-[#FFD700] text-lg font-bold">
+                            →
+                          </span>
+                          <span className="text-sm font-bold text-white whitespace-nowrap">
+                            {step.to}
+                          </span>
                         </div>
-                        <span className="text-xs text-[#666] hidden md:block">{step.reason}</span>
+                        <span className="text-xs text-[#666] hidden md:block">
+                          {step.reason}
+                        </span>
                       </div>
-                      <span className={`text-[9px] font-mono px-2 py-0.5 border font-bold uppercase shrink-0 ${getPriorityBadge(step.priority)}`}>
+                      <span
+                        className={`text-[9px] font-mono px-2 py-0.5 border font-bold uppercase shrink-0 ${getPriorityBadge(step.priority)}`}
+                      >
                         {step.priority}
                       </span>
                     </motion.div>
@@ -310,9 +561,14 @@ export default function Skills() {
                         </div>
                         <button
                           onClick={() => {
-                            navigator.clipboard.writeText("autodev skills --export md > ~/dev-roadmap.md");
+                            navigator.clipboard.writeText(
+                              "autodev skills --export md > ~/dev-roadmap.md",
+                            );
                             setCopiedRoadmapExport(true);
-                            setTimeout(() => setCopiedRoadmapExport(false), 1800);
+                            setTimeout(
+                              () => setCopiedRoadmapExport(false),
+                              1800,
+                            );
                           }}
                           className="text-[#666] hover:text-[#FFD700] transition-colors p-1 flex items-center gap-1 rounded bg-[#1e1e1e] border border-[#2a2a2a] cursor-pointer"
                           title="Copy command"
@@ -320,19 +576,28 @@ export default function Skills() {
                           {copiedRoadmapExport ? (
                             <>
                               <Check className="w-3 h-3 text-[#00FF87]" />
-                              <span className="text-[9px] text-[#00FF87] font-mono">Copied!</span>
+                              <span className="text-[9px] text-[#00FF87] font-mono">
+                                Copied!
+                              </span>
                             </>
                           ) : (
                             <>
                               <Copy className="w-3 h-3" />
-                              <span className="text-[9px] text-[#666] font-mono">Copy</span>
+                              <span className="text-[9px] text-[#666] font-mono">
+                                Copy
+                              </span>
                             </>
                           )}
                         </button>
                       </div>
                       <div className="px-4 py-3 font-mono text-xs text-[#00FF87] bg-black">
-                        $ autodev skills --export md &gt; ~/dev-roadmap.md<br />
-                        <span className="text-[#888]">  ✓ Roadmap exported. Share it on skills.sh or add to your README.</span>
+                        $ autodev skills --export md &gt; ~/dev-roadmap.md
+                        <br />
+                        <span className="text-[#888]">
+                          {" "}
+                          ✓ Roadmap exported. Share it on skills.sh or add to
+                          your README.
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -368,20 +633,40 @@ export default function Skills() {
                         )}
                       </span>
                     </div>
-                    <p className="text-[10px] text-[#666] mt-1 pl-1">{c.desc}</p>
+                    <p className="text-[10px] text-[#666] mt-1 pl-1">
+                      {c.desc}
+                    </p>
                   </div>
                 ))}
               </div>
             </div>
 
             <div className="border-2 border-[#2A2A2A] bg-[#111] p-5">
-              <h4 className="font-bold text-white text-sm uppercase tracking-wider mb-3">How It Works</h4>
+              <h4 className="font-bold text-white text-sm uppercase tracking-wider mb-3">
+                How It Works
+              </h4>
               <div className="space-y-3 text-xs text-[#888] leading-relaxed">
                 {[
-                  { step: "1", title: "Scan", desc: "Indexes package manifests, Dockerfiles, CI configs across all local repos" },
-                  { step: "2", title: "Score", desc: "Computes confidence from code frequency, git recency, and file diversity" },
-                  { step: "3", title: "Map", desc: "Generates personalized upgrade paths based on skill adjacency graphs" },
-                  { step: "4", title: "Sync", desc: "Pushes your skill profile to skills.sh for portfolio display" },
+                  {
+                    step: "1",
+                    title: "Scan",
+                    desc: "Indexes package manifests, Dockerfiles, CI configs across all local repos",
+                  },
+                  {
+                    step: "2",
+                    title: "Score",
+                    desc: "Computes confidence from code frequency, git recency, and file diversity",
+                  },
+                  {
+                    step: "3",
+                    title: "Map",
+                    desc: "Generates personalized upgrade paths based on skill adjacency graphs",
+                  },
+                  {
+                    step: "4",
+                    title: "Sync",
+                    desc: "Pushes your skill profile to skills.sh for portfolio display",
+                  },
                 ].map((s) => (
                   <div key={s.step} className="flex gap-3">
                     <span className="w-5 h-5 bg-[#FFD700] text-black font-black text-[10px] flex items-center justify-center shrink-0">
@@ -402,7 +687,9 @@ export default function Skills() {
               rel="noopener noreferrer"
               className="block border-2 border-[#FFD700] bg-[#FFD70008] p-4 text-center hover:bg-[#FFD70015] transition-colors group"
             >
-              <div className="text-[#FFD700] font-black text-sm mb-1">skills.sh</div>
+              <div className="text-[#FFD700] font-black text-sm mb-1">
+                skills.sh
+              </div>
               <p className="text-[10px] text-[#888] group-hover:text-[#aaa] transition-colors">
                 Developer learning platform. Create your public skill profile →
               </p>

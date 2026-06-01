@@ -3,36 +3,48 @@ import { useState, useEffect, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 
 const lines = [
-  { delay: 0,    text: "$ autodev setup",                    color: "#00FF87" },
-  { delay: 600,  text: "",                                   color: "#888" },
-  { delay: 800,  text: "  ⚡ AUTODEV · Clone. Scan. Install. Build.",  color: "#FFD700" },
-  { delay: 1000, text: "",                                   color: "#888" },
-  { delay: 1100, text: "  What do you want to install?",    color: "#F0F0F0" },
-  { delay: 1300, text: "",                                   color: "#888" },
-  { delay: 1400, text: "  1. Languages",                    color: "#4A90E2" },
-  { delay: 1500, text: "  2. Frameworks",                   color: "#4A90E2" },
-  { delay: 1600, text: "  3. Databases",                    color: "#4A90E2" },
-  { delay: 1700, text: "  4. DevOps",                       color: "#4A90E2" },
-  { delay: 1800, text: "  5. Mobile Development",           color: "#4A90E2" },
-  { delay: 1900, text: "  6. AI / ML",                      color: "#4A90E2" },
-  { delay: 2000, text: "  7. Install by Profile",           color: "#FFD700" },
-  { delay: 2100, text: "",                                   color: "#888" },
-  { delay: 2300, text: "> [User selects: Languages → Python, Go, Node.js]", color: "#888" },
-  { delay: 2800, text: "",                                   color: "#888" },
-  { delay: 2900, text: "  Installing 🐍 Python...",         color: "#FFD700" },
-  { delay: 3400, text: "  ✓ Python 3.12 installed",         color: "#00FF87" },
-  { delay: 3600, text: "  Installing 🔵 Go...",             color: "#FFD700" },
-  { delay: 4100, text: "  ✓ Go 1.22 installed",             color: "#00FF87" },
-  { delay: 4300, text: "  Installing 🟢 Node.js...",        color: "#FFD700" },
-  { delay: 4800, text: "  ✓ Node.js LTS installed",         color: "#00FF87" },
-  { delay: 5000, text: "",                                   color: "#888" },
-  { delay: 5100, text: "  ✓ All done! Run 'autodev doctor' to verify your setup.", color: "#00FF87" },
+  { delay: 0, text: "$ autodev setup", color: "#00FF87" },
+  { delay: 600, text: "", color: "#888" },
+  {
+    delay: 800,
+    text: "  ⚡ AUTODEV · Clone. Scan. Install. Build.",
+    color: "#FFD700",
+  },
+  { delay: 1000, text: "", color: "#888" },
+  { delay: 1100, text: "  What do you want to install?", color: "#F0F0F0" },
+  { delay: 1300, text: "", color: "#888" },
+  { delay: 1400, text: "  1. Languages", color: "#4A90E2" },
+  { delay: 1500, text: "  2. Frameworks", color: "#4A90E2" },
+  { delay: 1600, text: "  3. Databases", color: "#4A90E2" },
+  { delay: 1700, text: "  4. DevOps", color: "#4A90E2" },
+  { delay: 1800, text: "  5. Mobile Development", color: "#4A90E2" },
+  { delay: 1900, text: "  6. AI / ML", color: "#4A90E2" },
+  { delay: 2000, text: "  7. Install by Profile", color: "#FFD700" },
+  { delay: 2100, text: "", color: "#888" },
+  {
+    delay: 2300,
+    text: "> [User selects: Languages → Python, Go, Node.js]",
+    color: "#888",
+  },
+  { delay: 2800, text: "", color: "#888" },
+  { delay: 2900, text: "  Installing 🐍 Python...", color: "#FFD700" },
+  { delay: 3400, text: "  ✓ Python 3.12 installed", color: "#00FF87" },
+  { delay: 3600, text: "  Installing 🔵 Go...", color: "#FFD700" },
+  { delay: 4100, text: "  ✓ Go 1.22 installed", color: "#00FF87" },
+  { delay: 4300, text: "  Installing 🟢 Node.js...", color: "#FFD700" },
+  { delay: 4800, text: "  ✓ Node.js LTS installed", color: "#00FF87" },
+  { delay: 5000, text: "", color: "#888" },
+  {
+    delay: 5100,
+    text: "  ✓ All done! Run 'autodev doctor' to verify your setup.",
+    color: "#00FF87",
+  },
 ];
 
 export default function Terminal() {
   const [visible, setVisible] = useState(0);
   const [runKey, setRunKey] = useState(0);
-  
+
   const containerRef = useRef<HTMLDivElement>(null);
   const outputRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, amount: 0.1 });
@@ -41,7 +53,7 @@ export default function Terminal() {
     if (!isInView) return;
 
     const timers = lines.map((l, i) =>
-      setTimeout(() => setVisible(i + 1), l.delay)
+      setTimeout(() => setVisible(i + 1), l.delay),
     );
     return () => timers.forEach(clearTimeout);
   }, [isInView, runKey]);
@@ -56,14 +68,18 @@ export default function Terminal() {
   const isRunning = visible > 0 && visible < lines.length;
 
   return (
-    <section ref={containerRef} className="py-20 px-6 bg-[#0D0D0D] border-y-2 border-[#2A2A2A]">
+    <section
+      ref={containerRef}
+      className="py-20 px-6 bg-[#0D0D0D] border-y-2 border-[#2A2A2A]"
+    >
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-black text-white mb-3">
             SEE IT IN ACTION
           </h2>
           <p className="text-[#666]">
-            Run <code className="text-[#FFD700] font-mono">autodev setup</code> in any project and the interactive installer opens.
+            Run <code className="text-[#FFD700] font-mono">autodev setup</code>{" "}
+            in any project and the interactive installer opens.
           </p>
         </div>
 
@@ -74,12 +90,14 @@ export default function Terminal() {
               <span className="terminal-dot bg-[#FF5F56]" />
               <span className="terminal-dot bg-[#FFBD2E]" />
               <span className="terminal-dot bg-[#27C93F]" />
-              <span className="text-xs text-[#555] ml-3 font-mono">autodev — bash</span>
+              <span className="text-xs text-[#555] ml-3 font-mono">
+                autodev — bash
+              </span>
             </div>
-            <button 
+            <button
               onClick={() => {
                 setVisible(0);
-                setRunKey(prev => prev + 1);
+                setRunKey((prev) => prev + 1);
               }}
               disabled={isRunning}
               className="text-xs text-[#FFD700] disabled:text-[#555] disabled:border-[#222] disabled:cursor-not-allowed hover:text-[#00FF87] hover:border-[#00FF87] font-mono bg-[#1E1E1E] px-2.5 py-1 rounded border border-[#333] transition-colors cursor-pointer"
@@ -89,8 +107,8 @@ export default function Terminal() {
           </div>
 
           {/* Output */}
-          <div 
-            ref={outputRef} 
+          <div
+            ref={outputRef}
             className="px-6 py-5 space-y-1 h-[400px] overflow-y-auto scroll-smooth"
           >
             {lines.slice(0, visible).map((line, i) => (
@@ -115,4 +133,3 @@ export default function Terminal() {
     </section>
   );
 }
-

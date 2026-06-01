@@ -47,6 +47,16 @@ func getRepoName(url string) string {
 }
 
 func runClone(repoURL, targetDir string, skipConfirm bool) error {
+	repoURL = strings.TrimSpace(repoURL)
+	targetDir = strings.TrimSpace(targetDir)
+
+	if strings.HasPrefix(repoURL, "-") {
+		return fmt.Errorf("invalid repository URL: cannot start with a hyphen")
+	}
+	if targetDir != "" && strings.HasPrefix(targetDir, "-") {
+		return fmt.Errorf("invalid target directory: cannot start with a hyphen")
+	}
+
 	titleStyle := lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("#FFD700"))
 	okStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("#00FF87")).Bold(true)
 	warnStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("#FF6B6B"))
@@ -72,7 +82,13 @@ func runClone(repoURL, targetDir string, skipConfirm bool) error {
 
 	// 1. Clone
 	fmt.Println(dimStyle.Render("  → Cloning repository..."))
-	cloneCmd := exec.Command("git", "clone", repoURL, targetDir)
+	var gitArgs []string
+	if targetDir != "" {
+		gitArgs = []string{"clone", "--", repoURL, targetDir}
+	} else {
+		gitArgs = []string{"clone", "--", repoURL}
+	}
+	cloneCmd := exec.Command("git", gitArgs...)
 	cloneCmd.Stdout = os.Stdout
 	cloneCmd.Stderr = os.Stderr
 	if err := cloneCmd.Run(); err != nil {

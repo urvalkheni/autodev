@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Copy, Check } from "lucide-react";
+import { trackInstall } from "../utils/analytics";
 
 const container = {
   hidden: {},
@@ -12,7 +13,13 @@ const item = {
   show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
 };
 
-const words = ["DEVELOPERS.", "ENGINEERS.", "BUILDERS.", "HACKERS.", "CREATORS."];
+const words = [
+  "DEVELOPERS.",
+  "ENGINEERS.",
+  "BUILDERS.",
+  "HACKERS.",
+  "CREATORS.",
+];
 
 export default function Hero() {
   const [text, setText] = useState("");
@@ -23,11 +30,13 @@ export default function Hero() {
   const [activeTab, setActiveTab] = useState<"npx" | "curl">("npx");
 
   const handleCopyQuickInstall = () => {
-    const cmd = activeTab === "npx"
-      ? "npx @heetmehta18/autodev"
-      : "curl -fsSL https://raw.githubusercontent.com/HEETMEHTA18/autodev/main/scripts/install.sh | bash";
+    const cmd =
+      activeTab === "npx"
+        ? "npx @heetmehta18/autodev"
+        : "curl -fsSL https://raw.githubusercontent.com/HEETMEHTA18/autodev/main/scripts/install.sh | bash";
     navigator.clipboard.writeText(cmd);
     setCopiedQuickInstall(true);
+    trackInstall(activeTab);
     setTimeout(() => setCopiedQuickInstall(false), 1800);
   };
 
@@ -84,12 +93,19 @@ export default function Hero() {
         </motion.h1>
 
         {/* Sub-headline */}
-        <motion.p variants={item} className="text-xl text-[#888] max-w-2xl mb-4 font-medium">
+        <motion.p
+          variants={item}
+          className="text-xl text-[#888] max-w-2xl mb-4 font-medium"
+        >
           Clone. Scan. Install. Build.
         </motion.p>
-        <motion.p variants={item} className="text-[#666] max-w-xl mb-12 leading-relaxed">
-          Install any language, framework, database, or DevOps tool with a single command.
-          Smart dependency resolution. Cross-platform. Fully open-source.
+        <motion.p
+          variants={item}
+          className="text-[#666] max-w-xl mb-12 leading-relaxed"
+        >
+          Install any language, framework, database, or DevOps tool with a
+          single command. Smart dependency resolution. Cross-platform. Fully
+          open-source.
         </motion.p>
 
         {/* CTAs */}
@@ -109,7 +125,9 @@ export default function Hero() {
 
         {/* Quick install */}
         <motion.div variants={item} className="w-full max-w-xl">
-          <p className="text-xs text-[#555] mb-2 uppercase tracking-widest font-semibold">Quick install</p>
+          <p className="text-xs text-[#555] mb-2 uppercase tracking-widest font-semibold">
+            Quick install
+          </p>
           <div className="terminal w-full rounded-none relative">
             <div className="terminal-bar flex justify-between items-center pr-3 w-full">
               <div className="flex items-center gap-1.5">
@@ -147,12 +165,16 @@ export default function Hero() {
                 {copiedQuickInstall ? (
                   <>
                     <Check className="w-3.5 h-3.5 text-[#00FF87]" />
-                    <span className="text-[10px] text-[#00FF87] font-mono pr-0.5">Copied!</span>
+                    <span className="text-[10px] text-[#00FF87] font-mono pr-0.5">
+                      Copied!
+                    </span>
                   </>
                 ) : (
                   <>
                     <Copy className="w-3.5 h-3.5" />
-                    <span className="text-[10px] text-[#666] font-mono pr-0.5">Copy</span>
+                    <span className="text-[10px] text-[#666] font-mono pr-0.5">
+                      Copy
+                    </span>
                   </>
                 )}
               </button>
@@ -176,7 +198,9 @@ export default function Hero() {
           ].map(({ value, label }) => (
             <div key={label} className="nb-card px-6 py-4 min-w-[120px]">
               <div className="text-3xl font-black text-[#FFD700]">{value}</div>
-              <div className="text-xs text-[#666] mt-1 font-semibold uppercase tracking-wider">{label}</div>
+              <div className="text-xs text-[#666] mt-1 font-semibold uppercase tracking-wider">
+                {label}
+              </div>
             </div>
           ))}
         </motion.div>

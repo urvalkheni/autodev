@@ -1,7 +1,17 @@
 "use client";
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, Check, X, Terminal as TerminalIcon, Info, Sparkles, Layers, CheckCircle, Copy } from "lucide-react";
+import {
+  Search,
+  Check,
+  X,
+  Terminal as TerminalIcon,
+  Info,
+  Sparkles,
+  Layers,
+  CheckCircle,
+  Copy,
+} from "lucide-react";
 
 // Package definition
 interface DevPackage {
@@ -26,7 +36,7 @@ const categories = [
   { id: "databases", icon: "🗄️", label: "Databases" },
   { id: "devops", icon: "⚙️", label: "DevOps / Containers" },
   { id: "tools", icon: "⚡", label: "Editors & CLI Tools" },
-  { id: "aiml", icon: "🧠", label: "AI / ML" }
+  { id: "aiml", icon: "🧠", label: "AI / ML" },
 ];
 
 const packages: DevPackage[] = [
@@ -37,13 +47,14 @@ const packages: DevPackage[] = [
     icon: "🐍",
     category: "languages",
     desc: "Dynamic, object-oriented programming language.",
-    longDesc: "Python is an interpreted, high-level, general-purpose programming language. Its design philosophy emphasizes code readability with its use of significant indentation. Its language constructs as well as its object-oriented approach aim to help programmers write clear, logical code for small and large-scale projects.",
+    longDesc:
+      "Python is an interpreted, high-level, general-purpose programming language. Its design philosophy emphasizes code readability with its use of significant indentation. Its language constructs as well as its object-oriented approach aim to help programmers write clear, logical code for small and large-scale projects.",
     version: "3.12.3",
     size: "28.4 MB",
     developer: "Python Software Foundation",
     license: "PSF License",
     dependencies: ["openssl", "sqlite", "zlib"],
-    snippet: "python --version && python -c 'print(\"Hello from AutoDev!\")'"
+    snippet: "python --version && python -c 'print(\"Hello from AutoDev!\")'",
   },
   {
     id: "nodejs",
@@ -51,13 +62,14 @@ const packages: DevPackage[] = [
     icon: "🟢",
     category: "languages",
     desc: "JavaScript runtime built on Chrome's V8 engine.",
-    longDesc: "Node.js is an open-source, cross-platform JavaScript runtime environment that executes JavaScript code outside a web browser. It allows developers to use JavaScript to write command line tools and for server-side scripting—running scripts server-side to produce dynamic web page content before the page is sent to the user's web browser.",
+    longDesc:
+      "Node.js is an open-source, cross-platform JavaScript runtime environment that executes JavaScript code outside a web browser. It allows developers to use JavaScript to write command line tools and for server-side scripting—running scripts server-side to produce dynamic web page content before the page is sent to the user's web browser.",
     version: "20.12.2 (LTS)",
     size: "32.1 MB",
     developer: "OpenJS Foundation",
     license: "MIT",
     dependencies: ["libuv", "openssl", "v8"],
-    snippet: "node -v && node -e 'console.log(\"Node is up and running!\")'"
+    snippet: "node -v && node -e 'console.log(\"Node is up and running!\")'",
   },
   {
     id: "go",
@@ -65,13 +77,14 @@ const packages: DevPackage[] = [
     icon: "🔵",
     category: "languages",
     desc: "Open source programming language developed by Google.",
-    longDesc: "Go (also known as Golang) is a statically typed, compiled programming language designed at Google. Go is syntactically similar to C, but with memory safety, garbage collection, structural typing, and CSP-style concurrency.",
+    longDesc:
+      "Go (also known as Golang) is a statically typed, compiled programming language designed at Google. Go is syntactically similar to C, but with memory safety, garbage collection, structural typing, and CSP-style concurrency.",
     version: "1.22.2",
     size: "64.8 MB",
     developer: "Google & Contributors",
     license: "BSD 3-Clause",
     dependencies: ["libc", "libpthread"],
-    snippet: "go version && go run main.go"
+    snippet: "go version && go run main.go",
   },
   {
     id: "rust",
@@ -79,13 +92,14 @@ const packages: DevPackage[] = [
     icon: "🦀",
     category: "languages",
     desc: "Language empowering everyone to build reliable and efficient software.",
-    longDesc: "Rust is a multi-paradigm, general-purpose programming language designed for performance and safety, especially safe concurrency. Rust is syntactically similar to C++, but can guarantee memory safety by using a borrow checker to validate references.",
+    longDesc:
+      "Rust is a multi-paradigm, general-purpose programming language designed for performance and safety, especially safe concurrency. Rust is syntactically similar to C++, but can guarantee memory safety by using a borrow checker to validate references.",
     version: "1.77.2",
     size: "142.5 MB",
     developer: "Rust Foundation",
     license: "MIT / Apache 2.0",
     dependencies: ["gcc", "llvm", "make"],
-    snippet: "rustc --version && cargo --version"
+    snippet: "rustc --version && cargo --version",
   },
   // Databases
   {
@@ -94,13 +108,14 @@ const packages: DevPackage[] = [
     icon: "🐘",
     category: "databases",
     desc: "Powerful, open source object-relational database system.",
-    longDesc: "PostgreSQL is a free and open-source relational database management system emphasizing extensibility and SQL compliance. It is known for its proven architecture, reliability, data integrity, robust feature set, extensibility, and the dedication of the open-source community behind it.",
+    longDesc:
+      "PostgreSQL is a free and open-source relational database management system emphasizing extensibility and SQL compliance. It is known for its proven architecture, reliability, data integrity, robust feature set, extensibility, and the dedication of the open-source community behind it.",
     version: "16.2",
     size: "45.0 MB",
     developer: "PostgreSQL Global Development Group",
     license: "PostgreSQL License",
     dependencies: ["openssl", "readline", "zlib"],
-    snippet: "psql --version && pg_ctl status"
+    snippet: "psql --version && pg_ctl status",
   },
   {
     id: "redis",
@@ -108,13 +123,14 @@ const packages: DevPackage[] = [
     icon: "🔴",
     category: "databases",
     desc: "In-memory data structure store used as a database, cache, and message broker.",
-    longDesc: "Redis is an in-memory data structure store, used as a distributed, in-memory key-value database, cache and message broker, with optional durability. Redis supports different kinds of abstract data structures such as strings, lists, maps, sets, sorted sets, HyperLogLogs, bitmaps, streams, and spatial indexes.",
+    longDesc:
+      "Redis is an in-memory data structure store, used as a distributed, in-memory key-value database, cache and message broker, with optional durability. Redis supports different kinds of abstract data structures such as strings, lists, maps, sets, sorted sets, HyperLogLogs, bitmaps, streams, and spatial indexes.",
     version: "7.2.4",
     size: "6.2 MB",
     developer: "Redis Ltd. & Community",
     license: "RSALv2 / SSPLv1",
     dependencies: ["libc", "openssl"],
-    snippet: "redis-cli ping"
+    snippet: "redis-cli ping",
   },
   {
     id: "mongodb",
@@ -122,13 +138,14 @@ const packages: DevPackage[] = [
     icon: "🍃",
     category: "databases",
     desc: "Document-based, distributed database designed for modern apps.",
-    longDesc: "MongoDB is a source-available cross-platform document-oriented database program. Classified as a NoSQL database program, MongoDB uses JSON-like documents with optional schemas. MongoDB is developed by MongoDB Inc. and licensed under the Server Side Public License (SSPL).",
+    longDesc:
+      "MongoDB is a source-available cross-platform document-oriented database program. Classified as a NoSQL database program, MongoDB uses JSON-like documents with optional schemas. MongoDB is developed by MongoDB Inc. and licensed under the Server Side Public License (SSPL).",
     version: "7.0.8",
     size: "95.2 MB",
     developer: "MongoDB Inc.",
     license: "SSPL",
     dependencies: ["openssl", "curl", "snappy"],
-    snippet: "mongod --version && mongosh"
+    snippet: "mongod --version && mongosh",
   },
   // DevOps
   {
@@ -137,13 +154,14 @@ const packages: DevPackage[] = [
     icon: "🐳",
     category: "devops",
     desc: "Pack, ship and run any application as a lightweight container.",
-    longDesc: "Docker is a set of platform as a service products that use OS-level virtualization to deliver software in packages called containers. Containers are isolated from one another and bundle their own software, libraries and configuration files; they can communicate with each other through well-defined channels.",
+    longDesc:
+      "Docker is a set of platform as a service products that use OS-level virtualization to deliver software in packages called containers. Containers are isolated from one another and bundle their own software, libraries and configuration files; they can communicate with each other through well-defined channels.",
     version: "26.0.1",
     size: "38.6 MB",
     developer: "Docker Inc.",
     license: "Apache 2.0",
     dependencies: ["containerd", "runc", "iptables"],
-    snippet: "docker --version && docker ps"
+    snippet: "docker --version && docker ps",
   },
   {
     id: "kubectl",
@@ -151,13 +169,14 @@ const packages: DevPackage[] = [
     icon: "☸️",
     category: "devops",
     desc: "Command line tool for controlling Kubernetes clusters.",
-    longDesc: "Kubectl is the command line utility for communicating with a Kubernetes cluster's control plane, using the Kubernetes API. It allows you to run commands against Kubernetes clusters to deploy applications, inspect and manage cluster resources, and view logs.",
+    longDesc:
+      "Kubectl is the command line utility for communicating with a Kubernetes cluster's control plane, using the Kubernetes API. It allows you to run commands against Kubernetes clusters to deploy applications, inspect and manage cluster resources, and view logs.",
     version: "1.29.3",
     size: "18.4 MB",
     developer: "CNCF",
     license: "Apache 2.0",
     dependencies: ["glibc"],
-    snippet: "kubectl version --client"
+    snippet: "kubectl version --client",
   },
   {
     id: "terraform",
@@ -165,13 +184,14 @@ const packages: DevPackage[] = [
     icon: "🏗️",
     category: "devops",
     desc: "Infrastructure as Code tool to build, change, and version resources.",
-    longDesc: "HashiCorp Terraform is an open-source infrastructure as code software tool created by HashiCorp. Users define and provide data center infrastructure using a declarative configuration language known as HashiCorp Configuration Language, or optionally JSON.",
+    longDesc:
+      "HashiCorp Terraform is an open-source infrastructure as code software tool created by HashiCorp. Users define and provide data center infrastructure using a declarative configuration language known as HashiCorp Configuration Language, or optionally JSON.",
     version: "1.8.0",
     size: "42.0 MB",
     developer: "HashiCorp",
     license: "BSL 1.1",
     dependencies: ["libc"],
-    snippet: "terraform --version && terraform init"
+    snippet: "terraform --version && terraform init",
   },
   // Editors & CLI Tools
   {
@@ -180,13 +200,14 @@ const packages: DevPackage[] = [
     icon: "⚡",
     category: "tools",
     desc: "Vim-fork focused on extensibility and usability.",
-    longDesc: "Neovim is a refactor, and a logical successor, of Vim. It is designed for users who want the good parts of Vim, and more: built-in LSP support, an asynchronous plugin architecture, powerful Lua configuration capabilities, and modern UI integration.",
+    longDesc:
+      "Neovim is a refactor, and a logical successor, of Vim. It is designed for users who want the good parts of Vim, and more: built-in LSP support, an asynchronous plugin architecture, powerful Lua configuration capabilities, and modern UI integration.",
     version: "0.10.0",
     size: "14.2 MB",
     developer: "Neovim Community",
     license: "Apache 2.0 / Vim License",
     dependencies: ["luajit", "libuv", "msgpack"],
-    snippet: "nvim --version"
+    snippet: "nvim --version",
   },
   {
     id: "git",
@@ -194,13 +215,14 @@ const packages: DevPackage[] = [
     icon: "📝",
     category: "tools",
     desc: "Fast, scalable, distributed revision control system.",
-    longDesc: "Git is a distributed version control system: tracking changes in any set of files, usually used for coordinating work among programmers collaboratively developing source code during software development. Its goals include speed, data integrity, and support for distributed, non-linear workflows.",
+    longDesc:
+      "Git is a distributed version control system: tracking changes in any set of files, usually used for coordinating work among programmers collaboratively developing source code during software development. Its goals include speed, data integrity, and support for distributed, non-linear workflows.",
     version: "2.44.0",
     size: "18.5 MB",
     developer: "Software Freedom Conservancy",
     license: "GPL v2",
     dependencies: ["curl", "expat", "gettext"],
-    snippet: "git --version && git status"
+    snippet: "git --version && git status",
   },
   {
     id: "tmux",
@@ -208,13 +230,14 @@ const packages: DevPackage[] = [
     icon: "🔲",
     category: "tools",
     desc: "Terminal multiplexer enabling multiple windows in one terminal.",
-    longDesc: "tmux is a terminal multiplexer: it enables a number of terminals to be created, accessed, and controlled from a single screen. tmux may be detached from a screen and continue running in the background, then later reattached.",
+    longDesc:
+      "tmux is a terminal multiplexer: it enables a number of terminals to be created, accessed, and controlled from a single screen. tmux may be detached from a screen and continue running in the background, then later reattached.",
     version: "3.4",
     size: "1.8 MB",
     developer: "Nicholas Marriott",
     license: "ISC License",
     dependencies: ["libevent", "ncurses"],
-    snippet: "tmux -V && tmux new-session -d"
+    snippet: "tmux -V && tmux new-session -d",
   },
   // AI / ML
   {
@@ -223,13 +246,14 @@ const packages: DevPackage[] = [
     icon: "🦙",
     category: "aiml",
     desc: "Run large language models locally on your system.",
-    longDesc: "Ollama is a lightweight, extensible framework for building and running language models on your local machine. It manages model weights, configuration, and runtimes, and provides a clean API and CLI interface to interact with local LLMs like Llama 3, Mistral, and Phi.",
+    longDesc:
+      "Ollama is a lightweight, extensible framework for building and running language models on your local machine. It manages model weights, configuration, and runtimes, and provides a clean API and CLI interface to interact with local LLMs like Llama 3, Mistral, and Phi.",
     version: "0.1.33",
     size: "180.2 MB",
     developer: "Ollama Inc.",
     license: "MIT",
     dependencies: ["nvidia-cuda-toolkit", "rocm"],
-    snippet: "ollama --version && ollama run llama3"
+    snippet: "ollama --version && ollama run llama3",
   },
   {
     id: "jupyter",
@@ -237,14 +261,15 @@ const packages: DevPackage[] = [
     icon: "📓",
     category: "aiml",
     desc: "Web-based interactive development environment for notebooks.",
-    longDesc: "JupyterLab is the next-generation user interface for Project Jupyter, offering all the familiar building blocks of the classic Jupyter Notebook (notebook, terminal, text editor, file browser, rich outputs, etc.) in a flexible and powerful user interface.",
+    longDesc:
+      "JupyterLab is the next-generation user interface for Project Jupyter, offering all the familiar building blocks of the classic Jupyter Notebook (notebook, terminal, text editor, file browser, rich outputs, etc.) in a flexible and powerful user interface.",
     version: "4.1.5",
     size: "12.4 MB",
     developer: "Project Jupyter",
     license: "BSD 3-Clause",
     dependencies: ["python", "nodejs", "npm"],
-    snippet: "jupyter lab --version"
-  }
+    snippet: "jupyter lab --version",
+  },
 ];
 
 export default function Categories() {
@@ -253,9 +278,11 @@ export default function Categories() {
   const [selectedApp, setSelectedApp] = useState<DevPackage | null>(null);
   const [copiedCompiler, setCopiedCompiler] = useState(false);
   const [copiedModalSnippet, setCopiedModalSnippet] = useState(false);
-  
+
   // App states: "uninstalled", "installing", "installed"
-  const [appStates, setAppStates] = useState<Record<string, "uninstalled" | "installing" | "installed">>({
+  const [appStates, setAppStates] = useState<
+    Record<string, "uninstalled" | "installing" | "installed">
+  >({
     python: "uninstalled",
     nodejs: "installed", // Node.js starts pre-installed as the demo
     go: "uninstalled",
@@ -267,7 +294,7 @@ export default function Categories() {
     kubectl: "uninstalled",
     terraform: "uninstalled",
     neovim: "uninstalled",
-    git: "installed",   // Git starts pre-installed as standard developer setup
+    git: "installed", // Git starts pre-installed as standard developer setup
     tmux: "uninstalled",
     ollama: "uninstalled",
     jupyter: "uninstalled",
@@ -278,16 +305,18 @@ export default function Categories() {
     "AutoDev Store Service v0.1.0 Initialized.",
     "System architectures scanned: Linux x86_64, Darwin arm64, Windows amd64",
     "Pre-installed components detected: Node.js (v20.12.2), Git (v2.44.0)",
-    "Type an app search or click [GET] to execute mock commands..."
+    "Type an app search or click [GET] to execute mock commands...",
   ]);
   const [isTerminalRunning, setIsTerminalRunning] = useState(false);
 
   // Filter packages based on active category and search query
   const filteredPackages = useMemo(() => {
     return packages.filter((pkg) => {
-      const matchesCategory = activeCategory === "all" || pkg.category === activeCategory;
-      const matchesSearch = pkg.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                            pkg.desc.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesCategory =
+        activeCategory === "all" || pkg.category === activeCategory;
+      const matchesSearch =
+        pkg.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        pkg.desc.toLowerCase().includes(searchQuery.toLowerCase());
       return matchesCategory && matchesSearch;
     });
   }, [activeCategory, searchQuery]);
@@ -296,7 +325,7 @@ export default function Categories() {
   const installPackage = (pkg: DevPackage) => {
     if (appStates[pkg.id] !== "uninstalled") return;
 
-    setAppStates(prev => ({ ...prev, [pkg.id]: "installing" }));
+    setAppStates((prev) => ({ ...prev, [pkg.id]: "installing" }));
     setIsTerminalRunning(true);
 
     const logLines = [
@@ -307,15 +336,15 @@ export default function Categories() {
       `[autodev] Extracting tarball / binary archives...`,
       `[autodev] Binding path: /usr/local/bin/${pkg.id}`,
       `[autodev] Testing: executing "${pkg.snippet.split(" && ")[0]}"`,
-      `[autodev] ✓ Successfully installed ${pkg.name} v${pkg.version}!`
+      `[autodev] ✓ Successfully installed ${pkg.name} v${pkg.version}!`,
     ];
 
     // Log lines one by one to simulate terminal output
     logLines.forEach((line, index) => {
       setTimeout(() => {
-        setTerminalLogs(prev => [...prev, line]);
+        setTerminalLogs((prev) => [...prev, line]);
         if (index === logLines.length - 1) {
-          setAppStates(prev => ({ ...prev, [pkg.id]: "installed" }));
+          setAppStates((prev) => ({ ...prev, [pkg.id]: "installed" }));
           setIsTerminalRunning(false);
         }
       }, index * 400);
@@ -324,17 +353,18 @@ export default function Categories() {
 
   // Uninstall trigger
   const uninstallPackage = (id: string, name: string) => {
-    setAppStates(prev => ({ ...prev, [id]: "uninstalled" }));
-    setTerminalLogs(prev => [
+    setAppStates((prev) => ({ ...prev, [id]: "uninstalled" }));
+    setTerminalLogs((prev) => [
       ...prev,
       `$ autodev uninstall ${id}`,
       `[autodev] Removing environment paths for ${name}...`,
-      `[autodev] Cleanup complete. Removed ${name}.`
+      `[autodev] Cleanup complete. Removed ${name}.`,
     ]);
   };
 
   const installedCount = useMemo(() => {
-    return Object.values(appStates).filter(state => state === "installed").length;
+    return Object.values(appStates).filter((state) => state === "installed")
+      .length;
   }, [appStates]);
 
   const selectedPackagesForCliCommand = useMemo(() => {
@@ -344,9 +374,11 @@ export default function Categories() {
       .join(" ");
   }, [appStates]);
 
-
   return (
-    <section id="features" className="py-20 px-6 max-w-7xl mx-auto scroll-mt-24">
+    <section
+      id="features"
+      className="py-20 px-6 max-w-7xl mx-auto scroll-mt-24"
+    >
       {/* Brutalist Section Header */}
       <div className="mb-12 text-center lg:text-left flex flex-col lg:flex-row items-center lg:items-end justify-between gap-6">
         <div>
@@ -359,13 +391,13 @@ export default function Categories() {
           </h2>
         </div>
         <p className="text-[#888] max-w-md text-sm md:text-base leading-relaxed lg:text-right font-medium">
-          Select developer tools, databases, and language runtimes. Install them cleanly with a single command on your terminal. Try it live below.
+          Select developer tools, databases, and language runtimes. Install them
+          cleanly with a single command on your terminal. Try it live below.
         </p>
       </div>
 
       {/* Main Store Frame */}
       <div className="border-4 border-[#2A2A2A] bg-[#0A0A0A] nb-shadow flex flex-col overflow-hidden rounded-none">
-        
         {/* Header Bar */}
         <div className="border-b-4 border-[#2A2A2A] bg-[#111111] p-4 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3 w-full md:w-auto">
@@ -378,7 +410,10 @@ export default function Categories() {
               STOREFRONT VERIFIED
             </div>
             <div className="text-xs text-[#666] font-mono hidden sm:block">
-              Installed: <span className="text-[#00FF87] font-bold">{installedCount} / {packages.length}</span>
+              Installed:{" "}
+              <span className="text-[#00FF87] font-bold">
+                {installedCount} / {packages.length}
+              </span>
             </div>
           </div>
 
@@ -393,7 +428,10 @@ export default function Categories() {
               className="w-full bg-black border-2 border-[#2A2A2A] py-1.5 pl-10 pr-4 text-sm font-mono text-white placeholder-[#555] focus:outline-none focus:border-[#FFD700] transition-colors"
             />
             {searchQuery && (
-              <button onClick={() => setSearchQuery("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#888] hover:text-white">
+              <button
+                onClick={() => setSearchQuery("")}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#888] hover:text-white"
+              >
                 <X className="w-4 h-4" />
               </button>
             )}
@@ -402,18 +440,20 @@ export default function Categories() {
 
         {/* Mid-Row: Main Columns (Sidebar Navigation + App Grid) */}
         <div className="grid grid-cols-1 lg:grid-cols-[240px_1fr] min-h-[500px]">
-          
           {/* Sidebar */}
           <div className="border-b-4 lg:border-b-0 lg:border-r-4 border-[#2A2A2A] bg-[#0E0E0E] p-4 flex flex-row lg:flex-col overflow-x-auto lg:overflow-x-visible gap-2 lg:space-y-2 scrollbar-none whitespace-nowrap lg:whitespace-normal">
-            <p className="hidden lg:block text-[10px] font-bold text-[#555] uppercase tracking-wider pl-2 mb-2 font-mono">Categories</p>
+            <p className="hidden lg:block text-[10px] font-bold text-[#555] uppercase tracking-wider pl-2 mb-2 font-mono">
+              Categories
+            </p>
             {categories.map((cat) => (
               <button
                 key={cat.id}
                 onClick={() => setActiveCategory(cat.id)}
                 className={`flex-shrink-0 px-3 py-2.5 font-bold text-xs flex items-center justify-between border-2 transition-all gap-4
-                  ${activeCategory === cat.id
-                    ? "border-[#FFD700] text-[#FFD700] bg-[#FFD70010]"
-                    : "border-transparent text-[#888] hover:border-[#2A2A2A] hover:text-white"
+                  ${
+                    activeCategory === cat.id
+                      ? "border-[#FFD700] text-[#FFD700] bg-[#FFD70010]"
+                      : "border-transparent text-[#888] hover:border-[#2A2A2A] hover:text-white"
                   }`}
               >
                 <div className="flex items-center gap-2.5">
@@ -421,27 +461,29 @@ export default function Categories() {
                   <span>{cat.label}</span>
                 </div>
                 <span className="font-mono text-[10px] bg-black border border-[#2A2A2A] text-[#555] px-1.5 py-0.5 font-bold rounded ml-2">
-                  {cat.id === "all" 
-                    ? packages.length 
-                    : packages.filter(p => p.category === cat.id).length
-                  }
+                  {cat.id === "all"
+                    ? packages.length
+                    : packages.filter((p) => p.category === cat.id).length}
                 </span>
               </button>
             ))}
 
             {/* Smart Collections Divider / Text */}
             <div className="hidden lg:block pt-4 border-t border-[#2A2A2A] mt-4" />
-            <p className="hidden lg:block text-[10px] font-bold text-[#555] uppercase tracking-wider pl-2 mb-2 font-mono">Smart Collections</p>
-            
+            <p className="hidden lg:block text-[10px] font-bold text-[#555] uppercase tracking-wider pl-2 mb-2 font-mono">
+              Smart Collections
+            </p>
+
             <button
               onClick={() => {
                 setActiveCategory("installed");
                 setSearchQuery("");
               }}
               className={`flex-shrink-0 px-3 py-2.5 font-bold text-xs flex items-center justify-between border-2 transition-all gap-4
-                ${activeCategory === "installed"
-                  ? "border-[#00FF87] text-[#00FF87] bg-[#00FF8710]"
-                  : "border-transparent text-[#888] hover:border-[#2A2A2A] hover:text-white"
+                ${
+                  activeCategory === "installed"
+                    ? "border-[#00FF87] text-[#00FF87] bg-[#00FF8710]"
+                    : "border-transparent text-[#888] hover:border-[#2A2A2A] hover:text-white"
                 }`}
             >
               <div className="flex items-center gap-2.5">
@@ -459,19 +501,25 @@ export default function Categories() {
             {/* Banner (Visible on Discover "all" state and empty search) */}
             {activeCategory === "all" && !searchQuery && (
               <div className="mb-6 border-2 border-[#FFD700] bg-[#FFD70010] p-5 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
-                <div className="absolute right-4 top-4 text-6xl opacity-10 pointer-events-none select-none">⚡</div>
+                <div className="absolute right-4 top-4 text-6xl opacity-10 pointer-events-none select-none">
+                  ⚡
+                </div>
                 <div className="space-y-2 max-w-xl">
                   <div className="inline-block text-[10px] font-black bg-[#FFD700] text-black px-2 py-0.5 uppercase tracking-wide">
                     Featured Environment Tool
                   </div>
-                  <h4 className="text-2xl font-black text-white">NEOVIM v0.10.0</h4>
+                  <h4 className="text-2xl font-black text-white">
+                    NEOVIM v0.10.0
+                  </h4>
                   <p className="text-xs text-[#aaa] leading-relaxed">
-                    A hyper-extensible, fast, Lua-configurable terminal text editor. Autodev configures it complete with pre-bundled compilers and LSP servers out of the box.
+                    A hyper-extensible, fast, Lua-configurable terminal text
+                    editor. Autodev configures it complete with pre-bundled
+                    compilers and LSP servers out of the box.
                   </p>
                 </div>
                 <button
                   onClick={() => {
-                    const nvimPkg = packages.find(p => p.id === "neovim");
+                    const nvimPkg = packages.find((p) => p.id === "neovim");
                     if (nvimPkg) setSelectedApp(nvimPkg);
                   }}
                   className="px-4 py-2 border-2 border-white bg-white text-black text-xs font-black uppercase tracking-wide hover:bg-transparent hover:text-white transition-colors whitespace-nowrap self-stretch md:self-center text-center"
@@ -482,21 +530,25 @@ export default function Categories() {
             )}
 
             {/* App Cards List */}
-            {filteredPackages.length === 0 && activeCategory === "installed" && (
-              <div className="py-12 text-center border-2 border-dashed border-[#2A2A2A] text-[#666] font-mono text-sm">
-                No apps installed yet in this session. <br />Click on the [GET] button next to any package to simulate an installation!
-              </div>
-            )}
-            
-            {filteredPackages.length === 0 && activeCategory !== "installed" && (
-              <div className="py-12 text-center border-2 border-dashed border-[#2A2A2A] text-[#666] font-mono text-sm">
-                No developer tools match your search criteria.
-              </div>
-            )}
+            {filteredPackages.length === 0 &&
+              activeCategory === "installed" && (
+                <div className="py-12 text-center border-2 border-dashed border-[#2A2A2A] text-[#666] font-mono text-sm">
+                  No apps installed yet in this session. <br />
+                  Click on the [GET] button next to any package to simulate an
+                  installation!
+                </div>
+              )}
+
+            {filteredPackages.length === 0 &&
+              activeCategory !== "installed" && (
+                <div className="py-12 text-center border-2 border-dashed border-[#2A2A2A] text-[#666] font-mono text-sm">
+                  No developer tools match your search criteria.
+                </div>
+              )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-              {(activeCategory === "installed" 
-                ? packages.filter(p => appStates[p.id] === "installed") 
+              {(activeCategory === "installed"
+                ? packages.filter((p) => appStates[p.id] === "installed")
                 : filteredPackages
               ).map((pkg) => {
                 const state = appStates[pkg.id];
@@ -515,7 +567,9 @@ export default function Categories() {
                             {pkg.icon}
                           </span>
                           <div>
-                            <h5 className="font-black text-sm text-white group-hover:text-[#FFD700] transition-colors">{pkg.name}</h5>
+                            <h5 className="font-black text-sm text-white group-hover:text-[#FFD700] transition-colors">
+                              {pkg.name}
+                            </h5>
                             <span className="text-[10px] text-[#666] uppercase font-bold tracking-wider font-mono">
                               {pkg.category}
                             </span>
@@ -585,10 +639,14 @@ export default function Categories() {
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <Layers className="w-4 h-4 text-[#FFD700]" />
-              <h5 className="text-xs font-black text-white uppercase tracking-wider">Installer CLI Command Builder</h5>
+              <h5 className="text-xs font-black text-white uppercase tracking-wider">
+                Installer CLI Command Builder
+              </h5>
             </div>
             <p className="text-xs text-[#888] leading-relaxed max-w-xl">
-              Install the selected environment packages on your local machine instantly. Copy the dynamically compiled command below and run it in your terminal.
+              Install the selected environment packages on your local machine
+              instantly. Copy the dynamically compiled command below and run it
+              in your terminal.
             </p>
 
             <div className="terminal w-full">
@@ -599,7 +657,9 @@ export default function Categories() {
                     <span className="w-2 h-2 rounded-full bg-[#FFBD2E]" />
                     <span className="w-2 h-2 rounded-full bg-[#27C93F]" />
                   </div>
-                  <span className="text-[10px] text-[#555] ml-2 font-mono">autodev cli compiler</span>
+                  <span className="text-[10px] text-[#555] ml-2 font-mono">
+                    autodev cli compiler
+                  </span>
                 </div>
                 <button
                   onClick={() => {
@@ -614,19 +674,24 @@ export default function Categories() {
                   {copiedCompiler ? (
                     <>
                       <Check className="w-3.5 h-3.5 text-[#00FF87]" />
-                      <span className="text-[10px] text-[#00FF87] font-mono pr-0.5">Copied!</span>
+                      <span className="text-[10px] text-[#00FF87] font-mono pr-0.5">
+                        Copied!
+                      </span>
                     </>
                   ) : (
                     <>
                       <Copy className="w-3.5 h-3.5" />
-                      <span className="text-[10px] text-[#666] font-mono pr-0.5">Copy</span>
+                      <span className="text-[10px] text-[#666] font-mono pr-0.5">
+                        Copy
+                      </span>
                     </>
                   )}
                 </button>
               </div>
               <div className="px-4 py-3 font-mono text-xs md:text-sm text-[#00FF87] flex flex-col md:flex-row md:items-center justify-between gap-4 overflow-x-auto bg-black">
                 <code className="whitespace-nowrap">
-                  <span className="text-[#555]">$</span> curl -fsSL https://autodevs.dev/install.sh | bash -s -- --install{" "}
+                  <span className="text-[#555]">$</span> curl -fsSL
+                  https://autodevs.dev/install.sh | bash -s -- --install{" "}
                   <span className="text-[#FFD700] font-bold">
                     {selectedPackagesForCliCommand || "nodejs git"}
                   </span>
@@ -645,7 +710,16 @@ export default function Categories() {
             </div>
             <div className="p-3.5 font-mono text-[11px] leading-5 text-[#888] overflow-y-auto flex-1 space-y-0.5 select-text selection:bg-[#FFD700] selection:text-black">
               {terminalLogs.map((log, i) => (
-                <div key={i} className={log.startsWith("$") ? "text-[#00FF87]" : log.includes("✓") ? "text-[#FFD700]" : ""}>
+                <div
+                  key={i}
+                  className={
+                    log.startsWith("$")
+                      ? "text-[#00FF87]"
+                      : log.includes("✓")
+                        ? "text-[#FFD700]"
+                        : ""
+                  }
+                >
                   {log}
                 </div>
               ))}
@@ -684,7 +758,9 @@ export default function Categories() {
                   </span>
                   <div>
                     <div className="flex items-center gap-2.5">
-                      <h4 className="text-2xl font-black text-white">{selectedApp.name}</h4>
+                      <h4 className="text-2xl font-black text-white">
+                        {selectedApp.name}
+                      </h4>
                       <span className="px-2 py-0.5 border border-[#444] bg-[#111] text-[10px] font-mono text-[#888]">
                         v{selectedApp.version}
                       </span>
@@ -698,7 +774,9 @@ export default function Categories() {
                           <CheckCircle className="w-4 h-4" /> Installed locally
                         </span>
                       ) : appStates[selectedApp.id] === "installing" ? (
-                        <span className="text-xs text-[#888] font-bold animate-pulse">Installing via CLI...</span>
+                        <span className="text-xs text-[#888] font-bold animate-pulse">
+                          Installing via CLI...
+                        </span>
                       ) : (
                         <button
                           onClick={() => {
@@ -709,7 +787,7 @@ export default function Categories() {
                           INSTALL NOW
                         </button>
                       )}
-                      
+
                       {appStates[selectedApp.id] === "installed" && (
                         <button
                           onClick={() => {
@@ -726,34 +804,56 @@ export default function Categories() {
 
                 {/* Description */}
                 <div className="space-y-2">
-                  <h5 className="text-xs font-bold uppercase tracking-wider text-[#FFD700] font-mono">Overview</h5>
-                  <p className="text-sm text-[#ccc] leading-relaxed">{selectedApp.longDesc}</p>
+                  <h5 className="text-xs font-bold uppercase tracking-wider text-[#FFD700] font-mono">
+                    Overview
+                  </h5>
+                  <p className="text-sm text-[#ccc] leading-relaxed">
+                    {selectedApp.longDesc}
+                  </p>
                 </div>
 
                 {/* Metadata details */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 border-y border-[#2A2A2A] py-4 my-2">
                   <div>
-                    <span className="block text-[10px] font-mono text-[#555] uppercase">Developer</span>
-                    <span className="text-xs font-bold text-white block mt-0.5 truncate">{selectedApp.developer}</span>
+                    <span className="block text-[10px] font-mono text-[#555] uppercase">
+                      Developer
+                    </span>
+                    <span className="text-xs font-bold text-white block mt-0.5 truncate">
+                      {selectedApp.developer}
+                    </span>
                   </div>
                   <div>
-                    <span className="block text-[10px] font-mono text-[#555] uppercase">File Size</span>
-                    <span className="text-xs font-bold text-white block mt-0.5">{selectedApp.size}</span>
+                    <span className="block text-[10px] font-mono text-[#555] uppercase">
+                      File Size
+                    </span>
+                    <span className="text-xs font-bold text-white block mt-0.5">
+                      {selectedApp.size}
+                    </span>
                   </div>
                   <div>
-                    <span className="block text-[10px] font-mono text-[#555] uppercase">License</span>
-                    <span className="text-xs font-bold text-white block mt-0.5">{selectedApp.license}</span>
+                    <span className="block text-[10px] font-mono text-[#555] uppercase">
+                      License
+                    </span>
+                    <span className="text-xs font-bold text-white block mt-0.5">
+                      {selectedApp.license}
+                    </span>
                   </div>
                   <div>
-                    <span className="block text-[10px] font-mono text-[#555] uppercase">Category</span>
-                    <span className="text-xs font-bold text-[#FFD700] block mt-0.5 capitalize">{selectedApp.category}</span>
+                    <span className="block text-[10px] font-mono text-[#555] uppercase">
+                      Category
+                    </span>
+                    <span className="text-xs font-bold text-[#FFD700] block mt-0.5 capitalize">
+                      {selectedApp.category}
+                    </span>
                   </div>
                 </div>
 
                 {/* Dependencies */}
                 {selectedApp.dependencies.length > 0 && (
                   <div className="space-y-2">
-                    <h5 className="text-xs font-bold uppercase tracking-wider text-[#FFD700] font-mono">Dependencies</h5>
+                    <h5 className="text-xs font-bold uppercase tracking-wider text-[#FFD700] font-mono">
+                      Dependencies
+                    </h5>
                     <div className="flex flex-wrap gap-1.5">
                       {selectedApp.dependencies.map((dep) => (
                         <span
@@ -769,7 +869,9 @@ export default function Categories() {
 
                 {/* Execution command snippet */}
                 <div className="space-y-2">
-                  <h5 className="text-xs font-bold uppercase tracking-wider text-[#FFD700] font-mono">Run / Execute Example</h5>
+                  <h5 className="text-xs font-bold uppercase tracking-wider text-[#FFD700] font-mono">
+                    Run / Execute Example
+                  </h5>
                   <div className="bg-[#111] border border-[#2A2A2A] p-3 text-xs font-mono text-[#888] flex items-center justify-between gap-4">
                     <code className="break-all">{selectedApp.snippet}</code>
                     <button

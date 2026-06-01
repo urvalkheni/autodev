@@ -9,7 +9,16 @@ const profiles = [
     name: "Web Developer",
     desc: "Full-stack web development",
     color: "#4A90E2",
-    packages: ["git", "nodejs", "pnpm", "react", "nextjs", "docker", "postgresql", "redis"],
+    packages: [
+      "git",
+      "nodejs",
+      "pnpm",
+      "react",
+      "nextjs",
+      "docker",
+      "postgresql",
+      "redis",
+    ],
   },
   {
     id: "ml-engineer",
@@ -17,7 +26,15 @@ const profiles = [
     name: "ML Engineer",
     desc: "Machine learning & data science",
     color: "#FF6B6B",
-    packages: ["git", "python", "jupyter", "pytorch", "tensorflow", "langchain", "docker"],
+    packages: [
+      "git",
+      "python",
+      "jupyter",
+      "pytorch",
+      "tensorflow",
+      "langchain",
+      "docker",
+    ],
   },
   {
     id: "flutter-dev",
@@ -25,7 +42,14 @@ const profiles = [
     name: "Flutter Developer",
     desc: "Cross-platform mobile apps",
     color: "#00B4D8",
-    packages: ["git", "java", "dart", "flutter", "android-sdk", "android-studio"],
+    packages: [
+      "git",
+      "java",
+      "dart",
+      "flutter",
+      "android-sdk",
+      "android-studio",
+    ],
   },
   {
     id: "devops-engineer",
@@ -33,7 +57,14 @@ const profiles = [
     name: "DevOps Engineer",
     desc: "Infrastructure & CI/CD",
     color: "#00FF87",
-    packages: ["git", "docker", "docker-compose", "kubernetes", "terraform", "nginx"],
+    packages: [
+      "git",
+      "docker",
+      "docker-compose",
+      "kubernetes",
+      "terraform",
+      "nginx",
+    ],
   },
   {
     id: "backend-dev",
@@ -41,7 +72,15 @@ const profiles = [
     name: "Backend Developer",
     desc: "Server-side APIs & services",
     color: "#FFD700",
-    packages: ["git", "nodejs", "python", "go", "docker", "postgresql", "redis"],
+    packages: [
+      "git",
+      "nodejs",
+      "python",
+      "go",
+      "docker",
+      "postgresql",
+      "redis",
+    ],
   },
   {
     id: "fullstack-ai",
@@ -49,7 +88,17 @@ const profiles = [
     name: "Full-Stack AI Dev",
     desc: "AI-powered full-stack apps",
     color: "#C77DFF",
-    packages: ["git", "nodejs", "python", "nextjs", "fastapi", "pytorch", "langchain", "docker", "postgresql"],
+    packages: [
+      "git",
+      "nodejs",
+      "python",
+      "nextjs",
+      "fastapi",
+      "pytorch",
+      "langchain",
+      "docker",
+      "postgresql",
+    ],
   },
 ];
 
@@ -58,15 +107,21 @@ export default function Profiles() {
   const current = profiles.find((p) => p.id === active);
 
   return (
-    <section id="profiles" className="py-24 px-6 bg-[#0D0D0D] border-y-2 border-[#2A2A2A]">
+    <section
+      id="profiles"
+      className="py-24 px-6 bg-[#0D0D0D] border-y-2 border-[#2A2A2A]"
+    >
       <div className="max-w-7xl mx-auto">
         <div className="mb-16">
-          <span className="text-xs text-[#FFD700] font-bold uppercase tracking-widest">One command</span>
+          <span className="text-xs text-[#FFD700] font-bold uppercase tracking-widest">
+            One command
+          </span>
           <h2 className="text-5xl font-black text-white mt-2 mb-4">
             DEVELOPER PROFILES
           </h2>
           <p className="text-[#888] max-w-xl">
-            Pick your role. AutoDev installs everything — with smart dependency resolution.
+            Pick your role. AutoDev installs everything — with smart dependency
+            resolution.
           </p>
         </div>
 
@@ -81,7 +136,9 @@ export default function Profiles() {
               `}
             >
               <div className="text-4xl mb-4">{prof.icon}</div>
-              <h3 className="font-black text-lg text-white mb-1">{prof.name}</h3>
+              <h3 className="font-black text-lg text-white mb-1">
+                {prof.name}
+              </h3>
               <p className="text-sm text-[#666] mb-4">{prof.desc}</p>
               <div className="flex flex-wrap gap-1">
                 {prof.packages.slice(0, 5).map((pkg) => (
@@ -113,15 +170,26 @@ export default function Profiles() {
               <span className="terminal-dot bg-[#FF5F56]" />
               <span className="terminal-dot bg-[#FFBD2E]" />
               <span className="terminal-dot bg-[#27C93F]" />
-              <span className="text-xs text-[#555] ml-3">{current.name} Profile</span>
+              <span className="text-xs text-[#555] ml-3">
+                {current.name} Profile
+              </span>
             </div>
             <div className="px-6 py-5 font-mono text-sm space-y-1">
-              <div className="text-[#00FF87]">$ autodev profile {current.id}</div>
-              <div className="text-[#888] mt-2">{current.icon}  {current.name}</div>
-              <div className="text-[#555]">   {current.desc}</div>
-              <div className="mt-3 text-[#4A90E2]">Packages ({current.packages.length}):</div>
+              <div className="text-[#00FF87]">
+                $ autodev profile {current.id}
+              </div>
+              <div className="text-[#888] mt-2">
+                {current.icon} {current.name}
+              </div>
+              <div className="text-[#555]"> {current.desc}</div>
+              <div className="mt-3 text-[#4A90E2]">
+                Packages ({current.packages.length}):
+              </div>
               {current.packages.map((p) => (
-                <div key={p} className="text-[#00FF87] pl-3">  ✓ {p}</div>
+                <div key={p} className="text-[#00FF87] pl-3">
+                  {" "}
+                  ✓ {p}
+                </div>
               ))}
             </div>
           </motion.div>

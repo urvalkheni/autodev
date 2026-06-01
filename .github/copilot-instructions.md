@@ -79,12 +79,11 @@ If you are running as a shell executor, invoke these commands to interact with t
 | Go | intermediate |
 | Next.js | intermediate |
 | React | intermediate |
+| Express | beginner |
 
 ## 🗺️ Recommended Roadmap & Next Steps
 
 ### Next Skills to Focus On
-*   **Express** (beginner)
-    *   Resource: https://expressjs.com/en/starter/installing.html
 *   **Docker** (intermediate)
     *   Resource: https://docs.docker.com/get-started
     *   Resource: https://labs.play-with-docker.com
@@ -93,14 +92,13 @@ If you are running as a shell executor, invoke these commands to interact with t
 *   **CI/CD** (intermediate)
     *   Resource: https://docs.github.com/actions
     *   Resource: https://docs.gitlab.com/ee/ci
+*   **PostgreSQL** (intermediate)
+    *   Resource: https://www.postgresql.org/docs/current/tutorial.html
 *   **Kubernetes** (advanced)
     *   Resource: https://kubernetes.io/docs/tutorials
     *   Resource: https://killercoda.com
 *   **Terraform** (advanced)
     *   Resource: https://developer.hashicorp.com/terraform/tutorials
-
-### Long-Term Milestones
-*   **PostgreSQL** (intermediate)
 
 ## 🗺️ Future Horizon
 

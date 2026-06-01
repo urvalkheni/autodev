@@ -13,7 +13,9 @@ export default function Navbar() {
   const { theme, setTheme } = useTheme();
 
   // eslint-disable-next-line react-hooks/set-state-in-effect
-  useEffect(() => { setMounted(true); }, []);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     // Fetch GitHub stars
@@ -28,7 +30,7 @@ export default function Navbar() {
 
     // Fetch unique page views
     const hasVisited = localStorage.getItem("autodev_visited");
-    const endpoint = hasVisited 
+    const endpoint = hasVisited
       ? "https://api.counterapi.dev/v1/heetmehta18-autodev/views/"
       : "https://api.counterapi.dev/v1/heetmehta18-autodev/views/up";
 
@@ -49,7 +51,7 @@ export default function Navbar() {
     { name: "Features", href: "/#features" },
     { name: "Profiles", href: "/#profiles" },
     { name: "GitHub Scanner", href: "/#github-scanner" },
-    { name: "Docs", href: "/docs" }
+    { name: "Docs", href: "/docs" },
   ];
 
   return (
@@ -108,7 +110,9 @@ export default function Navbar() {
 
           {/* Release / What's New Notification */}
           <button
-            onClick={() => window.dispatchEvent(new Event("autodev_open_update_modal"))}
+            onClick={() =>
+              window.dispatchEvent(new Event("autodev_open_update_modal"))
+            }
             className="relative p-1.5 border-2 border-[#2A2A2A] bg-[#111] hover:border-[#FFD700] text-[#FFD700] transition-colors cursor-pointer"
             title="What's New in v0.2.0"
           >
@@ -120,12 +124,20 @@ export default function Navbar() {
           {/* Desktop Theme Toggle */}
           {mounted && (
             <button
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
               className="p-1.5 border-2 border-[#2A2A2A] bg-[#111] hover:border-[#FFD700] text-[#FFD700] transition-colors cursor-pointer"
               aria-label="Toggle theme"
-              title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+              title={
+                theme === "dark"
+                  ? "Switch to light mode"
+                  : "Switch to dark mode"
+              }
             >
-              {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+              {theme === "dark" ? (
+                <Sun className="w-4 h-4" />
+              ) : (
+                <Moon className="w-4 h-4" />
+              )}
             </button>
           )}
         </div>
@@ -153,7 +165,9 @@ export default function Navbar() {
 
           {/* Mobile Release Notification */}
           <button
-            onClick={() => window.dispatchEvent(new Event("autodev_open_update_modal"))}
+            onClick={() =>
+              window.dispatchEvent(new Event("autodev_open_update_modal"))
+            }
             className="relative p-1.5 border-2 border-[#2A2A2A] bg-[#111] hover:border-[#FFD700] text-white transition-colors cursor-pointer"
             title="What's New in v0.2.0"
           >
@@ -165,11 +179,15 @@ export default function Navbar() {
           {/* Theme Toggle — only render after client mount to avoid SSR mismatch */}
           {mounted && (
             <button
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
               className="p-1.5 border-2 border-[#2A2A2A] bg-[#111] hover:border-[#FFD700] text-white transition-colors cursor-pointer"
               aria-label="Toggle theme"
             >
-              {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+              {theme === "dark" ? (
+                <Sun className="w-5 h-5" />
+              ) : (
+                <Moon className="w-5 h-5" />
+              )}
             </button>
           )}
           {/* Hamburger Menu Icon */}
@@ -178,7 +196,11 @@ export default function Navbar() {
             className="p-1.5 border-2 border-[#2A2A2A] bg-[#111] hover:border-[#FFD700] text-white transition-colors cursor-pointer"
             aria-label="Toggle menu"
           >
-            {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            {isMenuOpen ? (
+              <X className="w-5 h-5" />
+            ) : (
+              <Menu className="w-5 h-5" />
+            )}
           </button>
         </div>
       </div>

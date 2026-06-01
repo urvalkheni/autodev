@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.2.0] - 2026-05-31
 
 ### Added
+
 - **Ecosystem Expansion**: Added detection and automated setup for Docker and Kubernetes (Helm, kubectl).
 - **Mobile/SDK Toolchains**: Native Flutter SDK installer, Android SDK, and emulator setup.
 - **JVM & Build Systems**: OpenJDK installer (Java 17/21), Kotlin build tools, and Apache Maven.
@@ -30,6 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.1.0] - 2026-05-29
 
 ### Added
+
 - Initial release 🎉
 - Core CLI with `autodev scan` and `autodev setup`
 - Support for Node.js, Python, Go, Rust, Java, Docker detection

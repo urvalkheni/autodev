@@ -1,66 +1,71 @@
 #!/usr/bin/env node
 
-const { spawn, spawnSync, execSync } = require('child_process');
-const path = require('path');
-const fs = require('fs');
-const os = require('os');
-const https = require('https');
-const http = require('http');
+const { spawn, execSync, execFileSync } = require("child_process");
+const path = require("path");
+const fs = require("fs");
+const os = require("os");
+const https = require("https");
+const http = require("http");
 
 // Determine OS & Arch mapping
 const platformMap = {
-  darwin: 'darwin',
-  linux: 'linux',
-  win32: 'windows',
+  darwin: "darwin",
+  linux: "linux",
+  win32: "windows",
 };
 
 const archMap = {
-  x64: 'amd64',
-  arm64: 'arm64',
+  x64: "amd64",
+  arm64: "arm64",
 };
 
 const platform = platformMap[process.platform];
 const arch = archMap[process.arch];
 
 if (!platform || !arch) {
-  console.error(`[autodev] Unsupported platform/architecture: ${process.platform}/${process.arch}`);
+  console.error(
+    `[autodev] Unsupported platform/architecture: ${process.platform}/${process.arch}`,
+  );
   process.exit(1);
 }
 
-const ext = platform === 'windows' ? 'zip' : 'tar.gz';
-const binaryName = platform === 'windows' ? 'autodev.exe' : 'autodev';
+const ext = platform === "windows" ? "zip" : "tar.gz";
+const binaryName = platform === "windows" ? "autodev.exe" : "autodev";
 
 // Version: prefer the latest GitHub release tag; fall back to package.json
-const pkgJson = require('../package.json');
+const pkgJson = require("../package.json");
 const fallbackVersion = `v${pkgJson.version}`;
 
 function getLatestReleaseTag() {
   return new Promise((resolve) => {
     const options = {
-      hostname: 'api.github.com',
-      path: '/repos/HEETMEHTA18/autodev/releases/latest',
+      hostname: "api.github.com",
+      path: "/repos/HEETMEHTA18/autodev/releases/latest",
       headers: {
-        'User-Agent': 'autodev-npm-cli'
+        "User-Agent": "autodev-npm-cli",
       },
-      timeout: 5000
+      timeout: 5000,
     };
 
-    https.get(options, (res) => {
-      let body = '';
-      res.on('data', (chunk) => body += chunk);
-      res.on('end', () => {
-        try {
-          const json = JSON.parse(body);
-          if (json.tag_name) {
-            resolve(json.tag_name);
-            return;
-          }
-        } catch (_) {}
+    https
+      .get(options, (res) => {
+        let body = "";
+        res.on("data", (chunk) => (body += chunk));
+        res.on("end", () => {
+          try {
+            const json = JSON.parse(body);
+            const versionRegex = /^v?\d+\.\d+\.\d+(-[a-zA-Z0-9.]+)?$/;
+            if (json.tag_name && versionRegex.test(json.tag_name)) {
+              resolve(json.tag_name);
+              return;
+            }
+          } catch (_) {}
+          resolve(fallbackVersion);
+        });
+      })
+      .on("error", () => {
         resolve(fallbackVersion);
       });
-    }).on('error', () => {
-      resolve(fallbackVersion);
-    });
   });
 }
 
@@ -70,9 +75,9 @@ const binaryPath = path.join(binDir, binaryName);
 
 // Development fallback paths
 const devPaths = [
-  path.join(__dirname, '..', '..', 'cli', 'bin', binaryName),
-  path.join(__dirname, '..', '..', '..', 'bin', binaryName),
-  path.join(__dirname, '..', '..', '..', 'packages', 'cli', 'bin', binaryName),
+  path.join(__dirname, "..", "..", "cli", "bin", binaryName),
+  path.join(__dirname, "..", "..", "..", "bin", binaryName),
+  path.join(__dirname, "..", "..", "..", "packages", "cli", "bin", binaryName),
 ];
 
 let activeBinaryPath = binaryPath;
@@ -92,35 +97,43 @@ for (const devPath of devPaths) {
  */
 function download(url, destPath, maxRedirects = 5) {
   return new Promise((resolve, reject) => {
-    if (maxRedirects <= 0) return reject(new Error('Too many redirects'));
+    if (maxRedirects <= 0) return reject(new Error("Too many redirects"));
 
-    const client = url.startsWith('https') ? https : http;
-    client.get(url, (res) => {
-      // Follow redirects (GitHub releases return 302)
-      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-        return download(res.headers.location, destPath, maxRedirects - 1)
-          .then(resolve)
-          .catch(reject);
-      }
+    const client = url.startsWith("https") ? https : http;
+    client
+      .get(url, (res) => {
+        // Follow redirects (GitHub releases return 302)
+        if (
+          res.statusCode >= 300 &&
+          res.statusCode < 400 &&
+          res.headers.location
+        ) {
+          return download(res.headers.location, destPath, maxRedirects - 1)
+            .then(resolve)
+            .catch(reject);
+        }
 
-      if (res.statusCode !== 200) {
-        return reject(new Error(`HTTP ${res.statusCode} from ${url}`));
-      }
+        if (res.statusCode !== 200) {
+          return reject(new Error(`HTTP ${res.statusCode} from ${url}`));
+        }
 
-      const fileStream = fs.createWriteStream(destPath);
-      res.pipe(fileStream);
-      fileStream.on('finish', () => {
-        fileStream.close();
-        resolve();
-      });
-      fileStream.on('error', reject);
-    }).on('error', reject);
+        const fileStream = fs.createWriteStream(destPath);
+        res.pipe(fileStream);
+        fileStream.on("finish", () => {
+          fileStream.close();
+          resolve();
+        });
+        fileStream.on("error", reject);
+      })
+      .on("error", reject);
   });
 }
 
 async function downloadBinary() {
   let version = await getLatestReleaseTag();
-  console.log(`\n[autodev] Native binary not found. Downloading AutoDev ${version} for ${platform}/${arch}...`);
+  console.log(
+    `\n[autodev] Native binary not found. Downloading AutoDev ${version} for ${platform}/${arch}...`,
+  );
 
   if (!fs.existsSync(binDir)) {
     fs.mkdirSync(binDir, { recursive: true });
@@ -131,29 +144,40 @@ async function downloadBinary() {
   const archiveFile = `${archiveName}.${ext}`;
   let url = `https://github.com/HEETMEHTA18/autodev/releases/download/${version}/${archiveFile}`;
 
-  const tempFile = path.join(os.tmpdir(), `autodev_download_${Date.now()}.${ext}`);
+  const tempFile = path.join(
+    os.tmpdir(),
+    `autodev_download_${Date.now()}.${ext}`,
+  );
 
   // Download using Node.js built-in HTTPS (handles redirects properly)
   try {
     console.log(`[autodev] Downloading from: ${url}`);
     await download(url, tempFile);
   } catch (err) {
-    const stableFallback = 'v0.2.0';
+    const stableFallback = "v0.2.0";
     if (version !== stableFallback) {
-      console.warn(`\n[autodev] Failed to download version ${version}: ${err.message}`);
-      console.warn(`[autodev] Falling back to last known stable release: ${stableFallback}...`);
+      console.warn(
+        `\n[autodev] Failed to download version ${version}: ${err.message}`,
+      );
+      console.warn(
+        `[autodev] Falling back to last known stable release: ${stableFallback}...`,
+      );
       version = stableFallback;
       url = `https://github.com/HEETMEHTA18/autodev/releases/download/${version}/${archiveFile}`;
       try {
         console.log(`[autodev] Downloading from: ${url}`);
         await download(url, tempFile);
       } catch (retryErr) {
-        console.error(`\n[autodev] Error downloading stable release asset: ${retryErr.message}`);
+        console.error(
+          `\n[autodev] Error downloading stable release asset: ${retryErr.message}`,
+        );
         console.error(`[autodev] Please verify your network connection.`);
         process.exit(1);
       }
     } else {
-      console.error(`\n[autodev] Error downloading release asset: ${err.message}`);
+      console.error(
+        `\n[autodev] Error downloading release asset: ${err.message}`,
+      );
       console.error(`[autodev] URL: ${url}`);
       process.exit(1);
     }
@@ -162,13 +186,17 @@ async function downloadBinary() {
   try {
     // Verify the file was actually downloaded
     if (!fs.existsSync(tempFile)) {
-      throw new Error('Download completed but file not found on disk.');
+      throw new Error("Download completed but file not found on disk.");
     }
     const stat = fs.statSync(tempFile);
     if (stat.size < 1000) {
-      throw new Error(`Downloaded file is too small (${stat.size} bytes), likely an error page.`);
+      throw new Error(
+        `Downloaded file is too small (${stat.size} bytes), likely an error page.`,
+      );
     }
-    console.log(`[autodev] Downloaded ${(stat.size / 1024 / 1024).toFixed(1)} MB`);
+    console.log(
+      `[autodev] Downloaded ${(stat.size / 1024 / 1024).toFixed(1)} MB`,
+    );
   } catch (err) {
     console.error(`\n[autodev] Error verifying download: ${err.message}`);
     process.exit(1);
@@ -177,14 +205,23 @@ async function downloadBinary() {
   // Extract
   console.log(`[autodev] Extracting binary...`);
   try {
-    if (ext === 'zip') {
-      if (process.platform === 'win32') {
-        execSync(`powershell -Command "Expand-Archive -Path '${tempFile}' -DestinationPath '${binDir}' -Force"`, { stdio: 'inherit' });
+    if (ext === "zip") {
+      if (process.platform === "win32") {
+        const escapedTempFile = tempFile.replace(/'/g, "''");
+        const escapedBinDir = binDir.replace(/'/g, "''");
+        execSync(
+          `powershell -Command "Expand-Archive -Path '${escapedTempFile}' -DestinationPath '${escapedBinDir}' -Force"`,
+          { stdio: "inherit" },
+        );
       } else {
-        execSync(`unzip -o "${tempFile}" -d "${binDir}"`, { stdio: 'inherit' });
+        execFileSync("unzip", ["-o", tempFile, "-d", binDir], {
+          stdio: "inherit",
+        });
       }
     } else {
-      execSync(`tar -xzf "${tempFile}" -C "${binDir}"`, { stdio: 'inherit' });
+      execFileSync("tar", ["-xzf", tempFile, "-C", binDir], {
+        stdio: "inherit",
+      });
     }
 
     // Clean up temp archive
@@ -193,7 +230,7 @@ async function downloadBinary() {
     }
 
     // Set execution permissions on Linux/macOS
-    if (process.platform !== 'win32' && fs.existsSync(binaryPath)) {
+    if (process.platform !== "win32" && fs.existsSync(binaryPath)) {
       fs.chmodSync(binaryPath, 0o755);
     }
     console.log(`[autodev] Installation successful.\n`);
@@ -215,10 +252,10 @@ async function main() {
 
   // Forward execution asynchronously to handle long-running / interactive processes properly
   const args = process.argv.slice(2);
-  const child = spawn(activeBinaryPath, args, { stdio: 'inherit' });
+  const child = spawn(activeBinaryPath, args, { stdio: "inherit" });
 
   // Forward termination signals to the child process (critical for long-running servers / MCP)
-  const signals = ['SIGINT', 'SIGTERM', 'SIGHUP', 'SIGQUIT'];
+  const signals = ["SIGINT", "SIGTERM", "SIGHUP", "SIGQUIT"];
   signals.forEach((signal) => {
     process.on(signal, () => {
       if (!child.killed) {
@@ -227,7 +264,7 @@ async function main() {
     });
   });
 
-  child.on('close', (code, signal) => {
+  child.on("close", (code, signal) => {
     if (code !== null) {
       process.exit(code);
     } else if (signal) {
@@ -239,7 +276,7 @@ async function main() {
     }
   });
 
-  child.on('error', (err) => {
+  child.on("error", (err) => {
     console.error(`[autodev] Failed to run binary: ${err.message}`);
     process.exit(1);
   });

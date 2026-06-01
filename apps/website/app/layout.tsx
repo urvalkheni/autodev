@@ -20,7 +20,14 @@ export const metadata: Metadata = {
   title: "AutoDevs — The App Store for Developers",
   description:
     "Clone. Scan. Install. Build. An open-source cross-platform developer environment bootstrapper. Install any language, framework, or tool with a single command.",
-  keywords: ["developer tools", "CLI", "package manager", "environment setup", "autodev", "autodevs"],
+  keywords: [
+    "developer tools",
+    "CLI",
+    "package manager",
+    "environment setup",
+    "autodev",
+    "autodevs",
+  ],
   // Explicit canonical: tells Google the HTTPS version is authoritative,
   // resolving the "Page with redirect" warning for http://autodevs.dev/
   alternates: {
@@ -74,15 +81,15 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "SoftwareApplication",
-              "name": "AutoDevs",
-              "applicationCategory": "DeveloperApplication",
-              "operatingSystem": "Linux, macOS, Windows",
-              "url": "https://autodevs.dev",
-              "offers": {
+              name: "AutoDevs",
+              applicationCategory: "DeveloperApplication",
+              operatingSystem: "Linux, macOS, Windows",
+              url: "https://autodevs.dev",
+              offers: {
                 "@type": "Offer",
-                "price": "0.00",
-                "priceCurrency": "USD"
-              }
+                price: "0.00",
+                priceCurrency: "USD",
+              },
             }),
           }}
         />

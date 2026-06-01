@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import {
-  Terminal,
   Copy,
   Check,
   Sparkles,
@@ -70,7 +69,7 @@ export default function AiAgentTemplatePage() {
           <p className="text-lg md:text-xl text-slate-400 max-w-3xl leading-relaxed">
             Build your AI Agent products immediately using this pre-set
             monorepo. It features a React chatbot interface connected to an
-            Express.js backend utilizing Google's official Gemini 2.5 Flash SDK.
+            Express.js backend utilizing Google&apos;s official Gemini 2.5 Flash SDK.
           </p>
         </div>
 
@@ -101,7 +100,7 @@ export default function AiAgentTemplatePage() {
         {/* What's Pre-Configured */}
         <div className="mb-20">
           <h2 className="text-2xl font-bold text-white mb-8 border-b border-slate-900 pb-3">
-            What's Pre-Configured
+            What&apos;s Pre-Configured
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-[#111] border-2 border-[#2A2A2A] p-6">
@@ -110,7 +109,7 @@ export default function AiAgentTemplatePage() {
                 Gemini 2.5 Flash SDK
               </h3>
               <p className="text-xs text-slate-400 leading-relaxed">
-                Backend Express route fully integrated with Google's official
+                Backend Express route fully integrated with Google&apos;s official
                 `@google/genai` library, ready to accept prompt inputs.
               </p>
             </div>

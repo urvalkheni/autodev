@@ -6,8 +6,6 @@ import {
   Terminal,
   Copy,
   Check,
-  Star,
-  Play,
   Sparkles,
   Shield,
   Cpu,
@@ -102,7 +100,7 @@ export default function ReactTemplatePage() {
         {/* Features list */}
         <div className="mb-20">
           <h2 className="text-2xl font-bold text-white mb-8 border-b border-slate-900 pb-3">
-            What's Pre-Configured
+            What&apos;s Pre-Configured
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-[#111] border-2 border-[#2A2A2A] p-6">

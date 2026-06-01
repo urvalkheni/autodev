@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import {
-  Terminal,
   Copy,
   Check,
   Sparkles,
@@ -101,7 +100,7 @@ export default function NextJsTemplatePage() {
         {/* Details section */}
         <div className="mb-20">
           <h2 className="text-2xl font-bold text-white mb-8 border-b border-slate-900 pb-3">
-            What's Inside
+            What&apos;s Inside
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-[#111] border-2 border-[#2A2A2A] p-6">

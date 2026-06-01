@@ -369,7 +369,7 @@ export default function Categories() {
 
   const selectedPackagesForCliCommand = useMemo(() => {
     return Object.entries(appStates)
-      .filter(([_, state]) => state === "installed")
+      .filter(([, state]) => state === "installed")
       .map(([id]) => id)
       .join(" ");
   }, [appStates]);

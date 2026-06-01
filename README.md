@@ -219,6 +219,7 @@ autodev/
 ## 🤝 Contributing
 
 We welcome contributions of all kinds! Please read [CONTRIBUTING.md](CONTRIBUTING.md) to get started.
+To understand the whole project delete the project_context.md from the root so that any of you can understand and context of the project or the real motive of this project.
 
 - 🐛 [Report a Bug](https://github.com/HEETMEHTA18/autodev/issues/new?template=bug_report.md)
 - 💡 [Request a Feature](https://github.com/HEETMEHTA18/autodev/issues/new?template=feature_request.md)

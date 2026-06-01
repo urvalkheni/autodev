@@ -114,7 +114,7 @@ export default function Navbar() {
               window.dispatchEvent(new Event("autodev_open_update_modal"))
             }
             className="relative p-1.5 border-2 border-[#2A2A2A] bg-[#111] hover:border-[#FFD700] text-[#FFD700] transition-colors cursor-pointer"
-            title="What's New in v0.2.0"
+            title="What's New in v0.3.0"
           >
             <Bell className="w-4 h-4" />
             <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-[#FFD700] rounded-full animate-ping" />
@@ -169,7 +169,7 @@ export default function Navbar() {
               window.dispatchEvent(new Event("autodev_open_update_modal"))
             }
             className="relative p-1.5 border-2 border-[#2A2A2A] bg-[#111] hover:border-[#FFD700] text-white transition-colors cursor-pointer"
-            title="What's New in v0.2.0"
+            title="What's New in v0.3.0"
           >
             <Bell className="w-5 h-5" />
             <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-[#FFD700] rounded-full animate-ping" />

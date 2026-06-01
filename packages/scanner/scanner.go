@@ -21,6 +21,13 @@ type Technology struct {
 	DocsURL    string  `json:"docs_url,omitempty"`
 }
 
+// SubProject represents a nested project inside a monorepo or workspace.
+type SubProject struct {
+	Name         string       `json:"name"`
+	Path         string       `json:"path"` // relative directory path
+	Technologies []Technology `json:"technologies"`
+}
+
 // ScanResult is the output of a repository scan.
 type ScanResult struct {
 	Path             string       `json:"path"`
@@ -33,6 +40,7 @@ type ScanResult struct {
 	HasDocker        bool         `json:"has_docker"`
 	HasK8s           bool         `json:"has_kubernetes"`
 	RecommendedSetup []string     `json:"recommended_setup"`
+	Projects         []SubProject `json:"projects,omitempty"`
 }
 
 // indicator maps a filename / glob pattern to a Technology.
@@ -142,6 +150,9 @@ func (s *Scanner) Scan() (*ScanResult, error) {
 	result := &ScanResult{Path: s.RootPath}
 	seen := map[string]bool{} // deduplicate
 
+	subprojectTechs := make(map[string][]Technology)
+	subprojectSeen := make(map[string]map[string]bool)
+
 	err := filepath.WalkDir(s.RootPath, func(path string, d os.DirEntry, err error) error {
 		if err != nil {
 			return nil // skip errors
@@ -151,7 +162,7 @@ func (s *Scanner) Scan() (*ScanResult, error) {
 		if d.IsDir() && (strings.HasPrefix(base, ".") ||
 			base == "node_modules" || base == "vendor" ||
 			base == ".git" || base == "dist" || base == "build" ||
-			base == "__pycache__" || base == ".next") {
+			base == "__pycache__" || base == ".next" || base == ".turbo") {
 			return filepath.SkipDir
 		}
 		if d.IsDir() {
@@ -159,16 +170,18 @@ func (s *Scanner) Scan() (*ScanResult, error) {
 		}
 
 		rel, _ := filepath.Rel(s.RootPath, path)
+		dir := filepath.Dir(rel)
+
+		// 1. Root and Global detection
 		for _, ind := range allIndicators {
 			if matchIndicator(rel, ind.file) {
 				key := ind.tech.Name + "|" + ind.tech.Type
-				if seen[key] {
-					continue
+				if !seen[key] {
+					tech := ind.tech
+					tech.ConfigFile = rel
+					result.Technologies = append(result.Technologies, tech)
+					seen[key] = true
 				}
-				tech := ind.tech
-				tech.ConfigFile = rel
-				result.Technologies = append(result.Technologies, tech)
-				seen[key] = true
 			}
 		}
 
@@ -177,10 +190,51 @@ func (s *Scanner) Scan() (*ScanResult, error) {
 			detectFromPackageJSON(path, result, seen)
 		}
 
+		// 2. Subproject detection (for nested directories)
+		if dir != "." && dir != "" {
+			if _, ok := subprojectSeen[dir]; !ok {
+				subprojectSeen[dir] = make(map[string]bool)
+			}
+			for _, ind := range allIndicators {
+				if matchIndicator(rel, ind.file) {
+					key := ind.tech.Name + "|" + ind.tech.Type
+					if !subprojectSeen[dir][key] {
+						subprojectSeen[dir][key] = true
+						tech := ind.tech
+						tech.ConfigFile = rel
+						subprojectTechs[dir] = append(subprojectTechs[dir], tech)
+					}
+				}
+			}
+			if base == "package.json" {
+				subTechs := detectSubprojectFromPackageJSON(path)
+				for _, tech := range subTechs {
+					key := tech.Name + "|" + tech.Type
+					if !subprojectSeen[dir][key] {
+						subprojectSeen[dir][key] = true
+						tech.ConfigFile = rel
+						subprojectTechs[dir] = append(subprojectTechs[dir], tech)
+					}
+				}
+			}
+		}
+
 		return nil
 	})
 	if err != nil {
 		return nil, err
+	}
+
+	// Group and populate subprojects in result
+	for dir, techs := range subprojectTechs {
+		if len(techs) > 0 {
+			name := filepath.Base(dir)
+			result.Projects = append(result.Projects, SubProject{
+				Name:         name,
+				Path:         dir,
+				Technologies: techs,
+			})
+		}
 	}
 
 	// Separate into categories
@@ -207,6 +261,49 @@ func (s *Scanner) Scan() (*ScanResult, error) {
 
 	result.RecommendedSetup = buildSetupPlan(result)
 	return result, nil
+}
+
+// detectSubprojectFromPackageJSON reads package.json and detects frameworks.
+func detectSubprojectFromPackageJSON(path string) []Technology {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return nil
+	}
+	var pkg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &pkg); err != nil {
+		return nil
+	}
+
+	allDeps := map[string]json.RawMessage{}
+	for _, key := range []string{"dependencies", "devDependencies", "peerDependencies"} {
+		if raw, ok := pkg[key]; ok {
+			var deps map[string]json.RawMessage
+			if err := json.Unmarshal(raw, &deps); err == nil {
+				for k, v := range deps {
+					allDeps[k] = v
+				}
+			}
+		}
+	}
+
+	frameworkDeps := map[string]Technology{
+		"react":         {Name: "React", Type: "framework", Confidence: 1.0, DocsURL: "https://react.dev"},
+		"vue":           {Name: "Vue", Type: "framework", Confidence: 1.0, DocsURL: "https://vuejs.org"},
+		"@angular/core": {Name: "Angular", Type: "framework", Confidence: 1.0, DocsURL: "https://angular.io"},
+		"svelte":        {Name: "Svelte", Type: "framework", Confidence: 1.0, DocsURL: "https://svelte.dev"},
+		"next":          {Name: "Next.js", Type: "framework", Confidence: 1.0, DocsURL: "https://nextjs.org"},
+		"express":       {Name: "Express", Type: "framework", Confidence: 1.0, DocsURL: "https://expressjs.com"},
+		"fastify":       {Name: "Fastify", Type: "framework", Confidence: 1.0, DocsURL: "https://fastify.dev"},
+		"typescript":    {Name: "TypeScript", Type: "language", Confidence: 1.0, DocsURL: "https://typescriptlang.org"},
+	}
+
+	var list []Technology
+	for dep, tech := range frameworkDeps {
+		if _, ok := allDeps[dep]; ok {
+			list = append(list, tech)
+		}
+	}
+	return list
 }
 
 // matchIndicator returns true if the file path matches the indicator pattern.

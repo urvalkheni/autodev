@@ -141,6 +141,19 @@ func printScanResult(result *scanner.ScanResult, elapsed time.Duration) {
 	if result.HasK8s {
 		fmt.Println("  " + badgeStyle.Render("Kubernetes") + "  Found k8s manifests")
 	}
+	fmt.Println()
+
+	if len(result.Projects) > 0 {
+		fmt.Println(titleStyle.Render("  [MONOREPO SUBPROJECTS]"))
+		for _, proj := range result.Projects {
+			var techs []string
+			for _, t := range proj.Technologies {
+				techs = append(techs, t.Name)
+			}
+			fmt.Printf("    - %s (%s) → %s\n", proj.Name, dimStyle.Render(proj.Path), strings.Join(techs, ", "))
+		}
+		fmt.Println()
+	}
 
 	if len(result.RecommendedSetup) > 0 {
 		fmt.Println()

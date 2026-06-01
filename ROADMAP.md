@@ -59,25 +59,25 @@ gantt
 
 ---
 
-### 🚧 v0.3.0 — Intelligence Layer (Target: 2026-07-01)
+### ✅ v0.3.0 — Intelligence Layer (Released 2026-06-01)
 
 - **Features:**
-  - **AI Dependency Doctor**: `autodev doctor --fix` detects and repairs version mismatches, path issues, compiler errors, and conflicts.
-  - **Auto .env Scaffolding**: Automatically creates `.env` files from `.env.example` or structural scan parameters.
-  - **Multi-project / Monorepo Scan**: Support for scan and setups across workspaces containing multiple nested projects.
-  - **Cloud IDE Scaffolding**: Support for generating DevContainer setups (`autodev containerize` generates `.devcontainer.json`).
-  - **Plugin Core (v0)**: Load package-specific detectors and setup instructions defined in YAML manifests.
-  - **Environment Lockfile**: Unified `autodev.lock.json` manifest representing environment versions.
+  - [x] **AI Dependency Doctor**: `autodev doctor --fix` detects and repairs version mismatches, path issues, compiler errors, and conflicts.
+  - [x] **Auto .env Scaffolding**: Automatically creates `.env` files from `.env.example` or structural scan parameters.
+  - [x] **Multi-project / Monorepo Scan**: Support for scan and setups across workspaces containing multiple nested projects.
+  - [x] **Cloud IDE Scaffolding**: Support for generating DevContainer setups (`autodev containerize` generates `.devcontainer.json`).
+  - [x] **Plugin Core (v0)**: Load package-specific detectors and setup instructions defined in YAML manifests.
+  - [x] **Environment Lockfile**: Unified `autodev.lock.json` manifest representing environment versions.
 - **Integrations:**
-  - **Skills.sh (Deep Profile Sync)**: Sync user profile scores with `Skills.sh` API and generate learning path milestones.
-  - **VSCode recommends**: Generate `.vscode/extensions.json` containing recommended extension IDs for detected stacks.
+  - [x] **Skills.sh (Deep Profile Sync)**: Sync user profile scores with `Skills.sh` API and generate learning path milestones.
+  - [x] **VSCode recommends**: Generate `.vscode/extensions.json` containing recommended extension IDs for detected stacks.
 - **Breaking Changes & Migrations:**
-  - Deprecate JSON configuration profiles in favor of a unified YAML configuration schema.
-  - Provide `autodev migrate` to upgrade existing profiles.
+  - [x] Deprecate JSON configuration profiles in favor of a unified YAML configuration schema.
+  - [x] Provide `autodev migrate` to upgrade existing profiles.
 - **Testing / CI / Docs:**
-  - Add mocked compiler path failure scenarios for `doctor --fix` testing.
-  - Verify DevContainer validation checks in CI.
-  - Publish YAML Plugin manifest schema documentation.
+  - [x] Add mocked compiler path failure scenarios for `doctor --fix` testing.
+  - [x] Verify DevContainer validation checks in CI.
+  - [x] Publish YAML Plugin manifest schema documentation.
 - **Effort Estimate:** Large.
 
 ---

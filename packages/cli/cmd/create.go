@@ -151,6 +151,7 @@ func runCreateNextJS(projectName string) error {
 	dirs := []string{
 		projectName,
 		filepath.Join(projectName, "app"),
+		filepath.Join(projectName, "public"),
 		filepath.Join(projectName, ".github"),
 		filepath.Join(projectName, ".github", "workflows"),
 	}
@@ -170,6 +171,7 @@ func runCreateNextJS(projectName string) error {
 		"app/layout.tsx":           nextJsLayout,
 		"app/page.tsx":             nextJsPage,
 		"app/globals.css":          nextJsGlobalsCss,
+		"public/.gitkeep":          "",
 		"Dockerfile":               nextJsDockerfile,
 		".github/workflows/ci.yml": nextJsGithubAction,
 		"README.md":                nextJsReadme,
@@ -243,7 +245,7 @@ func runCreateAIChatbot(projectName string) error {
 		"tailwind.config.js":       tailwindConfigContent,
 		"postcss.config.js":        postcssConfigContent,
 		"index.html":               aiChatbotIndexHtml,
-		"vite.config.ts":           viteConfigContent,
+		"vite.config.ts":           aiChatbotViteConfig,
 		"tsconfig.json":            tsconfigContent,
 		"src/main.tsx":             mainTsxContent,
 		"src/index.css":            indexCssContent,

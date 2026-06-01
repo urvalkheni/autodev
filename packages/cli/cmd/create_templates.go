@@ -24,6 +24,7 @@ const nextJsPackageJson = `{
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "postcss": "^8.4.38",
+    "autoprefixer": "^10.4.19",
     "tailwindcss": "^3.4.4",
     "eslint": "^8.57.0",
     "eslint-config-next": "14.2.4",
@@ -629,6 +630,21 @@ docker build -t autodev-gemini-bot .
 docker run -p 5000:5000 -e GEMINI_API_KEY="your_api_key" autodev-gemini-bot
 __BT____BT____BT__
 `
+
+const aiChatbotViteConfig = `import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+
+export default defineConfig({
+  plugins: [react()],
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+      },
+    },
+  },
+})`
 
 // ── MERN Stack Templates ──────────────────────────────────────────
 

@@ -326,6 +326,8 @@ export default function DocsClient() {
               </li>
             </ul>
           </Callout>
+          <h2 className="text-xl font-bold text-white mt-6 mb-2">Terminal Output</h2>
+          <img src="/screenshot-doctor.png" alt="autodev doctor CLI Output" className="my-4 border-2 border-[#2A2A2A] rounded-md max-w-full shadow-lg" />
         </>
       ),
     },
@@ -356,6 +358,8 @@ export default function DocsClient() {
             ) to build a precise map of frameworks, databases, and secondary
             development tools.
           </p>
+          <h2 className="text-xl font-bold text-white mt-6 mb-2">Terminal Output</h2>
+          <img src="/screenshot-scan.png" alt="autodev scan CLI Output" className="my-4 border-2 border-[#2A2A2A] rounded-md max-w-full shadow-lg" />
         </>
       ),
     },
@@ -382,6 +386,8 @@ export default function DocsClient() {
             supply-chain vulnerabilities, compromised packages, and security
             advisories, listing the CVE and severity level for any threats.
           </p>
+          <h2 className="text-xl font-bold text-white mt-6 mb-2">Terminal Output</h2>
+          <img src="/screenshot-audit.png" alt="autodev audit CLI Output" className="my-4 border-2 border-[#2A2A2A] rounded-md max-w-full shadow-lg" />
         </>
       ),
     },
@@ -418,6 +424,8 @@ export default function DocsClient() {
             AutoDev might request elevated execution permissions (sudo) to
             register links.
           </Callout>
+          <h2 className="text-xl font-bold text-white mt-6 mb-2">Terminal Output</h2>
+          <img src="/screenshot-setup.png" alt="autodev setup CLI Output" className="my-4 border-2 border-[#2A2A2A] rounded-md max-w-full shadow-lg" />
         </>
       ),
     },
@@ -454,6 +462,58 @@ export default function DocsClient() {
               CocoaPods
             </li>
           </ul>
+          <h2 className="text-xl font-bold text-white mt-6 mb-2">Terminal Output</h2>
+          <img src="/screenshot-profile.png" alt="autodev profile CLI Output" className="my-4 border-2 border-[#2A2A2A] rounded-md max-w-full shadow-lg" />
+        </>
+      ),
+    },
+    {
+      id: "cmd-containerize",
+      category: "Commands",
+      title: "autodev containerize",
+      content: (
+        <>
+          <h1 className="text-4xl font-black text-white mb-6 uppercase tracking-tight">
+            autodev containerize
+          </h1>
+          <p className="text-neutral-300 leading-relaxed mb-4">
+            Scaffold container environments for remote DevContainer or Cloud IDE development.
+          </p>
+          {renderCodeBlock("cmd-containerize-run", "autodev containerize")}
+          <p className="text-neutral-300 leading-relaxed mb-4">
+            AutoDev scans the workspace to identify tech stacks and automatically:
+          </p>
+          <ul className="list-disc pl-5 mb-4 space-y-2 text-neutral-300 font-sans">
+            <li>
+              Generates a <code className="font-mono text-neutral-400">.devcontainer.json</code> configured with specific container features and IDE extensions matching your project.
+            </li>
+            <li>
+              Creates <code className="font-mono text-neutral-400">.vscode/extensions.json</code> to recommend necessary extensions.
+            </li>
+          </ul>
+          <h2 className="text-xl font-bold text-white mt-6 mb-2">Terminal Output</h2>
+          <img src="/screenshot-containerize.png" alt="autodev containerize CLI Output" className="my-4 border-2 border-[#2A2A2A] rounded-md max-w-full shadow-lg" />
+        </>
+      ),
+    },
+    {
+      id: "cmd-migrate",
+      category: "Commands",
+      title: "autodev migrate",
+      content: (
+        <>
+          <h1 className="text-4xl font-black text-white mb-6 uppercase tracking-tight">
+            autodev migrate
+          </h1>
+          <p className="text-neutral-300 leading-relaxed mb-4">
+            Upgrade legacy configuration files to the standard YAML profile schema.
+          </p>
+          {renderCodeBlock("cmd-migrate-run", "autodev migrate")}
+          <p className="text-neutral-300 leading-relaxed mb-4">
+            Converts deprecated <code className="font-mono text-neutral-400">.autodev.json</code> and global JSON config configurations into YAML, creating a <code className="font-mono text-neutral-400">.bak</code> file as backup.
+          </p>
+          <h2 className="text-xl font-bold text-white mt-6 mb-2">Terminal Output</h2>
+          <img src="/screenshot-migrate.png" alt="autodev migrate CLI Output" className="my-4 border-2 border-[#2A2A2A] rounded-md max-w-full shadow-lg" />
         </>
       ),
     },
@@ -509,6 +569,8 @@ export default function DocsClient() {
             run the dependency scanners, and print the resulting plan without
             altering files on your host OS.
           </p>
+          <h2 className="text-xl font-bold text-white mt-6 mb-2">Terminal Output</h2>
+          <img src="/screenshot-docker-integration.png" alt="autodev docker run CLI Output" className="my-4 border-2 border-[#2A2A2A] rounded-md max-w-full shadow-lg" />
         </>
       ),
     },

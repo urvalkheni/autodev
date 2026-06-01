@@ -25,7 +25,6 @@ export default function Hero() {
   const [text, setText] = useState("");
   const [wordIndex, setWordIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [typingSpeed, setTypingSpeed] = useState(150);
   const [copiedQuickInstall, setCopiedQuickInstall] = useState(false);
   const [activeTab, setActiveTab] = useState<"npx" | "curl">("npx");
 
@@ -42,32 +41,26 @@ export default function Hero() {
 
   useEffect(() => {
     const currentWord = words[wordIndex];
-    let timer: NodeJS.Timeout;
-
-    if (isDeleting) {
-      timer = setTimeout(() => {
-        setText(currentWord.substring(0, text.length - 1));
-        setTypingSpeed(80);
-      }, typingSpeed);
-    } else {
-      timer = setTimeout(() => {
-        setText(currentWord.substring(0, text.length + 1));
-        setTypingSpeed(120);
-      }, typingSpeed);
-    }
-
-    if (!isDeleting && text === currentWord) {
-      timer = setTimeout(() => setIsDeleting(true), 2000);
-    } else if (isDeleting && text === "") {
-      timer = setTimeout(() => {
-        setIsDeleting(false);
-        setWordIndex((prev) => (prev + 1) % words.length);
-        setTypingSpeed(300);
-      }, 0);
-    }
+    
+    const timer = setTimeout(() => {
+      if (!isDeleting) {
+        if (text !== currentWord) {
+          setText(currentWord.substring(0, text.length + 1));
+        } else {
+          setIsDeleting(true);
+        }
+      } else {
+        if (text !== "") {
+          setText(currentWord.substring(0, text.length - 1));
+        } else {
+          setIsDeleting(false);
+          setWordIndex((prev) => (prev + 1) % words.length);
+        }
+      }
+    }, isDeleting ? 80 : text === currentWord ? 2000 : text === "" ? 300 : 120);
 
     return () => clearTimeout(timer);
-  }, [text, isDeleting, wordIndex, typingSpeed]);
+  }, [text, isDeleting, wordIndex]);
 
   return (
     <section className="pt-36 pb-24 px-6 max-w-7xl mx-auto">
@@ -75,7 +68,7 @@ export default function Hero() {
         {/* Badge */}
         <motion.div variants={item} className="mb-8">
           <span className="inline-block border-2 border-[#FFD700] text-[#FFD700] text-xs font-bold px-3 py-1 uppercase tracking-widest">
-            v0.2.0 — Open Source
+            v0.3.0 — Open Source
           </span>
         </motion.div>
 

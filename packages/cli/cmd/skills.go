@@ -81,7 +81,7 @@ func runSkills(path string, deep bool, exportFmt string, syncProfile bool, inter
 
 	if !silent && !interactive {
 		fmt.Println()
-		fmt.Println(titleStyle.Render("  ⚡ AutoDev Skills Engine v0.2.0"))
+		fmt.Println(titleStyle.Render("  ⚡ AutoDev Skills Engine v0.3.0"))
 		fmt.Println(dimStyle.Render("  Powered by skills.sh"))
 		fmt.Println()
 	}
@@ -120,7 +120,7 @@ func runSkills(path string, deep bool, exportFmt string, syncProfile bool, inter
 
 		if !silent {
 			fmt.Println()
-			fmt.Println(titleStyle.Render("  ⚡ AutoDev Skills Engine v0.2.0"))
+			fmt.Println(titleStyle.Render("  ⚡ AutoDev Skills Engine v0.3.0"))
 			fmt.Println(dimStyle.Render("  Powered by skills.sh"))
 			fmt.Println()
 		}

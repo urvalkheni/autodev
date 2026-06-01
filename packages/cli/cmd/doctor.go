@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"io/fs"
 	"os"
@@ -11,6 +12,8 @@ import (
 	"strings"
 
 	"github.com/autodev-sh/autodev/core/osinfo"
+	"github.com/autodev-sh/autodev/installer"
+	"github.com/autodev-sh/autodev/scanner"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/spf13/cobra"
 )
@@ -198,8 +201,21 @@ packages/cli/bin/
 			checkFn: func(path string) (bool, string, error) {
 				var matches []string
 				secretRegexes := []*regexp.Regexp{
+					// GitHub PAT
+					regexp.MustCompile(`\b(ghp_[a-zA-Z0-9]{36})\b`),
+					regexp.MustCompile(`\b(github_pat_[a-zA-Z0-9_]{82})\b`),
+					// AWS Access Key ID
+					regexp.MustCompile(`\b(AKIA[0-9A-Z]{16})\b`),
+					// AWS Secret Key
+					regexp.MustCompile(`(?i)aws_secret_access_key\s*[:=]\s*['"]([a-zA-Z0-9/+=]{40})['"]`),
+					// Google API Key
+					regexp.MustCompile(`\b(AIza[0-9A-Za-z\-_]{35})\b`),
+					// Stripe API Key
+					regexp.MustCompile(`\b(sk_live_[0-9a-zA-Z]{24})\b`),
+					// Slack Webhook URL
+					regexp.MustCompile(`(https://hooks\.slack\.com/services/T[a-zA-Z0-9_]+/B[a-zA-Z0-9_]+/[a-zA-Z0-9_]+)`),
+					// General credentials pattern
 					regexp.MustCompile(`(?i)(api_key|secret|password|private_key|token|auth_token)\s*[:=]\s*['"]([a-zA-Z0-9_\-\.]{16,})['"]`),
-					regexp.MustCompile(`(?i)aws_[a-z_]*key\s*[:=]\s*['"]([a-zA-Z0-9/+=]{16,})['"]`),
 				}
 
 				err := filepath.WalkDir(path, func(p string, d fs.DirEntry, err error) error {
@@ -237,10 +253,18 @@ packages/cli/bin/
 					for lineNum, line := range lines {
 						for _, rx := range secretRegexes {
 							sub := rx.FindStringSubmatch(line)
-							if len(sub) > 2 {
-								secretVal := sub[2]
-								if !isPlaceholder(secretVal) {
+							if len(sub) > 0 {
+								secretVal := ""
+								if len(sub) > 2 {
+									secretVal = sub[2]
+								} else if len(sub) > 1 {
+									secretVal = sub[1]
+								} else {
+									secretVal = sub[0]
+								}
+								if secretVal != "" && !isPlaceholder(secretVal) {
 									matches = append(matches, fmt.Sprintf("%s (Line %d)", filepath.Base(p), lineNum+1))
+									break
 								}
 							}
 						}
@@ -374,6 +398,130 @@ packages/cli/bin/
 					pcmd := exec.Command("npx", "prettier", "--write", "**/*.{js,ts,tsx,json,css,md}")
 					pcmd.Dir = path
 					_ = pcmd.Run()
+				}
+				return true, nil
+			},
+		},
+		{
+			name:        "Environment Lockfile Mismatch",
+			description: "Verify active tools match the versions declared in .autodev.lock.json",
+			checkFn: func(path string) (bool, string, error) {
+				lockPath := filepath.Join(path, ".autodev.lock.json")
+				if _, err := os.Stat(lockPath); os.IsNotExist(err) {
+					return true, "", nil // lockfile is optional, skip check
+				}
+				data, err := os.ReadFile(lockPath)
+				if err != nil {
+					return false, "", err
+				}
+				var lock struct {
+					Environment map[string]string `json:"environment"`
+				}
+				if err := json.Unmarshal(data, &lock); err != nil {
+					return false, "Lockfile is corrupted or invalid JSON", nil
+				}
+
+				inst := installer.New(false)
+				var mismatches []string
+				for name, targetVer := range lock.Environment {
+					status := inst.CheckStatus(name)
+					if !status.Installed {
+						mismatches = append(mismatches, fmt.Sprintf("%s (not installed, expected %s)", name, targetVer))
+					} else {
+						activeVer := strings.TrimSpace(status.Version)
+						if idx := strings.Index(activeVer, "\n"); idx != -1 {
+							activeVer = activeVer[:idx]
+						}
+						if !strings.Contains(strings.ToLower(activeVer), strings.ToLower(targetVer)) && 
+							!strings.Contains(strings.ToLower(targetVer), strings.ToLower(activeVer)) {
+							mismatches = append(mismatches, fmt.Sprintf("%s (active: %s, expected: %s)", name, activeVer, targetVer))
+						}
+					}
+				}
+
+				if len(mismatches) > 0 {
+					return false, fmt.Sprintf("Mismatched environment versions: %s", strings.Join(mismatches, ", ")), nil
+				}
+				return true, "", nil
+			},
+			fixFn: func(path string) (bool, error) {
+				lockPath := filepath.Join(path, ".autodev.lock.json")
+				if _, err := os.Stat(lockPath); os.IsNotExist(err) {
+					return true, nil
+				}
+				data, err := os.ReadFile(lockPath)
+				if err != nil {
+					return false, err
+				}
+				var lock struct {
+					Environment map[string]string `json:"environment"`
+				}
+				if err := json.Unmarshal(data, &lock); err != nil {
+					return false, err
+				}
+
+				inst := installer.New(false)
+				fixedAny := false
+				for name, targetVer := range lock.Environment {
+					status := inst.CheckStatus(name)
+					mismatch := false
+					if !status.Installed {
+						mismatch = true
+					} else {
+						activeVer := strings.TrimSpace(status.Version)
+						if idx := strings.Index(activeVer, "\n"); idx != -1 {
+							activeVer = activeVer[:idx]
+						}
+						if !strings.Contains(strings.ToLower(activeVer), strings.ToLower(targetVer)) && 
+							!strings.Contains(strings.ToLower(targetVer), strings.ToLower(activeVer)) {
+							mismatch = true
+						}
+					}
+					if mismatch {
+						fmt.Printf("    Re-installing/restoring matching runtime: %s...\n", name)
+						if err := inst.Install(name); err != nil {
+							return false, fmt.Errorf("failed to restore %s: %w", name, err)
+						}
+						fixedAny = true
+					}
+				}
+				return fixedAny, nil
+			},
+		},
+		{
+			name:        "Supply-Chain Vulnerabilities",
+			description: "Verify dependencies are free of known vulnerabilities",
+			checkFn: func(path string) (bool, string, error) {
+				results, err := scanner.AuditRepository(path)
+				if err != nil {
+					return false, "", err
+				}
+				if len(results) > 0 {
+					var vulnPacks []string
+					for _, res := range results {
+						vulnPacks = append(vulnPacks, fmt.Sprintf("%s@%s", res.Package.Name, res.Package.Version))
+					}
+					return false, fmt.Sprintf("Known vulnerabilities found in packages: %s", strings.Join(vulnPacks, ", ")), nil
+				}
+				return true, "", nil
+			},
+			fixFn: func(path string) (bool, error) {
+				pkgJSON := filepath.Join(path, "package.json")
+				if _, err := os.Stat(pkgJSON); err == nil {
+					cmdName := "npm"
+					if _, err := exec.LookPath("pnpm"); err == nil {
+						cmdName = "pnpm"
+					}
+
+					var cmd *exec.Cmd
+					if cmdName == "pnpm" {
+						cmd = exec.Command("pnpm", "update")
+					} else {
+						cmd = exec.Command("npm", "audit", "fix")
+					}
+					cmd.Dir = path
+					err := cmd.Run()
+					return err == nil, err
 				}
 				return true, nil
 			},

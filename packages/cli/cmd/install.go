@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"runtime"
 	"strings"
 	"sync"
 	"time"
@@ -21,6 +22,7 @@ import (
 
 func newInstallCmd() *cobra.Command {
 	var listFlag bool
+	var skipConfirm bool
 
 	cmd := &cobra.Command{
 		Use:   "install <package-id>",
@@ -29,7 +31,7 @@ func newInstallCmd() *cobra.Command {
 Dependencies are resolved automatically. Run --list to see all available packages.`,
 		Example: `  autodev install nodejs
   autodev install flutter
-  autodev install pytorch
+  autodev install --yes nodejs
   autodev install --list`,
 		Args: cobra.MaximumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -40,11 +42,12 @@ Dependencies are resolved automatically. Run --list to see all available package
 			if listFlag || len(args) == 0 {
 				return printCatalogList(c)
 			}
-			return runCatalogInstall(c, args[0])
+			return runCatalogInstall(c, args[0], skipConfirm)
 		},
 	}
 
 	cmd.Flags().BoolVarP(&listFlag, "list", "l", false, "list all available packages")
+	cmd.Flags().BoolVarP(&skipConfirm, "yes", "y", false, "skip confirmation prompts")
 	return cmd
 }
 
@@ -84,7 +87,7 @@ func printCatalogList(c *catalog.Catalog) error {
 	return nil
 }
 
-func runCatalogInstall(c *catalog.Catalog, id string) error {
+func runCatalogInstall(c *catalog.Catalog, id string, skipConfirm bool) error {
 	titleStyle := lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("#FFD700"))
 	okStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("#00FF87")).Bold(true)
 	warnStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("#FF6B6B"))
@@ -99,6 +102,58 @@ func runCatalogInstall(c *catalog.Catalog, id string) error {
 	fmt.Println()
 	pkg, _ := c.GetPackage(id)
 	fmt.Printf("%s\n", titleStyle.Render("Installing "+pkg.Name))
+
+	// Find out what is not installed
+	var toInstall []*catalog.Package
+	for _, p := range resolved {
+		if !p.IsInstalled() {
+			toInstall = append(toInstall, p)
+		}
+	}
+
+	if len(toInstall) > 0 {
+		fmt.Println(dimStyle.Render("  The following commands and packages will be installed/executed:"))
+		for _, p := range toInstall {
+			var method string
+			var cmdDetail string
+			switch runtime.GOOS {
+			case "linux":
+				method = p.Install.Linux.Method
+				if method == "script" {
+					cmdDetail = strings.Join(p.Install.Linux.Script, " && ")
+				} else {
+					cmdDetail = strings.Join(p.Install.Linux.Packages, ", ")
+				}
+			case "darwin":
+				method = p.Install.Darwin.Method
+				if method == "script" {
+					cmdDetail = strings.Join(p.Install.Darwin.Script, " && ")
+				} else {
+					cmdDetail = strings.Join(p.Install.Darwin.Packages, ", ")
+				}
+			case "windows":
+				method = p.Install.Windows.Method
+				if method == "script" {
+					cmdDetail = strings.Join(p.Install.Windows.Script, " && ")
+				} else {
+					cmdDetail = strings.Join(p.Install.Windows.Packages, ", ")
+				}
+			}
+			fmt.Printf("    - %s (%s) → %s\n", p.Name, method, cmdDetail)
+		}
+		fmt.Println()
+
+		if !skipConfirm && !dryRun {
+			fmt.Print("  Proceed with installation? [y/N] ")
+			var answer string
+			_, _ = fmt.Scanln(&answer)
+			answer = strings.ToLower(strings.TrimSpace(answer))
+			if answer != "y" && answer != "yes" {
+				fmt.Println(dimStyle.Render("  Installation cancelled."))
+				return nil
+			}
+		}
+	}
 
 	if len(resolved) > 1 {
 		fmt.Println(dimStyle.Render("  Installing dependencies first:"))
@@ -492,7 +547,7 @@ func runExport(outFile string) error {
 	lock := Lockfile{
 		OS:          info.OS,
 		Arch:        info.Arch,
-		Exporter:    "AutoDev CLI v0.2.0",
+		Exporter:    "AutoDev CLI v0.3.0",
 		ExportedAt:  time.Now().Format(time.RFC3339),
 		Environment: envMap,
 	}

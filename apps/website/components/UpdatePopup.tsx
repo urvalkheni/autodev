@@ -40,7 +40,7 @@ export default function UpdatePopup() {
 
   useEffect(() => {
     // Check if user has already dismissed this update notification
-    const isDismissed = localStorage.getItem("autodev_update_dismissed_v0.3.0");
+    const isDismissed = localStorage.getItem("autodev_update_dismissed_v0.3.2");
     if (!isDismissed) {
       // Delay showing the popup slightly for better UX
       const timer = setTimeout(() => {
@@ -60,7 +60,7 @@ export default function UpdatePopup() {
   }, []);
 
   const handleDismiss = () => {
-    localStorage.setItem("autodev_update_dismissed_v0.3.0", "true");
+    localStorage.setItem("autodev_update_dismissed_v0.3.2", "true");
     setIsOpen(false);
   };
 
@@ -97,13 +97,13 @@ export default function UpdatePopup() {
                 New Release
               </span>
               <span className="text-neutral-400 text-xs font-mono font-bold">
-                v0.3.0 is live!
+                v0.3.2 is live!
               </span>
             </div>
 
             <h3 className="text-xl font-black tracking-tight text-white mb-2 flex items-center gap-1.5">
               <Sparkles className="w-5 h-5 text-[#FFD700] shrink-0" />
-              UPGRADE TO AUTODEV v0.3.0
+              UPGRADE TO AUTODEV v0.3.2
             </h3>
 
             <p className="text-neutral-400 text-xs leading-relaxed mb-4">
@@ -164,7 +164,7 @@ export default function UpdatePopup() {
             {/* Action buttons */}
             <div className="flex gap-2">
               <a
-                href="https://github.com/HEETMEHTA18/autodev/releases/tag/v0.3.0"
+                href="https://github.com/HEETMEHTA18/autodev/releases/tag/v0.3.2"
                 target="_blank"
                 rel="noreferrer"
                 className="nb-btn-small flex items-center justify-center gap-1.5 flex-1 py-1.5 bg-[#FFD700] text-black text-xs font-black tracking-wider uppercase"

@@ -213,7 +213,7 @@ packages/cli/bin/
 					// Stripe API Key
 					regexp.MustCompile(`\b(sk_live_[0-9a-zA-Z]{24})\b`),
 					// Slack Webhook URL
-					regexp.MustCompile(`\b(https://hooks\.slack\.com/services/T[a-zA-Z0-9_]+/B[a-zA-Z0-9_]+/[a-zA-Z0-9_]+)\b`),
+					regexp.MustCompile(`^\s*(https://hooks\.slack\.com/services/T[a-zA-Z0-9_]+/B[a-zA-Z0-9_]+/[a-zA-Z0-9_]+)\s*$`),
 					// General credentials pattern
 					regexp.MustCompile(`(?i)(api_key|secret|password|private_key|token|auth_token)\s*[:=]\s*['"]([a-zA-Z0-9_\-\.]{16,})['"]`),
 				}

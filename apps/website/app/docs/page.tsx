@@ -25,6 +25,9 @@ export const metadata: Metadata = {
     title: "Documentation — AutoDev",
     description: "Bootstrap developer workstations with one command.",
   },
+  alternates: {
+    canonical: "https://autodevs.dev/docs",
+  },
 };
 
 export default function DocsPage() {

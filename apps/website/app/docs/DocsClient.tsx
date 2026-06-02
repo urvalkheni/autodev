@@ -518,6 +518,243 @@ export default function DocsClient() {
       ),
     },
     {
+      id: "cmd-create",
+      category: "Commands",
+      title: "autodev create",
+      content: (
+        <>
+          <h1 className="text-4xl font-black text-white mb-6 uppercase tracking-tight">
+            autodev create
+          </h1>
+          <p className="text-neutral-300 leading-relaxed mb-4">
+            The{" "}
+            <code className="text-[#FFD700] font-mono bg-[#111] px-1 py-0.5 rounded text-sm">
+              create
+            </code>{" "}
+            command generates a new pre-configured boilerplate project matching standard developer profiles with all build configurations, linters, layout conventions, and git hooks already in place.
+          </p>
+          {renderCodeBlock("cmd-create-run", "autodev create [template] [project-name]")}
+          <p className="text-neutral-300 mb-4">Supported templates include:</p>
+          <ul className="list-disc pl-5 mb-4 space-y-2 text-neutral-300 font-sans">
+            <li>
+              <strong>react-ts</strong> (or <strong>react</strong>): Vite + React + TypeScript + Tailwind CSS
+            </li>
+            <li>
+              <strong>nextjs</strong> (or <strong>next</strong>): Next.js App Router + TypeScript + Tailwind + Docker
+            </li>
+            <li>
+              <strong>ai-chatbot</strong> (or <strong>ai-agent</strong>): React chatbot UI + Express.js backend + Google Gemini 2.5 Flash SDK
+            </li>
+            <li>
+              <strong>mern-stack</strong> (or <strong>mern</strong>): Mongo + Express + React + Node.js multi-container setup via Docker Compose
+            </li>
+            <li>
+              <strong>flutter-app</strong> (or <strong>flutter</strong>): Cross-platform Flutter App structured with Clean Architecture conventions
+            </li>
+          </ul>
+          <Callout type="tip" title="Setup Time Comparison">
+            Generating a template with <code className="text-[#00FF87] font-mono font-bold bg-[#111] px-1.5 py-0.5 rounded">autodev create</code> is up to <strong>99% faster</strong> than prompts-based AI configuration, reducing typical API costs by <strong>80% or more</strong>.
+          </Callout>
+        </>
+      ),
+    },
+    {
+      id: "cmd-clone",
+      category: "Commands",
+      title: "autodev clone",
+      content: (
+        <>
+          <h1 className="text-4xl font-black text-white mb-6 uppercase tracking-tight">
+            autodev clone
+          </h1>
+          <p className="text-neutral-300 leading-relaxed mb-4">
+            The{" "}
+            <code className="text-[#FFD700] font-mono bg-[#111] px-1 py-0.5 rounded text-sm">
+              clone
+            </code>{" "}
+            command clones a Git repository, runs a deep stack technology scan, and automatically installs all missing dependencies, runtimes, and compiler toolchains.
+          </p>
+          {renderCodeBlock("cmd-clone-run", "autodev clone <repository-url> [target-directory]")}
+          <p className="text-neutral-300 leading-relaxed mb-4">
+            This streamlines developer onboarding to a single command. By pairing cloning with automated environment detection and installation, a newly cloned repository is immediately ready to run and build.
+          </p>
+        </>
+      ),
+    },
+    {
+      id: "cmd-install",
+      category: "Commands",
+      title: "autodev install",
+      content: (
+        <>
+          <h1 className="text-4xl font-black text-white mb-6 uppercase tracking-tight">
+            autodev install
+          </h1>
+          <p className="text-neutral-300 leading-relaxed mb-4">
+            The{" "}
+            <code className="text-[#FFD700] font-mono bg-[#111] px-1 py-0.5 rounded text-sm">
+              install
+            </code>{" "}
+            command installs a specific developer tool, compiler runtime, or SDK directly to your system path.
+          </p>
+          {renderCodeBlock("cmd-install-run", "autodev install <tool>")}
+          <p className="text-neutral-300 mb-4">Supported tools and runtimes include:</p>
+          <div className="grid grid-cols-2 gap-2 text-sm text-neutral-400 font-mono mb-4 max-w-md">
+            <div>• nodejs</div>
+            <div>• go</div>
+            <div>• python</div>
+            <div>• rust</div>
+            <div>• docker</div>
+            <div>• bun</div>
+            <div>• pnpm</div>
+            <div>• java</div>
+            <div>• terraform</div>
+            <div>• kubectl</div>
+            <div>• php</div>
+            <div>• ruby</div>
+          </div>
+        </>
+      ),
+    },
+    {
+      id: "cmd-skills",
+      category: "Commands",
+      title: "autodev skills",
+      content: (
+        <>
+          <h1 className="text-4xl font-black text-white mb-6 uppercase tracking-tight">
+            autodev skills
+          </h1>
+          <p className="text-neutral-300 leading-relaxed mb-4">
+            The{" "}
+            <code className="text-[#FFD700] font-mono bg-[#111] px-1 py-0.5 rounded text-sm">
+              skills
+            </code>{" "}
+            command analyzes your developer profiles and commits in local git history to map out and output a personalized skills progression and learning path directly in the terminal (TUI).
+          </p>
+          {renderCodeBlock("cmd-skills-run", "autodev skills")}
+          <p className="text-neutral-300 leading-relaxed mb-4">
+            It integrates with skills.sh profiles and exports a telemetry summary `.autodev-skills.md` to feed relevant skills and framework contexts directly to AI Coding Assistants, improving accuracy.
+          </p>
+        </>
+      ),
+    },
+    {
+      id: "cmd-mcp",
+      category: "Commands",
+      title: "autodev mcp",
+      content: (
+        <>
+          <h1 className="text-4xl font-black text-white mb-6 uppercase tracking-tight">
+            autodev mcp
+          </h1>
+          <p className="text-neutral-300 leading-relaxed mb-4">
+            The{" "}
+            <code className="text-[#FFD700] font-mono bg-[#111] px-1 py-0.5 rounded text-sm">
+              mcp
+            </code>{" "}
+            command launches the AutoDev Model Context Protocol (MCP) server.
+          </p>
+          {renderCodeBlock("cmd-mcp-run", "autodev mcp")}
+          <p className="text-neutral-300 leading-relaxed mb-4">
+            This server exposes environment diagnostics, security auditing, and tool installation commands as MCP tools that AI assistants (like Claude, Cursor, Windsurf, Roo-Cline) can interact with directly and securely.
+          </p>
+        </>
+      ),
+    },
+    {
+      id: "cmd-benchmark",
+      category: "Commands",
+      title: "autodev benchmark",
+      content: (
+        <>
+          <h1 className="text-4xl font-black text-white mb-6 uppercase tracking-tight">
+            autodev benchmark
+          </h1>
+          <p className="text-neutral-300 leading-relaxed mb-4">
+            The{" "}
+            <code className="text-[#FFD700] font-mono bg-[#111] px-1 py-0.5 rounded text-sm">
+              benchmark
+            </code>{" "}
+            command measures and prints AI efficiency comparisons comparing standard prompting vs AutoDev&apos;s telemetry integration.
+          </p>
+          {renderCodeBlock("cmd-benchmark-run", "autodev benchmark")}
+          <p className="text-neutral-300 leading-relaxed mb-4">
+            It demonstrates the token usage, response latency, and cost savings achieved when using AutoDev metadata rules files to keep context windows small and compact.
+          </p>
+        </>
+      ),
+    },
+    {
+      id: "cmd-report",
+      category: "Commands",
+      title: "autodev report",
+      content: (
+        <>
+          <h1 className="text-4xl font-black text-white mb-6 uppercase tracking-tight">
+            autodev report
+          </h1>
+          <p className="text-neutral-300 leading-relaxed mb-4">
+            The{" "}
+            <code className="text-[#FFD700] font-mono bg-[#111] px-1 py-0.5 rounded text-sm">
+              report
+            </code>{" "}
+            command generates a comprehensive configuration report of your developer environment in HTML, PDF, or JSON format.
+          </p>
+          {renderCodeBlock("cmd-report-run", "autodev report")}
+          <p className="text-neutral-300 leading-relaxed mb-4">
+            This is extremely useful for compliance audits, team alignment, or archiving developer environment requirements alongside your codebase.
+          </p>
+        </>
+      ),
+    },
+    {
+      id: "cmd-github",
+      category: "Commands",
+      title: "autodev github",
+      content: (
+        <>
+          <h1 className="text-4xl font-black text-white mb-6 uppercase tracking-tight">
+            autodev github
+          </h1>
+          <p className="text-neutral-300 leading-relaxed mb-4">
+            The{" "}
+            <code className="text-[#FFD700] font-mono bg-[#111] px-1 py-0.5 rounded text-sm">
+              github
+            </code>{" "}
+            command scans all public repositories belonging to a specified GitHub user or organization to map out the collective technology footprint.
+          </p>
+          {renderCodeBlock("cmd-github-run", "autodev github <username>")}
+          <p className="text-neutral-300 leading-relaxed mb-4">
+            It provides valuable aggregate statistics on primary languages, framework prevalence, and tooling usage across their entire public code catalog.
+          </p>
+        </>
+      ),
+    },
+    {
+      id: "cmd-exec",
+      category: "Commands",
+      title: "autodev exec",
+      content: (
+        <>
+          <h1 className="text-4xl font-black text-white mb-6 uppercase tracking-tight">
+            autodev exec
+          </h1>
+          <p className="text-neutral-300 leading-relaxed mb-4">
+            The{" "}
+            <code className="text-[#FFD700] font-mono bg-[#111] px-1 py-0.5 rounded text-sm">
+              exec
+            </code>{" "}
+            command runs a specific command directly inside a configured AutoDev virtual sandboxed or path-resolved environment.
+          </p>
+          {renderCodeBlock("cmd-exec-run", "autodev exec <command>")}
+          <p className="text-neutral-300 leading-relaxed mb-4">
+            It dynamically maps local path runtimes, environment variables, and configurations on the fly to ensure commands execute with the correct tool versions without polluting your host shell environment.
+          </p>
+        </>
+      ),
+    },
+    {
       id: "lockfiles",
       category: "Advanced",
       title: "Reproducible Lockfiles",

@@ -74,6 +74,10 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${spaceGrotesk.variable} ${jetbrainsMono.variable}`}
     >
+      <head>
+        <link rel="preconnect" href="https://api.github.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://api.counterapi.dev" crossOrigin="anonymous" />
+      </head>
       <body className="font-space antialiased">
         <script
           type="application/ld+json"

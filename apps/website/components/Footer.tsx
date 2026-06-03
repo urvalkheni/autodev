@@ -124,10 +124,10 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-[#1A1A1A] pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-neutral-500">
+          <p className="text-xs text-neutral-400">
             © 2026 AutoDev Contributors — MIT License
           </p>
-          <p className="text-xs text-neutral-500 font-mono">
+          <p className="text-xs text-neutral-400 font-mono">
             Clone. Scan. Install. Build.
           </p>
         </div>

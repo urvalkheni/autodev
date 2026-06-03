@@ -88,8 +88,8 @@ export default function InstallMethods() {
                   </>
                 ) : (
                   <>
-                    <Copy className="w-3.5 h-3.5 text-neutral-500 group-hover:text-[#FFD700] transition-colors" />
-                    <span className="text-[10px] text-neutral-500 group-hover:text-[#FFD700] font-mono transition-colors">
+                    <Copy className="w-3.5 h-3.5 text-neutral-400 group-hover:text-[#FFD700] transition-colors" />
+                    <span className="text-[10px] text-neutral-400 group-hover:text-[#FFD700] font-mono transition-colors">
                       Copy
                     </span>
                   </>

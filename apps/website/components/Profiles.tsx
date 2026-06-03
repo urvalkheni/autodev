@@ -181,7 +181,7 @@ export default function Profiles() {
               <div className="text-neutral-400 mt-2">
                 {current.icon} {current.name}
               </div>
-              <div className="text-neutral-500"> {current.desc}</div>
+              <div className="text-neutral-400"> {current.desc}</div>
               <div className="mt-3 text-[#4A90E2]">
                 Packages ({current.packages.length}):
               </div>

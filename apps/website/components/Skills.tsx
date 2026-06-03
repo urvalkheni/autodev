@@ -315,7 +315,7 @@ export default function Skills() {
       case "Detected":
         return "#FFD700";
       default:
-        return "#888";
+        return "#A3A3A3";
     }
   };
 
@@ -328,7 +328,7 @@ export default function Skills() {
       case "Low":
         return "border-[#4A90E2] text-[#4A90E2]";
       default:
-        return "border-[#888] text-[#888]";
+        return "border-neutral-400 text-neutral-400";
     }
   };
 
@@ -629,7 +629,7 @@ export default function Skills() {
                         {copiedCmd === c.cmd ? (
                           <Check className="w-3.5 h-3.5 text-[#00FF87]" />
                         ) : (
-                          <Copy className="w-3.5 h-3.5 text-neutral-500 group-hover:text-[#FFD700] transition-colors" />
+                          <Copy className="w-3.5 h-3.5 text-neutral-400 group-hover:text-[#FFD700] transition-colors" />
                         )}
                       </span>
                     </div>

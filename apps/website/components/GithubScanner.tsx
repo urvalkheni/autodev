@@ -326,7 +326,7 @@ export default function GithubScanner() {
               {loading ? "SCANNING..." : "SCAN →"}
             </button>
           </form>
-          <p className="text-xs text-neutral-500 font-mono">
+          <p className="text-xs text-neutral-400 font-mono">
             Or run:{" "}
             <span className="text-[#FFD700]">
               autodev github {username || "USERNAME"}
@@ -363,11 +363,11 @@ export default function GithubScanner() {
                   );
                 })
             ) : loading ? (
-              <div className="py-8 text-center text-neutral-500 font-mono text-xs animate-pulse">
+              <div className="py-8 text-center text-neutral-400 font-mono text-xs animate-pulse">
                 Analyzing repositories...
               </div>
             ) : (
-              <div className="py-8 text-center text-neutral-500 font-mono text-xs">
+              <div className="py-8 text-center text-neutral-400 font-mono text-xs">
                 No languages detected.
               </div>
             )}

@@ -75,7 +75,7 @@ export default function Navbar() {
             <Link
               key={link.name}
               href={link.href}
-              className="text-[#888] hover:text-[#FFD700] transition-colors"
+              className="text-neutral-400 hover:text-[#FFD700] transition-colors"
             >
               {link.name}
             </Link>
@@ -86,7 +86,7 @@ export default function Navbar() {
         <div className="hidden md:flex items-center gap-4">
           {/* Views Button */}
           {views !== null && (
-            <div className="flex items-center gap-1.5 px-3 py-1.5 border border-[#2A2A2A] bg-[#111] text-xs font-mono font-bold text-[#888]">
+            <div className="flex items-center gap-1.5 px-3 py-1.5 border border-[#2A2A2A] bg-[#111] text-xs font-mono font-bold text-neutral-400">
               <Eye className="w-3.5 h-3.5 text-[#FFD700]" />
               <span>{views.toLocaleString()} VIEWS</span>
             </div>
@@ -146,7 +146,7 @@ export default function Navbar() {
         <div className="flex lg:hidden items-center gap-2.5">
           {/* Compact views display for mobile */}
           {views !== null && (
-            <div className="flex items-center gap-1 px-2 py-1 border border-[#2A2A2A] bg-[#111] text-[10px] font-mono text-[#888]">
+            <div className="flex items-center gap-1 px-2 py-1 border border-[#2A2A2A] bg-[#111] text-[10px] font-mono text-neutral-400">
               <Eye className="w-3.5 h-3.5 text-[#FFD700]" />
               <span>{views}</span>
             </div>

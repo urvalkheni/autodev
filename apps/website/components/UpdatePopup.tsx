@@ -164,7 +164,7 @@ export default function UpdatePopup() {
               </div>
 
               <div className="flex items-center gap-2 font-mono text-xs text-[#00FF87] truncate select-all">
-                <TermIcon className="w-3.5 h-3.5 text-neutral-600 shrink-0" />
+                <TermIcon className="w-3.5 h-3.5 text-neutral-400 shrink-0" />
                 <span>{updateMethods[activeTab].cmd}</span>
               </div>
             </div>

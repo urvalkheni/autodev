@@ -24,7 +24,7 @@ const lines = [
   {
     delay: 2300,
     text: "> [User selects: Languages → Python, Go, Node.js]",
-    color: "#888",
+    color: "#A3A3A3",
   },
   { delay: 2800, text: "", color: "#888" },
   { delay: 2900, text: "  Installing 🐍 Python...", color: "#FFD700" },

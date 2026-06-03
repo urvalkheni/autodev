@@ -442,7 +442,7 @@ export default function Categories() {
         <div className="grid grid-cols-1 lg:grid-cols-[240px_1fr] min-h-[500px]">
           {/* Sidebar */}
           <div className="border-b-4 lg:border-b-0 lg:border-r-4 border-[#2A2A2A] bg-[#0E0E0E] p-4 flex flex-row lg:flex-col overflow-x-auto lg:overflow-x-visible gap-2 lg:space-y-2 scrollbar-none whitespace-nowrap lg:whitespace-normal">
-            <p className="hidden lg:block text-[10px] font-bold text-neutral-500 uppercase tracking-wider pl-2 mb-2 font-mono">
+            <p className="hidden lg:block text-[10px] font-bold text-neutral-400 uppercase tracking-wider pl-2 mb-2 font-mono">
               Categories
             </p>
             {categories.map((cat) => (
@@ -460,7 +460,7 @@ export default function Categories() {
                   <span className="text-base">{cat.icon}</span>
                   <span>{cat.label}</span>
                 </div>
-                <span className="font-mono text-[10px] bg-black border border-[#2A2A2A] text-neutral-500 px-1.5 py-0.5 font-bold rounded ml-2">
+                <span className="font-mono text-[10px] bg-black border border-[#2A2A2A] text-neutral-400 px-1.5 py-0.5 font-bold rounded ml-2">
                   {cat.id === "all"
                     ? packages.length
                     : packages.filter((p) => p.category === cat.id).length}
@@ -470,7 +470,7 @@ export default function Categories() {
 
             {/* Smart Collections Divider / Text */}
             <div className="hidden lg:block pt-4 border-t border-[#2A2A2A] mt-4" />
-            <p className="hidden lg:block text-[10px] font-bold text-neutral-500 uppercase tracking-wider pl-2 mb-2 font-mono">
+            <p className="hidden lg:block text-[10px] font-bold text-neutral-400 uppercase tracking-wider pl-2 mb-2 font-mono">
               Smart Collections
             </p>
 
@@ -490,7 +490,7 @@ export default function Categories() {
                 <span>📦</span>
                 <span>Installed</span>
               </div>
-              <span className="font-mono text-[10px] bg-black border border-[#2A2A2A] text-neutral-500 px-1.5 py-0.5 font-bold rounded ml-2">
+              <span className="font-mono text-[10px] bg-black border border-[#2A2A2A] text-neutral-400 px-1.5 py-0.5 font-bold rounded ml-2">
                 {installedCount}
               </span>
             </button>
@@ -617,7 +617,7 @@ export default function Categories() {
                     </div>
 
                     {/* Bottom row info */}
-                    <div className="mt-4 pt-3 border-t border-[#2A2A2A] flex items-center justify-between text-[10px] font-mono text-neutral-500 font-semibold">
+                    <div className="mt-4 pt-3 border-t border-[#2A2A2A] flex items-center justify-between text-[10px] font-mono text-neutral-400 font-semibold">
                       <span>Size: {pkg.size}</span>
                       <button
                         onClick={() => setSelectedApp(pkg)}
@@ -657,7 +657,7 @@ export default function Categories() {
                     <span className="w-2 h-2 rounded-full bg-[#FFBD2E]" />
                     <span className="w-2 h-2 rounded-full bg-[#27C93F]" />
                   </div>
-                  <span className="text-[10px] text-neutral-500 ml-2 font-mono">
+                  <span className="text-[10px] text-neutral-400 ml-2 font-mono">
                     autodev cli compiler
                   </span>
                 </div>
@@ -815,7 +815,7 @@ export default function Categories() {
                 {/* Metadata details */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 border-y border-[#2A2A2A] py-4 my-2">
                   <div>
-                    <span className="block text-[10px] font-mono text-neutral-500 uppercase">
+                    <span className="block text-[10px] font-mono text-neutral-400 uppercase">
                       Developer
                     </span>
                     <span className="text-xs font-bold text-white block mt-0.5 truncate">
@@ -823,7 +823,7 @@ export default function Categories() {
                     </span>
                   </div>
                   <div>
-                    <span className="block text-[10px] font-mono text-neutral-500 uppercase">
+                    <span className="block text-[10px] font-mono text-neutral-400 uppercase">
                       File Size
                     </span>
                     <span className="text-xs font-bold text-white block mt-0.5">
@@ -831,7 +831,7 @@ export default function Categories() {
                     </span>
                   </div>
                   <div>
-                    <span className="block text-[10px] font-mono text-neutral-500 uppercase">
+                    <span className="block text-[10px] font-mono text-neutral-400 uppercase">
                       License
                     </span>
                     <span className="text-xs font-bold text-white block mt-0.5">
@@ -839,7 +839,7 @@ export default function Categories() {
                     </span>
                   </div>
                   <div>
-                    <span className="block text-[10px] font-mono text-neutral-500 uppercase">
+                    <span className="block text-[10px] font-mono text-neutral-400 uppercase">
                       Category
                     </span>
                     <span className="text-xs font-bold text-[#FFD700] block mt-0.5 capitalize">

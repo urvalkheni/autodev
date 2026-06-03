@@ -77,7 +77,7 @@ export default function Terminal() {
           <h2 className="text-4xl font-black text-white mb-3">
             SEE IT IN ACTION
           </h2>
-          <p className="text-[#666]">
+          <p className="text-neutral-400">
             Run <code className="text-[#FFD700] font-mono">autodev setup</code>{" "}
             in any project and the interactive installer opens.
           </p>
@@ -90,7 +90,7 @@ export default function Terminal() {
               <span className="terminal-dot bg-[#FF5F56]" />
               <span className="terminal-dot bg-[#FFBD2E]" />
               <span className="terminal-dot bg-[#27C93F]" />
-              <span className="text-xs text-[#555] ml-3 font-mono">
+              <span className="text-xs text-neutral-400 ml-3 font-mono">
                 autodev — bash
               </span>
             </div>

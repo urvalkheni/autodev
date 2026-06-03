@@ -2,14 +2,7 @@
 import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import {
-  Copy,
-  Check,
-  Sparkles,
-  Shield,
-  Cpu,
-  Database,
-} from "lucide-react";
+import { Copy, Check, Sparkles, Shield, Cpu, Database } from "lucide-react";
 import { trackTemplateView, trackTemplateCopy } from "../../utils/analytics";
 
 export default function MernTemplatePage() {

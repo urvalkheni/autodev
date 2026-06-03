@@ -78,10 +78,12 @@ autodev create react-ts    # Standard React, Vite builder, Tailwind styles
 
 > [!TIP]
 > **How it compares to `npm create`:**
+>
 > - **`npm create`**: Downloads a package and writes basic project skeleton files. The developer must manually run `npm install` before running the project.
-> - **`autodev create`**: Generates complete boilerplate files (folder structure, setups for Tailwind/PostCSS, multi-stage Dockerfiles, linter configs, CI/CD GitHub workflows) **AND automatically executes dependency installations (`pnpm/bun/yarn/npm install` or `flutter pub get`) on the fly**. 
+> - **`autodev create`**: Generates complete boilerplate files (folder structure, setups for Tailwind/PostCSS, multi-stage Dockerfiles, linter configs, CI/CD GitHub workflows) **AND automatically executes dependency installations (`pnpm/bun/yarn/npm install` or `flutter pub get`) on the fly**.
 >
 > You are ready to build instantly! Simply run:
+>
 > ```bash
 > autodev create ai-chatbot my-agent-app
 > cd my-agent-app

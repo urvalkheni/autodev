@@ -297,7 +297,7 @@ export default function GithubScanner() {
         <h2 className="text-5xl font-black text-white mt-2 mb-4 font-mono">
           SCAN ANY GITHUB USER
         </h2>
-        <p className="text-[#888] max-w-xl font-mono text-sm">
+        <p className="text-neutral-400 max-w-xl font-mono text-sm">
           AutoDev reads all public repos, detects languages, and generates a
           setup plan.
         </p>
@@ -307,7 +307,7 @@ export default function GithubScanner() {
         {/* Input */}
         <div>
           <form onSubmit={handleScanSubmit} className="flex gap-0 mb-4">
-            <div className="border-2 border-r-0 border-[#2A2A2A] px-4 py-3 text-[#555] font-mono text-sm bg-[#111] whitespace-nowrap select-none">
+            <div className="border-2 border-r-0 border-[#2A2A2A] px-4 py-3 text-neutral-400 font-mono text-sm bg-[#111] whitespace-nowrap select-none">
               autodev github
             </div>
             <input
@@ -316,7 +316,7 @@ export default function GithubScanner() {
               onChange={(e) => setUsername(e.target.value)}
               placeholder="USERNAME"
               disabled={loading}
-              className="flex-1 border-2 border-[#FFD700] bg-black text-white font-mono text-sm px-4 py-3 outline-none focus:shadow-[4px_4px_0_#FFD700] transition-shadow placeholder:text-[#444] min-w-0"
+              className="flex-1 border-2 border-[#FFD700] bg-black text-white font-mono text-sm px-4 py-3 outline-none focus:shadow-[4px_4px_0_#FFD700] transition-shadow placeholder:text-neutral-500 min-w-0"
             />
             <button
               type="submit"
@@ -326,7 +326,7 @@ export default function GithubScanner() {
               {loading ? "SCANNING..." : "SCAN →"}
             </button>
           </form>
-          <p className="text-xs text-[#555] font-mono">
+          <p className="text-xs text-neutral-500 font-mono">
             Or run:{" "}
             <span className="text-[#FFD700]">
               autodev github {username || "USERNAME"}
@@ -335,9 +335,9 @@ export default function GithubScanner() {
 
           {/* Language bars */}
           <div className="mt-8 border-2 border-[#2A2A2A] p-5">
-            <h4 className="font-bold text-white mb-4 text-sm uppercase tracking-wider font-mono">
+            <h3 className="font-bold text-white mb-4 text-sm uppercase tracking-wider font-mono">
               Languages Detected
-            </h4>
+            </h3>
             {showStats && Object.keys(data.languages).length > 0 ? (
               Object.entries(data.languages)
                 .sort((a, b) => b[1] - a[1])
@@ -347,8 +347,8 @@ export default function GithubScanner() {
                   return (
                     <div key={lang} className="mb-3">
                       <div className="flex justify-between text-xs mb-1 font-mono">
-                        <span className="text-[#888]">{lang}</span>
-                        <span className="text-[#555]">{count} repos</span>
+                        <span className="text-neutral-400">{lang}</span>
+                        <span className="text-neutral-400">{count} repos</span>
                       </div>
                       <div className="h-2 bg-[#1A1A1A] border border-[#2A2A2A]">
                         <motion.div
@@ -363,11 +363,11 @@ export default function GithubScanner() {
                   );
                 })
             ) : loading ? (
-              <div className="py-8 text-center text-[#555] font-mono text-xs animate-pulse">
+              <div className="py-8 text-center text-neutral-500 font-mono text-xs animate-pulse">
                 Analyzing repositories...
               </div>
             ) : (
-              <div className="py-8 text-center text-[#555] font-mono text-xs">
+              <div className="py-8 text-center text-neutral-500 font-mono text-xs">
                 No languages detected.
               </div>
             )}
@@ -380,7 +380,7 @@ export default function GithubScanner() {
             <span className="terminal-dot bg-[#FF5F56] w-3 h-3 rounded-full mr-1.5 inline-block" />
             <span className="terminal-dot bg-[#FFBD2E] w-3 h-3 rounded-full mr-1.5 inline-block" />
             <span className="terminal-dot bg-[#27C93F] w-3 h-3 rounded-full mr-1.5 inline-block" />
-            <span className="text-xs text-[#555] ml-3 font-mono select-none">
+            <span className="text-xs text-neutral-400 ml-3 font-mono select-none">
               autodev github {loading ? username : data.username}
             </span>
           </div>
@@ -389,7 +389,7 @@ export default function GithubScanner() {
               {terminalLines.map((line, idx) => {
                 const isError = line.startsWith("❌");
                 const isSuccess = line.startsWith("✓");
-                let colorClass = "text-[#888]";
+                let colorClass = "text-neutral-400";
                 if (isError) colorClass = "text-[#FF5F56]";
                 else if (isSuccess) colorClass = "text-[#00FF87]";
                 else if (idx === 0) colorClass = "text-[#00FF87] font-bold";
@@ -445,7 +445,7 @@ export default function GithubScanner() {
                     {data.skills.map((s) => (
                       <span
                         key={s}
-                        className="text-xs bg-[#111] border border-[#2A2A2A] px-2 py-0.5 text-[#888]"
+                        className="text-xs bg-[#111] border border-[#2A2A2A] px-2 py-0.5 text-neutral-400"
                       >
                         ↗ {s}
                       </span>

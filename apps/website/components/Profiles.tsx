@@ -119,7 +119,7 @@ export default function Profiles() {
           <h2 className="text-5xl font-black text-white mt-2 mb-4">
             DEVELOPER PROFILES
           </h2>
-          <p className="text-[#888] max-w-xl">
+          <p className="text-neutral-400 max-w-xl">
             Pick your role. AutoDev installs everything — with smart dependency
             resolution.
           </p>
@@ -139,12 +139,12 @@ export default function Profiles() {
               <h3 className="font-black text-lg text-white mb-1">
                 {prof.name}
               </h3>
-              <p className="text-sm text-[#666] mb-4">{prof.desc}</p>
+              <p className="text-sm text-neutral-400 mb-4">{prof.desc}</p>
               <div className="flex flex-wrap gap-1">
                 {prof.packages.slice(0, 5).map((pkg) => (
                   <span
                     key={pkg}
-                    className="text-[10px] px-2 py-0.5 border border-[#333] text-[#888] font-mono"
+                    className="text-[10px] px-2 py-0.5 border border-[#333] text-neutral-400 font-mono"
                   >
                     {pkg}
                   </span>
@@ -170,18 +170,18 @@ export default function Profiles() {
               <span className="terminal-dot bg-[#FF5F56]" />
               <span className="terminal-dot bg-[#FFBD2E]" />
               <span className="terminal-dot bg-[#27C93F]" />
-              <span className="text-xs text-[#555] ml-3">
+              <span className="text-xs text-neutral-400 ml-3">
                 {current.name} Profile
               </span>
             </div>
-            <div className="px-6 py-5 font-mono text-sm space-y-1">
+            <div className="px-6 py-5 font-mono text-sm space-y-1 bg-black">
               <div className="text-[#00FF87]">
                 $ autodev profile {current.id}
               </div>
-              <div className="text-[#888] mt-2">
+              <div className="text-neutral-400 mt-2">
                 {current.icon} {current.name}
               </div>
-              <div className="text-[#555]"> {current.desc}</div>
+              <div className="text-neutral-500"> {current.desc}</div>
               <div className="mt-3 text-[#4A90E2]">
                 Packages ({current.packages.length}):
               </div>

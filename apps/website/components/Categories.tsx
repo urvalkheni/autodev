@@ -390,7 +390,7 @@ export default function Categories() {
             <span className="text-[#FFD700]">FOR DEVELOPERS.</span>
           </h2>
         </div>
-        <p className="text-[#888] max-w-md text-sm md:text-base leading-relaxed lg:text-right font-medium">
+        <p className="text-neutral-300 max-w-md text-sm md:text-base leading-relaxed lg:text-right font-medium">
           Select developer tools, databases, and language runtimes. Install them
           cleanly with a single command on your terminal. Try it live below.
         </p>
@@ -406,10 +406,10 @@ export default function Categories() {
               <span className="w-3 h-3 rounded-full bg-[#FFBD2E]" />
               <span className="w-3 h-3 rounded-full bg-[#27C93F]" />
             </div>
-            <div className="text-xs font-mono bg-black border border-[#2A2A2A] text-[#888] px-3 py-1 font-bold">
+            <div className="text-xs font-mono bg-black border border-[#2A2A2A] text-neutral-400 px-3 py-1 font-bold">
               STOREFRONT VERIFIED
             </div>
-            <div className="text-xs text-[#666] font-mono hidden sm:block">
+            <div className="text-xs text-neutral-400 font-mono hidden sm:block">
               Installed:{" "}
               <span className="text-[#00FF87] font-bold">
                 {installedCount} / {packages.length}
@@ -419,18 +419,18 @@ export default function Categories() {
 
           {/* Search bar */}
           <div className="relative w-full md:w-80">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#888]" />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
             <input
               type="text"
               placeholder="Search CLI compilers, DBs, tools..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-black border-2 border-[#2A2A2A] py-1.5 pl-10 pr-4 text-sm font-mono text-white placeholder-[#555] focus:outline-none focus:border-[#FFD700] transition-colors"
+              className="w-full bg-black border-2 border-[#2A2A2A] py-1.5 pl-10 pr-4 text-sm font-mono text-white placeholder-neutral-600 focus:outline-none focus:border-[#FFD700] transition-colors"
             />
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery("")}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#888] hover:text-white"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-white"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -442,7 +442,7 @@ export default function Categories() {
         <div className="grid grid-cols-1 lg:grid-cols-[240px_1fr] min-h-[500px]">
           {/* Sidebar */}
           <div className="border-b-4 lg:border-b-0 lg:border-r-4 border-[#2A2A2A] bg-[#0E0E0E] p-4 flex flex-row lg:flex-col overflow-x-auto lg:overflow-x-visible gap-2 lg:space-y-2 scrollbar-none whitespace-nowrap lg:whitespace-normal">
-            <p className="hidden lg:block text-[10px] font-bold text-[#555] uppercase tracking-wider pl-2 mb-2 font-mono">
+            <p className="hidden lg:block text-[10px] font-bold text-neutral-500 uppercase tracking-wider pl-2 mb-2 font-mono">
               Categories
             </p>
             {categories.map((cat) => (
@@ -453,14 +453,14 @@ export default function Categories() {
                   ${
                     activeCategory === cat.id
                       ? "border-[#FFD700] text-[#FFD700] bg-[#FFD70010]"
-                      : "border-transparent text-[#888] hover:border-[#2A2A2A] hover:text-white"
+                      : "border-transparent text-neutral-400 hover:border-[#2A2A2A] hover:text-white"
                   }`}
               >
                 <div className="flex items-center gap-2.5">
                   <span className="text-base">{cat.icon}</span>
                   <span>{cat.label}</span>
                 </div>
-                <span className="font-mono text-[10px] bg-black border border-[#2A2A2A] text-[#555] px-1.5 py-0.5 font-bold rounded ml-2">
+                <span className="font-mono text-[10px] bg-black border border-[#2A2A2A] text-neutral-500 px-1.5 py-0.5 font-bold rounded ml-2">
                   {cat.id === "all"
                     ? packages.length
                     : packages.filter((p) => p.category === cat.id).length}
@@ -470,7 +470,7 @@ export default function Categories() {
 
             {/* Smart Collections Divider / Text */}
             <div className="hidden lg:block pt-4 border-t border-[#2A2A2A] mt-4" />
-            <p className="hidden lg:block text-[10px] font-bold text-[#555] uppercase tracking-wider pl-2 mb-2 font-mono">
+            <p className="hidden lg:block text-[10px] font-bold text-neutral-500 uppercase tracking-wider pl-2 mb-2 font-mono">
               Smart Collections
             </p>
 
@@ -483,14 +483,14 @@ export default function Categories() {
                 ${
                   activeCategory === "installed"
                     ? "border-[#00FF87] text-[#00FF87] bg-[#00FF8710]"
-                    : "border-transparent text-[#888] hover:border-[#2A2A2A] hover:text-white"
+                    : "border-transparent text-neutral-400 hover:border-[#2A2A2A] hover:text-white"
                 }`}
             >
               <div className="flex items-center gap-2.5">
                 <span>📦</span>
                 <span>Installed</span>
               </div>
-              <span className="font-mono text-[10px] bg-black border border-[#2A2A2A] text-[#555] px-1.5 py-0.5 font-bold rounded ml-2">
+              <span className="font-mono text-[10px] bg-black border border-[#2A2A2A] text-neutral-500 px-1.5 py-0.5 font-bold rounded ml-2">
                 {installedCount}
               </span>
             </button>
@@ -508,10 +508,10 @@ export default function Categories() {
                   <div className="inline-block text-[10px] font-black bg-[#FFD700] text-black px-2 py-0.5 uppercase tracking-wide">
                     Featured Environment Tool
                   </div>
-                  <h4 className="text-2xl font-black text-white">
+                  <h3 className="text-2xl font-black text-white">
                     NEOVIM v0.10.0
-                  </h4>
-                  <p className="text-xs text-[#aaa] leading-relaxed">
+                  </h3>
+                  <p className="text-xs text-neutral-300 leading-relaxed">
                     A hyper-extensible, fast, Lua-configurable terminal text
                     editor. Autodev configures it complete with pre-bundled
                     compilers and LSP servers out of the box.
@@ -532,7 +532,7 @@ export default function Categories() {
             {/* App Cards List */}
             {filteredPackages.length === 0 &&
               activeCategory === "installed" && (
-                <div className="py-12 text-center border-2 border-dashed border-[#2A2A2A] text-[#666] font-mono text-sm">
+                <div className="py-12 text-center border-2 border-dashed border-[#2A2A2A] text-neutral-400 font-mono text-sm">
                   No apps installed yet in this session. <br />
                   Click on the [GET] button next to any package to simulate an
                   installation!
@@ -541,7 +541,7 @@ export default function Categories() {
 
             {filteredPackages.length === 0 &&
               activeCategory !== "installed" && (
-                <div className="py-12 text-center border-2 border-dashed border-[#2A2A2A] text-[#666] font-mono text-sm">
+                <div className="py-12 text-center border-2 border-dashed border-[#2A2A2A] text-neutral-400 font-mono text-sm">
                   No developer tools match your search criteria.
                 </div>
               )}
@@ -567,10 +567,10 @@ export default function Categories() {
                             {pkg.icon}
                           </span>
                           <div>
-                            <h5 className="font-black text-sm text-white group-hover:text-[#FFD700] transition-colors">
+                            <h3 className="font-black text-sm text-white group-hover:text-[#FFD700] transition-colors">
                               {pkg.name}
-                            </h5>
-                            <span className="text-[10px] text-[#666] uppercase font-bold tracking-wider font-mono">
+                            </h3>
+                            <span className="text-[10px] text-neutral-400 uppercase font-bold tracking-wider font-mono">
                               {pkg.category}
                             </span>
                           </div>
@@ -590,7 +590,7 @@ export default function Categories() {
                           {state === "installing" && (
                             <button
                               disabled
-                              className="px-2 py-1 text-[10px] font-black border-2 border-[#888] text-[#888] animate-pulse"
+                              className="px-2 py-1 text-[10px] font-black border-2 border-[#888] text-neutral-400 animate-pulse"
                             >
                               LOADING...
                             </button>
@@ -611,17 +611,17 @@ export default function Categories() {
                         </div>
                       </div>
 
-                      <p className="text-xs text-[#888] leading-normal line-clamp-2 mt-2 min-h-[2rem]">
+                      <p className="text-xs text-neutral-400 leading-normal line-clamp-2 mt-2 min-h-[2rem]">
                         {pkg.desc}
                       </p>
                     </div>
 
                     {/* Bottom row info */}
-                    <div className="mt-4 pt-3 border-t border-[#2A2A2A] flex items-center justify-between text-[10px] font-mono text-[#555] font-semibold">
+                    <div className="mt-4 pt-3 border-t border-[#2A2A2A] flex items-center justify-between text-[10px] font-mono text-neutral-500 font-semibold">
                       <span>Size: {pkg.size}</span>
                       <button
                         onClick={() => setSelectedApp(pkg)}
-                        className="text-[#888] hover:text-white flex items-center gap-1"
+                        className="text-neutral-400 hover:text-white flex items-center gap-1"
                       >
                         <Info className="w-3 h-3" /> More
                       </button>
@@ -639,11 +639,11 @@ export default function Categories() {
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <Layers className="w-4 h-4 text-[#FFD700]" />
-              <h5 className="text-xs font-black text-white uppercase tracking-wider">
+              <h3 className="text-xs font-black text-white uppercase tracking-wider">
                 Installer CLI Command Builder
-              </h5>
+              </h3>
             </div>
-            <p className="text-xs text-[#888] leading-relaxed max-w-xl">
+            <p className="text-xs text-neutral-400 leading-relaxed max-w-xl">
               Install the selected environment packages on your local machine
               instantly. Copy the dynamically compiled command below and run it
               in your terminal.
@@ -657,7 +657,7 @@ export default function Categories() {
                     <span className="w-2 h-2 rounded-full bg-[#FFBD2E]" />
                     <span className="w-2 h-2 rounded-full bg-[#27C93F]" />
                   </div>
-                  <span className="text-[10px] text-[#555] ml-2 font-mono">
+                  <span className="text-[10px] text-neutral-500 ml-2 font-mono">
                     autodev cli compiler
                   </span>
                 </div>
@@ -668,7 +668,7 @@ export default function Categories() {
                     setCopiedCompiler(true);
                     setTimeout(() => setCopiedCompiler(false), 1800);
                   }}
-                  className="text-[#666] hover:text-[#FFD700] transition-colors p-1.5 flex items-center gap-1 rounded bg-[#1e1e1e] border border-[#2a2a2a] cursor-pointer"
+                  className="text-neutral-400 hover:text-[#FFD700] transition-colors p-1.5 flex items-center gap-1 rounded bg-[#1e1e1e] border border-[#2a2a2a] cursor-pointer"
                   title="Copy installation command"
                 >
                   {copiedCompiler ? (
@@ -681,7 +681,7 @@ export default function Categories() {
                   ) : (
                     <>
                       <Copy className="w-3.5 h-3.5" />
-                      <span className="text-[10px] text-[#666] font-mono pr-0.5">
+                      <span className="text-[10px] text-neutral-400 font-mono pr-0.5">
                         Copy
                       </span>
                     </>
@@ -690,7 +690,7 @@ export default function Categories() {
               </div>
               <div className="px-4 py-3 font-mono text-xs md:text-sm text-[#00FF87] flex flex-col md:flex-row md:items-center justify-between gap-4 overflow-x-auto bg-black">
                 <code className="whitespace-nowrap">
-                  <span className="text-[#555]">$</span> curl -fsSL
+                  <span className="text-neutral-500">$</span> curl -fsSL
                   https://autodevs.dev/install.sh | bash -s -- --install{" "}
                   <span className="text-[#FFD700] font-bold">
                     {selectedPackagesForCliCommand || "nodejs git"}
@@ -702,13 +702,13 @@ export default function Categories() {
 
           {/* Local Installation Terminal Logs */}
           <div className="border-2 border-[#2A2A2A] bg-black flex flex-col h-[180px] lg:h-auto overflow-hidden">
-            <div className="bg-[#111] px-3 py-1.5 border-b border-[#2A2A2A] flex items-center justify-between text-[10px] font-mono text-[#888] font-bold">
+            <div className="bg-[#111] px-3 py-1.5 border-b border-[#2A2A2A] flex items-center justify-between text-[10px] font-mono text-neutral-400 font-bold">
               <span className="flex items-center gap-1.5 text-[#00FF87]">
                 <TerminalIcon className="w-3.5 h-3.5" /> STDOUT MONITOR
               </span>
               <span>{isTerminalRunning ? "RUNNING" : "READY"}</span>
             </div>
-            <div className="p-3.5 font-mono text-[11px] leading-5 text-[#888] overflow-y-auto flex-1 space-y-0.5 select-text selection:bg-[#FFD700] selection:text-black">
+            <div className="p-3.5 font-mono text-[11px] leading-5 text-neutral-400 overflow-y-auto flex-1 space-y-0.5 select-text selection:bg-[#FFD700] selection:text-black">
               {terminalLogs.map((log, i) => (
                 <div
                   key={i}
@@ -744,7 +744,7 @@ export default function Categories() {
               {/* Close button */}
               <button
                 onClick={() => setSelectedApp(null)}
-                className="absolute right-4 top-4 p-1.5 border-2 border-[#2A2A2A] bg-black text-[#888] hover:text-white hover:border-[#FFD700] transition-all"
+                className="absolute right-4 top-4 p-1.5 border-2 border-[#2A2A2A] bg-black text-neutral-400 hover:text-white hover:border-[#FFD700] transition-all"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -758,14 +758,14 @@ export default function Categories() {
                   </span>
                   <div>
                     <div className="flex items-center gap-2.5">
-                      <h4 className="text-2xl font-black text-white">
+                      <h3 className="text-2xl font-black text-white">
                         {selectedApp.name}
-                      </h4>
-                      <span className="px-2 py-0.5 border border-[#444] bg-[#111] text-[10px] font-mono text-[#888]">
+                      </h3>
+                      <span className="px-2 py-0.5 border border-[#444] bg-[#111] text-[10px] font-mono text-neutral-400">
                         v{selectedApp.version}
                       </span>
                     </div>
-                    <p className="text-xs text-[#888] uppercase tracking-wider font-mono mt-1">
+                    <p className="text-xs text-neutral-400 uppercase tracking-wider font-mono mt-1">
                       {selectedApp.category} · {selectedApp.license}
                     </p>
                     <div className="flex gap-2 mt-3">
@@ -774,7 +774,7 @@ export default function Categories() {
                           <CheckCircle className="w-4 h-4" /> Installed locally
                         </span>
                       ) : appStates[selectedApp.id] === "installing" ? (
-                        <span className="text-xs text-[#888] font-bold animate-pulse">
+                        <span className="text-xs text-neutral-400 font-bold animate-pulse">
                           Installing via CLI...
                         </span>
                       ) : (
@@ -804,10 +804,10 @@ export default function Categories() {
 
                 {/* Description */}
                 <div className="space-y-2">
-                  <h5 className="text-xs font-bold uppercase tracking-wider text-[#FFD700] font-mono">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-[#FFD700] font-mono">
                     Overview
-                  </h5>
-                  <p className="text-sm text-[#ccc] leading-relaxed">
+                  </h4>
+                  <p className="text-sm text-neutral-300 leading-relaxed">
                     {selectedApp.longDesc}
                   </p>
                 </div>
@@ -815,7 +815,7 @@ export default function Categories() {
                 {/* Metadata details */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 border-y border-[#2A2A2A] py-4 my-2">
                   <div>
-                    <span className="block text-[10px] font-mono text-[#555] uppercase">
+                    <span className="block text-[10px] font-mono text-neutral-500 uppercase">
                       Developer
                     </span>
                     <span className="text-xs font-bold text-white block mt-0.5 truncate">
@@ -823,7 +823,7 @@ export default function Categories() {
                     </span>
                   </div>
                   <div>
-                    <span className="block text-[10px] font-mono text-[#555] uppercase">
+                    <span className="block text-[10px] font-mono text-neutral-500 uppercase">
                       File Size
                     </span>
                     <span className="text-xs font-bold text-white block mt-0.5">
@@ -831,7 +831,7 @@ export default function Categories() {
                     </span>
                   </div>
                   <div>
-                    <span className="block text-[10px] font-mono text-[#555] uppercase">
+                    <span className="block text-[10px] font-mono text-neutral-500 uppercase">
                       License
                     </span>
                     <span className="text-xs font-bold text-white block mt-0.5">
@@ -839,7 +839,7 @@ export default function Categories() {
                     </span>
                   </div>
                   <div>
-                    <span className="block text-[10px] font-mono text-[#555] uppercase">
+                    <span className="block text-[10px] font-mono text-neutral-500 uppercase">
                       Category
                     </span>
                     <span className="text-xs font-bold text-[#FFD700] block mt-0.5 capitalize">
@@ -851,14 +851,14 @@ export default function Categories() {
                 {/* Dependencies */}
                 {selectedApp.dependencies.length > 0 && (
                   <div className="space-y-2">
-                    <h5 className="text-xs font-bold uppercase tracking-wider text-[#FFD700] font-mono">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-[#FFD700] font-mono">
                       Dependencies
-                    </h5>
+                    </h4>
                     <div className="flex flex-wrap gap-1.5">
                       {selectedApp.dependencies.map((dep) => (
                         <span
                           key={dep}
-                          className="px-2.5 py-0.5 border border-[#333] bg-[#111] text-xs font-mono text-[#aaa]"
+                          className="px-2.5 py-0.5 border border-[#333] bg-[#111] text-xs font-mono text-neutral-300"
                         >
                           {dep}
                         </span>
@@ -869,10 +869,10 @@ export default function Categories() {
 
                 {/* Execution command snippet */}
                 <div className="space-y-2">
-                  <h5 className="text-xs font-bold uppercase tracking-wider text-[#FFD700] font-mono">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-[#FFD700] font-mono">
                     Run / Execute Example
-                  </h5>
-                  <div className="bg-[#111] border border-[#2A2A2A] p-3 text-xs font-mono text-[#888] flex items-center justify-between gap-4">
+                  </h4>
+                  <div className="bg-[#111] border border-[#2A2A2A] p-3 text-xs font-mono text-neutral-400 flex items-center justify-between gap-4">
                     <code className="break-all">{selectedApp.snippet}</code>
                     <button
                       onClick={() => {

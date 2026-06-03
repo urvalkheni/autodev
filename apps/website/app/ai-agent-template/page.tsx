@@ -2,14 +2,7 @@
 import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import {
-  Copy,
-  Check,
-  Sparkles,
-  Shield,
-  Cpu,
-  Bot,
-} from "lucide-react";
+import { Copy, Check, Sparkles, Shield, Cpu, Bot } from "lucide-react";
 import { trackTemplateView, trackTemplateCopy } from "../../utils/analytics";
 
 export default function AiAgentTemplatePage() {
@@ -69,7 +62,8 @@ export default function AiAgentTemplatePage() {
           <p className="text-lg md:text-xl text-slate-400 max-w-3xl leading-relaxed">
             Build your AI Agent products immediately using this pre-set
             monorepo. It features a React chatbot interface connected to an
-            Express.js backend utilizing Google&apos;s official Gemini 2.5 Flash SDK.
+            Express.js backend utilizing Google&apos;s official Gemini 2.5 Flash
+            SDK.
           </p>
         </div>
 
@@ -109,8 +103,8 @@ export default function AiAgentTemplatePage() {
                 Gemini 2.5 Flash SDK
               </h3>
               <p className="text-xs text-slate-400 leading-relaxed">
-                Backend Express route fully integrated with Google&apos;s official
-                `@google/genai` library, ready to accept prompt inputs.
+                Backend Express route fully integrated with Google&apos;s
+                official `@google/genai` library, ready to accept prompt inputs.
               </p>
             </div>
             <div className="bg-[#111] border-2 border-[#2A2A2A] p-6">

@@ -61,7 +61,9 @@ export default function InstallMethods() {
         <h2 className="text-5xl font-black text-white mt-2 mb-4">
           GET STARTED IN SECONDS
         </h2>
-        <p className="text-[#888]">Pick your preferred installation method.</p>
+        <p className="text-neutral-300">
+          Pick your preferred installation method.
+        </p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -86,15 +88,15 @@ export default function InstallMethods() {
                   </>
                 ) : (
                   <>
-                    <Copy className="w-3.5 h-3.5 text-[#555] group-hover:text-[#FFD700] transition-colors" />
-                    <span className="text-[10px] text-[#555] group-hover:text-[#FFD700] font-mono transition-colors">
+                    <Copy className="w-3.5 h-3.5 text-neutral-500 group-hover:text-[#FFD700] transition-colors" />
+                    <span className="text-[10px] text-neutral-500 group-hover:text-[#FFD700] font-mono transition-colors">
                       Copy
                     </span>
                   </>
                 )}
               </div>
             </div>
-            <p className="text-[10px] text-[#555] font-sans mb-3 ml-7">
+            <p className="text-[10px] text-neutral-400 font-sans mb-3 ml-7">
               {m.desc}
             </p>
             <div
@@ -113,7 +115,7 @@ export default function InstallMethods() {
           (os) => (
             <span
               key={os}
-              className="border-2 border-[#2A2A2A] text-[#888] text-sm font-semibold px-4 py-2"
+              className="border-2 border-[#2A2A2A] text-neutral-400 text-sm font-semibold px-4 py-2"
             >
               {os}
             </span>

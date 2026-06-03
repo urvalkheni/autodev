@@ -20,11 +20,46 @@ const words = [
   "HACKERS.",
   "CREATORS.",
 ];
-
-export default function Hero() {
+function TypingText() {
   const [text, setText] = useState("");
   const [wordIndex, setWordIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
+
+  useEffect(() => {
+    const currentWord = words[wordIndex];
+
+    const timer = setTimeout(
+      () => {
+        if (!isDeleting) {
+          if (text !== currentWord) {
+            setText(currentWord.substring(0, text.length + 1));
+          } else {
+            setIsDeleting(true);
+          }
+        } else {
+          if (text !== "") {
+            setText(currentWord.substring(0, text.length - 1));
+          } else {
+            setIsDeleting(false);
+            setWordIndex((prev) => (prev + 1) % words.length);
+          }
+        }
+      },
+      isDeleting ? 80 : text === currentWord ? 2000 : text === "" ? 300 : 120,
+    );
+
+    return () => clearTimeout(timer);
+  }, [text, isDeleting, wordIndex]);
+
+  return (
+    <span className="text-[#FFD700] inline-flex items-center min-h-[1.1em]">
+      FOR {text}
+      <span className="inline-block w-[4px] md:w-[8px] h-[0.8em] bg-[#FFD700] ml-2 align-middle animate-pulse" />
+    </span>
+  );
+}
+
+export default function Hero() {
   const [copiedQuickInstall, setCopiedQuickInstall] = useState(false);
   const [activeTab, setActiveTab] = useState<"npx" | "curl">("npx");
 
@@ -39,34 +74,14 @@ export default function Hero() {
     setTimeout(() => setCopiedQuickInstall(false), 1800);
   };
 
-  useEffect(() => {
-    const currentWord = words[wordIndex];
-    
-    const timer = setTimeout(() => {
-      if (!isDeleting) {
-        if (text !== currentWord) {
-          setText(currentWord.substring(0, text.length + 1));
-        } else {
-          setIsDeleting(true);
-        }
-      } else {
-        if (text !== "") {
-          setText(currentWord.substring(0, text.length - 1));
-        } else {
-          setIsDeleting(false);
-          setWordIndex((prev) => (prev + 1) % words.length);
-        }
-      }
-    }, isDeleting ? 80 : text === currentWord ? 2000 : text === "" ? 300 : 120);
-
-    return () => clearTimeout(timer);
-  }, [text, isDeleting, wordIndex]);
-
   return (
     <section className="pt-36 pb-24 px-6 max-w-7xl mx-auto">
       <motion.div variants={container} initial="hidden" animate="show">
         {/* Badges */}
-        <motion.div variants={item} className="mb-8 flex flex-wrap items-center gap-4">
+        <motion.div
+          variants={item}
+          className="mb-8 flex flex-wrap items-center gap-4"
+        >
           <span className="inline-block border-2 border-[#FFD700] text-[#FFD700] text-xs font-bold px-3 py-1 uppercase tracking-widest">
             v0.3.2 — Open Source
           </span>
@@ -93,22 +108,19 @@ export default function Hero() {
         >
           THE APP STORE
           <br />
-          <span className="text-[#FFD700] inline-flex items-center min-h-[1.1em]">
-            FOR {text}
-            <span className="inline-block w-[4px] md:w-[8px] h-[0.8em] bg-[#FFD700] ml-2 align-middle animate-pulse" />
-          </span>
+          <TypingText />
         </motion.h1>
 
         {/* Sub-headline */}
         <motion.p
           variants={item}
-          className="text-xl text-[#888] max-w-2xl mb-4 font-medium"
+          className="text-xl text-neutral-300 max-w-2xl mb-4 font-medium"
         >
           Clone. Scan. Install. Build.
         </motion.p>
         <motion.p
           variants={item}
-          className="text-[#666] max-w-xl mb-12 leading-relaxed"
+          className="text-neutral-400 max-w-xl mb-12 leading-relaxed"
         >
           Install any language, framework, database, or DevOps tool with a
           single command. Smart dependency resolution. Cross-platform. Fully
@@ -132,7 +144,7 @@ export default function Hero() {
 
         {/* Quick install */}
         <motion.div variants={item} className="w-full max-w-xl">
-          <p className="text-xs text-[#555] mb-2 uppercase tracking-widest font-semibold">
+          <p className="text-xs text-neutral-400 mb-2 uppercase tracking-widest font-semibold">
             Quick install
           </p>
           <div className="terminal w-full rounded-none relative">
@@ -147,7 +159,7 @@ export default function Hero() {
                     className={`text-xs px-2 py-0.5 font-mono rounded cursor-pointer transition-all border ${
                       activeTab === "npx"
                         ? "bg-[#FFD700] text-black font-bold border-[#FFD700]"
-                        : "text-[#666] border-transparent hover:text-white"
+                        : "text-neutral-400 border-transparent hover:text-white"
                     }`}
                   >
                     npx
@@ -157,7 +169,7 @@ export default function Hero() {
                     className={`text-xs px-2 py-0.5 font-mono rounded cursor-pointer transition-all border ${
                       activeTab === "curl"
                         ? "bg-[#FFD700] text-black font-bold border-[#FFD700]"
-                        : "text-[#666] border-transparent hover:text-white"
+                        : "text-neutral-400 border-transparent hover:text-white"
                     }`}
                   >
                     curl
@@ -166,7 +178,7 @@ export default function Hero() {
               </div>
               <button
                 onClick={handleCopyQuickInstall}
-                className="text-[#666] hover:text-[#FFD700] transition-colors p-1 flex items-center gap-1 rounded bg-[#1e1e1e] border border-[#2a2a2a] cursor-pointer"
+                className="text-neutral-400 hover:text-[#FFD700] transition-colors p-1 flex items-center gap-1 rounded bg-[#1e1e1e] border border-[#2a2a2a] cursor-pointer"
                 title="Copy install command"
               >
                 {copiedQuickInstall ? (
@@ -179,15 +191,15 @@ export default function Hero() {
                 ) : (
                   <>
                     <Copy className="w-3.5 h-3.5" />
-                    <span className="text-[10px] text-[#666] font-mono pr-0.5">
+                    <span className="text-[10px] text-neutral-400 font-mono pr-0.5">
                       Copy
                     </span>
                   </>
                 )}
               </button>
             </div>
-            <div className="px-6 py-4 font-mono text-sm text-[#00FF87] overflow-x-auto whitespace-nowrap">
-              <span className="text-[#555]">$ </span>
+            <div className="px-6 py-4 font-mono text-sm text-[#00FF87] overflow-x-auto whitespace-nowrap bg-black">
+              <span className="text-neutral-500">$ </span>
               {activeTab === "npx"
                 ? "npx @heetmehta18/autodev"
                 : "curl -fsSL https://raw.githubusercontent.com/HEETMEHTA18/autodev/main/scripts/install.sh | bash"}
@@ -205,7 +217,7 @@ export default function Hero() {
           ].map(({ value, label }) => (
             <div key={label} className="nb-card px-6 py-4 min-w-[120px]">
               <div className="text-3xl font-black text-[#FFD700]">{value}</div>
-              <div className="text-xs text-[#666] mt-1 font-semibold uppercase tracking-wider">
+              <div className="text-xs text-neutral-400 mt-1 font-semibold uppercase tracking-wider">
                 {label}
               </div>
             </div>

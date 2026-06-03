@@ -326,8 +326,14 @@ export default function DocsClient() {
               </li>
             </ul>
           </Callout>
-          <h2 className="text-xl font-bold text-white mt-6 mb-2">Terminal Output</h2>
-          <img src="/screenshot-doctor.png" alt="autodev doctor CLI Output" className="my-4 border-2 border-[#2A2A2A] rounded-md max-w-full shadow-lg" />
+          <h2 className="text-xl font-bold text-white mt-6 mb-2">
+            Terminal Output
+          </h2>
+          <img
+            src="/screenshot-doctor.png"
+            alt="autodev doctor CLI Output"
+            className="my-4 border-2 border-[#2A2A2A] rounded-md max-w-full shadow-lg"
+          />
         </>
       ),
     },
@@ -358,8 +364,14 @@ export default function DocsClient() {
             ) to build a precise map of frameworks, databases, and secondary
             development tools.
           </p>
-          <h2 className="text-xl font-bold text-white mt-6 mb-2">Terminal Output</h2>
-          <img src="/screenshot-scan.png" alt="autodev scan CLI Output" className="my-4 border-2 border-[#2A2A2A] rounded-md max-w-full shadow-lg" />
+          <h2 className="text-xl font-bold text-white mt-6 mb-2">
+            Terminal Output
+          </h2>
+          <img
+            src="/screenshot-scan.png"
+            alt="autodev scan CLI Output"
+            className="my-4 border-2 border-[#2A2A2A] rounded-md max-w-full shadow-lg"
+          />
         </>
       ),
     },
@@ -386,8 +398,14 @@ export default function DocsClient() {
             supply-chain vulnerabilities, compromised packages, and security
             advisories, listing the CVE and severity level for any threats.
           </p>
-          <h2 className="text-xl font-bold text-white mt-6 mb-2">Terminal Output</h2>
-          <img src="/screenshot-audit.png" alt="autodev audit CLI Output" className="my-4 border-2 border-[#2A2A2A] rounded-md max-w-full shadow-lg" />
+          <h2 className="text-xl font-bold text-white mt-6 mb-2">
+            Terminal Output
+          </h2>
+          <img
+            src="/screenshot-audit.png"
+            alt="autodev audit CLI Output"
+            className="my-4 border-2 border-[#2A2A2A] rounded-md max-w-full shadow-lg"
+          />
         </>
       ),
     },
@@ -424,8 +442,14 @@ export default function DocsClient() {
             AutoDev might request elevated execution permissions (sudo) to
             register links.
           </Callout>
-          <h2 className="text-xl font-bold text-white mt-6 mb-2">Terminal Output</h2>
-          <img src="/screenshot-setup.png" alt="autodev setup CLI Output" className="my-4 border-2 border-[#2A2A2A] rounded-md max-w-full shadow-lg" />
+          <h2 className="text-xl font-bold text-white mt-6 mb-2">
+            Terminal Output
+          </h2>
+          <img
+            src="/screenshot-setup.png"
+            alt="autodev setup CLI Output"
+            className="my-4 border-2 border-[#2A2A2A] rounded-md max-w-full shadow-lg"
+          />
         </>
       ),
     },
@@ -462,8 +486,14 @@ export default function DocsClient() {
               CocoaPods
             </li>
           </ul>
-          <h2 className="text-xl font-bold text-white mt-6 mb-2">Terminal Output</h2>
-          <img src="/screenshot-profile.png" alt="autodev profile CLI Output" className="my-4 border-2 border-[#2A2A2A] rounded-md max-w-full shadow-lg" />
+          <h2 className="text-xl font-bold text-white mt-6 mb-2">
+            Terminal Output
+          </h2>
+          <img
+            src="/screenshot-profile.png"
+            alt="autodev profile CLI Output"
+            className="my-4 border-2 border-[#2A2A2A] rounded-md max-w-full shadow-lg"
+          />
         </>
       ),
     },
@@ -477,22 +507,39 @@ export default function DocsClient() {
             autodev containerize
           </h1>
           <p className="text-neutral-300 leading-relaxed mb-4">
-            Scaffold container environments for remote DevContainer or Cloud IDE development.
+            Scaffold container environments for remote DevContainer or Cloud IDE
+            development.
           </p>
           {renderCodeBlock("cmd-containerize-run", "autodev containerize")}
           <p className="text-neutral-300 leading-relaxed mb-4">
-            AutoDev scans the workspace to identify tech stacks and automatically:
+            AutoDev scans the workspace to identify tech stacks and
+            automatically:
           </p>
           <ul className="list-disc pl-5 mb-4 space-y-2 text-neutral-300 font-sans">
             <li>
-              Generates a <code className="font-mono text-neutral-400">.devcontainer.json</code> configured with specific container features and IDE extensions matching your project.
+              Generates a{" "}
+              <code className="font-mono text-neutral-400">
+                .devcontainer.json
+              </code>{" "}
+              configured with specific container features and IDE extensions
+              matching your project.
             </li>
             <li>
-              Creates <code className="font-mono text-neutral-400">.vscode/extensions.json</code> to recommend necessary extensions.
+              Creates{" "}
+              <code className="font-mono text-neutral-400">
+                .vscode/extensions.json
+              </code>{" "}
+              to recommend necessary extensions.
             </li>
           </ul>
-          <h2 className="text-xl font-bold text-white mt-6 mb-2">Terminal Output</h2>
-          <img src="/screenshot-containerize.png" alt="autodev containerize CLI Output" className="my-4 border-2 border-[#2A2A2A] rounded-md max-w-full shadow-lg" />
+          <h2 className="text-xl font-bold text-white mt-6 mb-2">
+            Terminal Output
+          </h2>
+          <img
+            src="/screenshot-containerize.png"
+            alt="autodev containerize CLI Output"
+            className="my-4 border-2 border-[#2A2A2A] rounded-md max-w-full shadow-lg"
+          />
         </>
       ),
     },
@@ -506,14 +553,25 @@ export default function DocsClient() {
             autodev migrate
           </h1>
           <p className="text-neutral-300 leading-relaxed mb-4">
-            Upgrade legacy configuration files to the standard YAML profile schema.
+            Upgrade legacy configuration files to the standard YAML profile
+            schema.
           </p>
           {renderCodeBlock("cmd-migrate-run", "autodev migrate")}
           <p className="text-neutral-300 leading-relaxed mb-4">
-            Converts deprecated <code className="font-mono text-neutral-400">.autodev.json</code> and global JSON config configurations into YAML, creating a <code className="font-mono text-neutral-400">.bak</code> file as backup.
+            Converts deprecated{" "}
+            <code className="font-mono text-neutral-400">.autodev.json</code>{" "}
+            and global JSON config configurations into YAML, creating a{" "}
+            <code className="font-mono text-neutral-400">.bak</code> file as
+            backup.
           </p>
-          <h2 className="text-xl font-bold text-white mt-6 mb-2">Terminal Output</h2>
-          <img src="/screenshot-migrate.png" alt="autodev migrate CLI Output" className="my-4 border-2 border-[#2A2A2A] rounded-md max-w-full shadow-lg" />
+          <h2 className="text-xl font-bold text-white mt-6 mb-2">
+            Terminal Output
+          </h2>
+          <img
+            src="/screenshot-migrate.png"
+            alt="autodev migrate CLI Output"
+            className="my-4 border-2 border-[#2A2A2A] rounded-md max-w-full shadow-lg"
+          />
         </>
       ),
     },
@@ -531,29 +589,46 @@ export default function DocsClient() {
             <code className="text-[#FFD700] font-mono bg-[#111] px-1 py-0.5 rounded text-sm">
               create
             </code>{" "}
-            command generates a new pre-configured boilerplate project matching standard developer profiles with all build configurations, linters, layout conventions, and git hooks already in place.
+            command generates a new pre-configured boilerplate project matching
+            standard developer profiles with all build configurations, linters,
+            layout conventions, and git hooks already in place.
           </p>
-          {renderCodeBlock("cmd-create-run", "autodev create [template] [project-name]")}
+          {renderCodeBlock(
+            "cmd-create-run",
+            "autodev create [template] [project-name]",
+          )}
           <p className="text-neutral-300 mb-4">Supported templates include:</p>
           <ul className="list-disc pl-5 mb-4 space-y-2 text-neutral-300 font-sans">
             <li>
-              <strong>react-ts</strong> (or <strong>react</strong>): Vite + React + TypeScript + Tailwind CSS
+              <strong>react-ts</strong> (or <strong>react</strong>): Vite +
+              React + TypeScript + Tailwind CSS
             </li>
             <li>
-              <strong>nextjs</strong> (or <strong>next</strong>): Next.js App Router + TypeScript + Tailwind + Docker
+              <strong>nextjs</strong> (or <strong>next</strong>): Next.js App
+              Router + TypeScript + Tailwind + Docker
             </li>
             <li>
-              <strong>ai-chatbot</strong> (or <strong>ai-agent</strong>): React chatbot UI + Express.js backend + Google Gemini 2.5 Flash SDK
+              <strong>ai-chatbot</strong> (or <strong>ai-agent</strong>): React
+              chatbot UI + Express.js backend + Google Gemini 2.5 Flash SDK
             </li>
             <li>
-              <strong>mern-stack</strong> (or <strong>mern</strong>): Mongo + Express + React + Node.js multi-container setup via Docker Compose
+              <strong>mern-stack</strong> (or <strong>mern</strong>): Mongo +
+              Express + React + Node.js multi-container setup via Docker Compose
             </li>
             <li>
-              <strong>flutter-app</strong> (or <strong>flutter</strong>): Cross-platform Flutter App structured with Clean Architecture conventions
+              <strong>flutter-app</strong> (or <strong>flutter</strong>):
+              Cross-platform Flutter App structured with Clean Architecture
+              conventions
             </li>
           </ul>
           <Callout type="tip" title="Setup Time Comparison">
-            Generating a template with <code className="text-[#00FF87] font-mono font-bold bg-[#111] px-1.5 py-0.5 rounded">autodev create</code> is up to <strong>99% faster</strong> than prompts-based AI configuration, reducing typical API costs by <strong>80% or more</strong>.
+            Generating a template with{" "}
+            <code className="text-[#00FF87] font-mono font-bold bg-[#111] px-1.5 py-0.5 rounded">
+              autodev create
+            </code>{" "}
+            is up to <strong>99% faster</strong> than prompts-based AI
+            configuration, reducing typical API costs by{" "}
+            <strong>80% or more</strong>.
           </Callout>
         </>
       ),
@@ -572,11 +647,19 @@ export default function DocsClient() {
             <code className="text-[#FFD700] font-mono bg-[#111] px-1 py-0.5 rounded text-sm">
               clone
             </code>{" "}
-            command clones a Git repository, runs a deep stack technology scan, and automatically installs all missing dependencies, runtimes, and compiler toolchains.
+            command clones a Git repository, runs a deep stack technology scan,
+            and automatically installs all missing dependencies, runtimes, and
+            compiler toolchains.
           </p>
-          {renderCodeBlock("cmd-clone-run", "autodev clone <repository-url> [target-directory]")}
+          {renderCodeBlock(
+            "cmd-clone-run",
+            "autodev clone <repository-url> [target-directory]",
+          )}
           <p className="text-neutral-300 leading-relaxed mb-4">
-            This streamlines developer onboarding to a single command. By pairing cloning with automated environment detection and installation, a newly cloned repository is immediately ready to run and build.
+            This streamlines developer onboarding to a single command. By
+            pairing cloning with automated environment detection and
+            installation, a newly cloned repository is immediately ready to run
+            and build.
           </p>
         </>
       ),
@@ -595,10 +678,13 @@ export default function DocsClient() {
             <code className="text-[#FFD700] font-mono bg-[#111] px-1 py-0.5 rounded text-sm">
               install
             </code>{" "}
-            command installs a specific developer tool, compiler runtime, or SDK directly to your system path.
+            command installs a specific developer tool, compiler runtime, or SDK
+            directly to your system path.
           </p>
           {renderCodeBlock("cmd-install-run", "autodev install <tool>")}
-          <p className="text-neutral-300 mb-4">Supported tools and runtimes include:</p>
+          <p className="text-neutral-300 mb-4">
+            Supported tools and runtimes include:
+          </p>
           <div className="grid grid-cols-2 gap-2 text-sm text-neutral-400 font-mono mb-4 max-w-md">
             <div>• nodejs</div>
             <div>• go</div>
@@ -630,11 +716,15 @@ export default function DocsClient() {
             <code className="text-[#FFD700] font-mono bg-[#111] px-1 py-0.5 rounded text-sm">
               skills
             </code>{" "}
-            command analyzes your developer profiles and commits in local git history to map out and output a personalized skills progression and learning path directly in the terminal (TUI).
+            command analyzes your developer profiles and commits in local git
+            history to map out and output a personalized skills progression and
+            learning path directly in the terminal (TUI).
           </p>
           {renderCodeBlock("cmd-skills-run", "autodev skills")}
           <p className="text-neutral-300 leading-relaxed mb-4">
-            It integrates with skills.sh profiles and exports a telemetry summary `.autodev-skills.md` to feed relevant skills and framework contexts directly to AI Coding Assistants, improving accuracy.
+            It integrates with skills.sh profiles and exports a telemetry
+            summary `.autodev-skills.md` to feed relevant skills and framework
+            contexts directly to AI Coding Assistants, improving accuracy.
           </p>
         </>
       ),
@@ -657,7 +747,10 @@ export default function DocsClient() {
           </p>
           {renderCodeBlock("cmd-mcp-run", "autodev mcp")}
           <p className="text-neutral-300 leading-relaxed mb-4">
-            This server exposes environment diagnostics, security auditing, and tool installation commands as MCP tools that AI assistants (like Claude, Cursor, Windsurf, Roo-Cline) can interact with directly and securely.
+            This server exposes environment diagnostics, security auditing, and
+            tool installation commands as MCP tools that AI assistants (like
+            Claude, Cursor, Windsurf, Roo-Cline) can interact with directly and
+            securely.
           </p>
         </>
       ),
@@ -676,11 +769,14 @@ export default function DocsClient() {
             <code className="text-[#FFD700] font-mono bg-[#111] px-1 py-0.5 rounded text-sm">
               benchmark
             </code>{" "}
-            command measures and prints AI efficiency comparisons comparing standard prompting vs AutoDev&apos;s telemetry integration.
+            command measures and prints AI efficiency comparisons comparing
+            standard prompting vs AutoDev&apos;s telemetry integration.
           </p>
           {renderCodeBlock("cmd-benchmark-run", "autodev benchmark")}
           <p className="text-neutral-300 leading-relaxed mb-4">
-            It demonstrates the token usage, response latency, and cost savings achieved when using AutoDev metadata rules files to keep context windows small and compact.
+            It demonstrates the token usage, response latency, and cost savings
+            achieved when using AutoDev metadata rules files to keep context
+            windows small and compact.
           </p>
         </>
       ),
@@ -699,11 +795,14 @@ export default function DocsClient() {
             <code className="text-[#FFD700] font-mono bg-[#111] px-1 py-0.5 rounded text-sm">
               report
             </code>{" "}
-            command generates a comprehensive configuration report of your developer environment in HTML, PDF, or JSON format.
+            command generates a comprehensive configuration report of your
+            developer environment in HTML, PDF, or JSON format.
           </p>
           {renderCodeBlock("cmd-report-run", "autodev report")}
           <p className="text-neutral-300 leading-relaxed mb-4">
-            This is extremely useful for compliance audits, team alignment, or archiving developer environment requirements alongside your codebase.
+            This is extremely useful for compliance audits, team alignment, or
+            archiving developer environment requirements alongside your
+            codebase.
           </p>
         </>
       ),
@@ -722,11 +821,15 @@ export default function DocsClient() {
             <code className="text-[#FFD700] font-mono bg-[#111] px-1 py-0.5 rounded text-sm">
               github
             </code>{" "}
-            command scans all public repositories belonging to a specified GitHub user or organization to map out the collective technology footprint.
+            command scans all public repositories belonging to a specified
+            GitHub user or organization to map out the collective technology
+            footprint.
           </p>
           {renderCodeBlock("cmd-github-run", "autodev github <username>")}
           <p className="text-neutral-300 leading-relaxed mb-4">
-            It provides valuable aggregate statistics on primary languages, framework prevalence, and tooling usage across their entire public code catalog.
+            It provides valuable aggregate statistics on primary languages,
+            framework prevalence, and tooling usage across their entire public
+            code catalog.
           </p>
         </>
       ),
@@ -745,11 +848,14 @@ export default function DocsClient() {
             <code className="text-[#FFD700] font-mono bg-[#111] px-1 py-0.5 rounded text-sm">
               exec
             </code>{" "}
-            command runs a specific command directly inside a configured AutoDev virtual sandboxed or path-resolved environment.
+            command runs a specific command directly inside a configured AutoDev
+            virtual sandboxed or path-resolved environment.
           </p>
           {renderCodeBlock("cmd-exec-run", "autodev exec <command>")}
           <p className="text-neutral-300 leading-relaxed mb-4">
-            It dynamically maps local path runtimes, environment variables, and configurations on the fly to ensure commands execute with the correct tool versions without polluting your host shell environment.
+            It dynamically maps local path runtimes, environment variables, and
+            configurations on the fly to ensure commands execute with the
+            correct tool versions without polluting your host shell environment.
           </p>
         </>
       ),
@@ -806,8 +912,14 @@ export default function DocsClient() {
             run the dependency scanners, and print the resulting plan without
             altering files on your host OS.
           </p>
-          <h2 className="text-xl font-bold text-white mt-6 mb-2">Terminal Output</h2>
-          <img src="/screenshot-docker-integration.png" alt="autodev docker run CLI Output" className="my-4 border-2 border-[#2A2A2A] rounded-md max-w-full shadow-lg" />
+          <h2 className="text-xl font-bold text-white mt-6 mb-2">
+            Terminal Output
+          </h2>
+          <img
+            src="/screenshot-docker-integration.png"
+            alt="autodev docker run CLI Output"
+            className="my-4 border-2 border-[#2A2A2A] rounded-md max-w-full shadow-lg"
+          />
         </>
       ),
     },

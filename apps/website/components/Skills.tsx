@@ -346,7 +346,7 @@ export default function Skills() {
           <h2 className="text-5xl font-black text-white mt-2 mb-4">
             YOUR LEARNING ROADMAP
           </h2>
-          <p className="text-[#888] max-w-2xl">
+          <p className="text-neutral-400 max-w-2xl">
             AutoDev scans your repositories — git history, package manifests,
             Dockerfiles, CI configs — and builds a{" "}
             <strong className="text-white">
@@ -385,7 +385,7 @@ export default function Skills() {
                       ${
                         activeTab === tab.id
                           ? "text-[#FFD700] border-[#FFD700] bg-[#FFD70008]"
-                          : "text-[#666] border-transparent hover:text-white"
+                          : "text-neutral-400 border-transparent hover:text-white"
                       }`}
                   >
                     <span className="mr-1.5">{tab.icon}</span>
@@ -401,7 +401,7 @@ export default function Skills() {
                   className={`mr-4 px-4 py-1.5 text-xs font-bold border-2 uppercase tracking-wider transition-all
                     ${
                       isPlaying
-                        ? "border-[#888] text-[#888] cursor-not-allowed"
+                        ? "border-[#888] text-neutral-400 cursor-not-allowed"
                         : "border-[#FFD700] bg-[#FFD700] text-black hover:bg-transparent hover:text-[#FFD700]"
                     }`}
                 >
@@ -421,7 +421,7 @@ export default function Skills() {
                   {visibleLines === 0 && !isPlaying && (
                     <div className="flex flex-col items-center justify-center h-[400px] text-center gap-4">
                       <div className="text-6xl mb-2">⚡</div>
-                      <p className="text-[#888] text-sm max-w-md">
+                      <p className="text-neutral-400 text-sm max-w-md">
                         Click{" "}
                         <strong className="text-[#FFD700]">Run Demo</strong> to
                         see AutoDev&apos;s Skills Engine scan a developer&apos;s
@@ -450,7 +450,7 @@ export default function Skills() {
               {activeTab === "matrix" && (
                 <div className="p-6 space-y-4">
                   <div className="flex items-center justify-between mb-2">
-                    <p className="text-xs text-[#888]">
+                    <p className="text-xs text-neutral-400">
                       Confidence scores computed from code frequency, recency,
                       and repository diversity.
                     </p>
@@ -472,9 +472,9 @@ export default function Skills() {
                             {skill.icon}
                           </span>
                           <div>
-                            <h5 className="font-bold text-white text-sm">
+                            <h3 className="font-bold text-white text-sm">
                               {skill.name}
-                            </h5>
+                            </h3>
                             <span
                               className="text-[10px] font-mono font-bold uppercase tracking-wider"
                               style={{ color: getLevelColor(skill.level) }}
@@ -490,7 +490,7 @@ export default function Skills() {
                           >
                             {skill.confidence}%
                           </div>
-                          <div className="text-[10px] text-[#555] font-mono">
+                          <div className="text-[10px] text-neutral-400 font-mono">
                             {skill.files} files · {skill.commits} commits
                           </div>
                         </div>
@@ -514,7 +514,7 @@ export default function Skills() {
               {/* Roadmap Tab */}
               {activeTab === "roadmap" && (
                 <div className="p-6 space-y-1">
-                  <p className="text-xs text-[#888] mb-6">
+                  <p className="text-xs text-neutral-400 mb-6">
                     Upgrade paths ranked by impact. Recommendations based on
                     your existing skill adjacencies.
                   </p>
@@ -529,7 +529,7 @@ export default function Skills() {
                     >
                       <div className="flex items-center gap-5 flex-1">
                         <div className="flex items-center gap-2 min-w-0">
-                          <span className="text-sm font-bold text-[#888] whitespace-nowrap">
+                          <span className="text-sm font-bold text-neutral-400 whitespace-nowrap">
                             {step.from}
                           </span>
                           <span className="text-[#FFD700] text-lg font-bold">
@@ -539,7 +539,7 @@ export default function Skills() {
                             {step.to}
                           </span>
                         </div>
-                        <span className="text-xs text-[#666] hidden md:block">
+                        <span className="text-xs text-neutral-400 hidden md:block">
                           {step.reason}
                         </span>
                       </div>
@@ -570,7 +570,7 @@ export default function Skills() {
                               1800,
                             );
                           }}
-                          className="text-[#666] hover:text-[#FFD700] transition-colors p-1 flex items-center gap-1 rounded bg-[#1e1e1e] border border-[#2a2a2a] cursor-pointer"
+                          className="text-neutral-400 hover:text-[#FFD700] transition-colors p-1 flex items-center gap-1 rounded bg-[#1e1e1e] border border-[#2a2a2a] cursor-pointer"
                           title="Copy command"
                         >
                           {copiedRoadmapExport ? (
@@ -583,7 +583,7 @@ export default function Skills() {
                           ) : (
                             <>
                               <Copy className="w-3 h-3" />
-                              <span className="text-[9px] text-[#666] font-mono">
+                              <span className="text-[9px] text-neutral-400 font-mono">
                                 Copy
                               </span>
                             </>
@@ -593,7 +593,7 @@ export default function Skills() {
                       <div className="px-4 py-3 font-mono text-xs text-[#00FF87] bg-black">
                         $ autodev skills --export md &gt; ~/dev-roadmap.md
                         <br />
-                        <span className="text-[#888]">
+                        <span className="text-neutral-400">
                           {" "}
                           ✓ Roadmap exported. Share it on skills.sh or add to
                           your README.
@@ -609,9 +609,9 @@ export default function Skills() {
           {/* Right Sidebar — CLI Commands Reference */}
           <div className="space-y-6">
             <div className="border-2 border-[#2A2A2A] bg-[#111] p-5">
-              <h4 className="font-bold text-white text-sm uppercase tracking-wider mb-4 flex items-center gap-2">
+              <h3 className="font-bold text-white text-sm uppercase tracking-wider mb-4 flex items-center gap-2">
                 <span className="text-[#FFD700]">$</span> CLI Commands
-              </h4>
+              </h3>
               <div className="space-y-3">
                 {cliCommands.map((c) => (
                   <div
@@ -629,11 +629,11 @@ export default function Skills() {
                         {copiedCmd === c.cmd ? (
                           <Check className="w-3.5 h-3.5 text-[#00FF87]" />
                         ) : (
-                          <Copy className="w-3.5 h-3.5 text-[#555] group-hover:text-[#FFD700] transition-colors" />
+                          <Copy className="w-3.5 h-3.5 text-neutral-500 group-hover:text-[#FFD700] transition-colors" />
                         )}
                       </span>
                     </div>
-                    <p className="text-[10px] text-[#666] mt-1 pl-1">
+                    <p className="text-[10px] text-neutral-400 mt-1 pl-1">
                       {c.desc}
                     </p>
                   </div>
@@ -642,10 +642,10 @@ export default function Skills() {
             </div>
 
             <div className="border-2 border-[#2A2A2A] bg-[#111] p-5">
-              <h4 className="font-bold text-white text-sm uppercase tracking-wider mb-3">
+              <h3 className="font-bold text-white text-sm uppercase tracking-wider mb-3">
                 How It Works
-              </h4>
-              <div className="space-y-3 text-xs text-[#888] leading-relaxed">
+              </h3>
+              <div className="space-y-3 text-xs text-neutral-400 leading-relaxed">
                 {[
                   {
                     step: "1",
@@ -674,7 +674,7 @@ export default function Skills() {
                     </span>
                     <div>
                       <span className="font-bold text-white">{s.title}</span>
-                      <span className="text-[#888]"> — {s.desc}</span>
+                      <span className="text-neutral-400"> — {s.desc}</span>
                     </div>
                   </div>
                 ))}
@@ -690,7 +690,7 @@ export default function Skills() {
               <div className="text-[#FFD700] font-black text-sm mb-1">
                 skills.sh
               </div>
-              <p className="text-[10px] text-[#888] group-hover:text-[#aaa] transition-colors">
+              <p className="text-[10px] text-neutral-400 group-hover:text-[#aaa] transition-colors">
                 Developer learning platform. Create your public skill profile →
               </p>
             </a>

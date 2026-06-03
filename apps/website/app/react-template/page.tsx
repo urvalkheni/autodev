@@ -2,14 +2,7 @@
 import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import {
-  Terminal,
-  Copy,
-  Check,
-  Sparkles,
-  Shield,
-  Cpu,
-} from "lucide-react";
+import { Terminal, Copy, Check, Sparkles, Shield, Cpu } from "lucide-react";
 import { trackTemplateView, trackTemplateCopy } from "../../utils/analytics";
 
 export default function ReactTemplatePage() {

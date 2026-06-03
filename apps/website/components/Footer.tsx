@@ -1,3 +1,5 @@
+"use client";
+
 export default function Footer() {
   return (
     <footer className="border-t-2 border-[#2A2A2A] py-16 px-6">
@@ -8,7 +10,7 @@ export default function Footer() {
             <div className="text-2xl font-black text-[#FFD700] mb-3">
               ⚡ AUTODEV
             </div>
-            <p className="text-[#666] text-sm leading-relaxed max-w-xs">
+            <p className="text-neutral-400 text-sm leading-relaxed max-w-xs">
               The App Store for Developers. Open-source, cross-platform, and
               built for thousands of contributors.
             </p>
@@ -40,24 +42,39 @@ export default function Footer() {
 
           {/* Product */}
           <div>
-            <h4 className="font-black text-white text-sm uppercase tracking-wider mb-4">
+            <h3 className="font-black text-white text-sm uppercase tracking-wider mb-4">
               Product
-            </h4>
-            <ul className="space-y-2 text-sm text-[#666]">
+            </h3>
+            <ul className="space-y-2 text-sm text-neutral-400">
               {[
-                "Features",
-                "Profiles",
-                "GitHub Scanner",
-                "Skills Roadmap",
-                "Changelog",
+                { name: "Features", href: "/#features" },
+                { name: "Profiles", href: "/#profiles" },
+                { name: "GitHub Scanner", href: "/#github-scanner" },
+                { name: "Skills Roadmap", href: "/#skills" },
+                {
+                  name: "Changelog",
+                  onClick: () =>
+                    window.dispatchEvent(
+                      new Event("autodev_open_update_modal"),
+                    ),
+                },
               ].map((l) => (
-                <li key={l}>
-                  <a
-                    href="#"
-                    className="hover:text-[#FFD700] transition-colors"
-                  >
-                    {l}
-                  </a>
+                <li key={l.name}>
+                  {l.onClick ? (
+                    <button
+                      onClick={l.onClick}
+                      className="hover:text-[#FFD700] transition-colors text-left bg-transparent border-0 p-0 cursor-pointer"
+                    >
+                      {l.name}
+                    </button>
+                  ) : (
+                    <a
+                      href={l.href}
+                      className="hover:text-[#FFD700] transition-colors"
+                    >
+                      {l.name}
+                    </a>
+                  )}
                 </li>
               ))}
             </ul>
@@ -65,23 +82,40 @@ export default function Footer() {
 
           {/* Open Source */}
           <div>
-            <h4 className="font-black text-white text-sm uppercase tracking-wider mb-4">
+            <h3 className="font-black text-white text-sm uppercase tracking-wider mb-4">
               Open Source
-            </h4>
-            <ul className="space-y-2 text-sm text-[#666]">
+            </h3>
+            <ul className="space-y-2 text-sm text-neutral-400">
               {[
-                "Contributing",
-                "Code of Conduct",
-                "Security",
-                "Roadmap",
-                "MIT License",
+                {
+                  name: "Contributing",
+                  href: "https://github.com/HEETMEHTA18/autodev/blob/main/CONTRIBUTING.md",
+                },
+                {
+                  name: "Code of Conduct",
+                  href: "https://github.com/HEETMEHTA18/autodev/blob/main/CODE_OF_CONDUCT.md",
+                },
+                {
+                  name: "Security",
+                  href: "https://github.com/HEETMEHTA18/autodev/blob/main/SECURITY.md",
+                },
+                {
+                  name: "Roadmap",
+                  href: "https://github.com/HEETMEHTA18/autodev/blob/main/ROADMAP.md",
+                },
+                {
+                  name: "MIT License",
+                  href: "https://github.com/HEETMEHTA18/autodev/blob/main/LICENSE",
+                },
               ].map((l) => (
-                <li key={l}>
+                <li key={l.name}>
                   <a
-                    href="#"
+                    href={l.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="hover:text-[#FFD700] transition-colors"
                   >
-                    {l}
+                    {l.name}
                   </a>
                 </li>
               ))}
@@ -90,10 +124,10 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-[#1A1A1A] pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-[#444]">
+          <p className="text-xs text-neutral-500">
             © 2026 AutoDev Contributors — MIT License
           </p>
-          <p className="text-xs text-[#444] font-mono">
+          <p className="text-xs text-neutral-500 font-mono">
             Clone. Scan. Install. Build.
           </p>
         </div>

@@ -32,6 +32,10 @@
   </a>
 </p>
 
+<p align="center">
+  <img src="autodev-demo.gif" width="800" alt="AutoDev CLI Interactive Demo" />
+</p>
+
 ---
 
 ## Quick Start

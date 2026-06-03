@@ -65,11 +65,25 @@ export default function Hero() {
   return (
     <section className="pt-36 pb-24 px-6 max-w-7xl mx-auto">
       <motion.div variants={container} initial="hidden" animate="show">
-        {/* Badge */}
-        <motion.div variants={item} className="mb-8">
+        {/* Badges */}
+        <motion.div variants={item} className="mb-8 flex flex-wrap items-center gap-4">
           <span className="inline-block border-2 border-[#FFD700] text-[#FFD700] text-xs font-bold px-3 py-1 uppercase tracking-widest">
             v0.3.2 — Open Source
           </span>
+          <a
+            href="https://www.producthunt.com/products/autodevs?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-autodevs"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block hover:opacity-90 transition-opacity"
+          >
+            <img
+              alt="Autodevs - AI-powered development setup in minutes | Product Hunt"
+              width="250"
+              height="54"
+              src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1162368&theme=neutral&t=1780484994611"
+              className="h-[36px] w-auto"
+            />
+          </a>
         </motion.div>
 
         {/* Headline */}

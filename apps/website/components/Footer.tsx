@@ -12,7 +12,7 @@ export default function Footer() {
               The App Store for Developers. Open-source, cross-platform, and
               built for thousands of contributors.
             </p>
-            <div className="flex gap-3 mt-5">
+            <div className="flex flex-wrap items-center gap-3 mt-5">
               <a
                 href="https://github.com/HEETMEHTA18/autodev"
                 target="_blank"
@@ -20,6 +20,20 @@ export default function Footer() {
                 className="nb-btn px-4 py-2 text-xs"
               >
                 GitHub →
+              </a>
+              <a
+                href="https://www.producthunt.com/products/autodevs?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-autodevs"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block hover:opacity-90 transition-opacity"
+              >
+                <img
+                  alt="Autodevs - AI-powered development setup in minutes | Product Hunt"
+                  width="250"
+                  height="54"
+                  src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1162368&theme=neutral&t=1780484994611"
+                  className="h-[34px] w-auto"
+                />
               </a>
             </div>
           </div>

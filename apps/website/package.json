@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --webpack",
     "prebuild": "node -e \"const fs = require('fs'); fs.copyFileSync('../../scripts/install.sh', './public/install.sh');\"",
     "build": "next build",
     "start": "next start",

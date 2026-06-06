@@ -97,6 +97,35 @@ func init() {
 		newContainerizeCmd(),
 		newMigrateCmd(),
 	)
+
+	// Prompts manager command (displays history & groups prompt capture subcommands)
+	promptsCmd := newPromptsCmd()
+	rootCmd.AddCommand(promptsCmd)
+
+	// Keep top-level commands for compatibility but hide them from main help list
+	chatCmd := newChatCmd()
+	chatCmd.Hidden = true
+	rootCmd.AddCommand(chatCmd)
+
+	captureCmd := newCaptureCmd()
+	captureCmd.Hidden = true
+	rootCmd.AddCommand(captureCmd)
+
+	daemonCmd := newDaemonCmd()
+	daemonCmd.Hidden = true
+	rootCmd.AddCommand(daemonCmd)
+
+	replayCmd := newReplayCmd()
+	replayCmd.Hidden = true
+	rootCmd.AddCommand(replayCmd)
+
+	exportPromptsCmd := newExportPromptsCmd()
+	exportPromptsCmd.Hidden = true
+	rootCmd.AddCommand(exportPromptsCmd)
+
+	syncCmd := newSyncCmd()
+	syncCmd.Hidden = true
+	rootCmd.AddCommand(syncCmd)
 }
 
 func initConfig() {

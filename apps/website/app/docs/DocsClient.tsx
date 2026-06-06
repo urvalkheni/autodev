@@ -618,7 +618,6 @@ export default function DocsClient() {
             <li>
               <strong>flutter-app</strong> (or <strong>flutter</strong>):
               Cross-platform Flutter App structured with Clean Architecture
-              conventions
             </li>
           </ul>
           <Callout type="tip" title="Setup Time Comparison">
@@ -630,6 +629,14 @@ export default function DocsClient() {
             configuration, reducing typical API costs by{" "}
             <strong>80% or more</strong>.
           </Callout>
+          <h2 className="text-xl font-bold text-white mt-6 mb-2">
+            Terminal Output
+          </h2>
+          <img
+            src="/screenshot-create.png"
+            alt="autodev create CLI Output"
+            className="my-4 border-2 border-[#2A2A2A] rounded-md max-w-full shadow-lg"
+          />
         </>
       ),
     },
@@ -661,6 +668,14 @@ export default function DocsClient() {
             installation, a newly cloned repository is immediately ready to run
             and build.
           </p>
+          <h2 className="text-xl font-bold text-white mt-6 mb-2">
+            Terminal Output
+          </h2>
+          <img
+            src="/screenshot-clone.png"
+            alt="autodev clone CLI Output"
+            className="my-4 border-2 border-[#2A2A2A] rounded-md max-w-full shadow-lg"
+          />
         </>
       ),
     },
@@ -699,6 +714,14 @@ export default function DocsClient() {
             <div>• php</div>
             <div>• ruby</div>
           </div>
+          <h2 className="text-xl font-bold text-white mt-6 mb-2">
+            Terminal Output
+          </h2>
+          <img
+            src="/screenshot-install.png"
+            alt="autodev install CLI Output"
+            className="my-4 border-2 border-[#2A2A2A] rounded-md max-w-full shadow-lg"
+          />
         </>
       ),
     },
@@ -726,6 +749,14 @@ export default function DocsClient() {
             summary `.autodev-skills.md` to feed relevant skills and framework
             contexts directly to AI Coding Assistants, improving accuracy.
           </p>
+          <h2 className="text-xl font-bold text-white mt-6 mb-2">
+            Terminal Output
+          </h2>
+          <img
+            src="/screenshot-skills.png"
+            alt="autodev skills CLI Output"
+            className="my-4 border-2 border-[#2A2A2A] rounded-md max-w-full shadow-lg"
+          />
         </>
       ),
     },
@@ -752,6 +783,14 @@ export default function DocsClient() {
             Claude, Cursor, Windsurf, Roo-Cline) can interact with directly and
             securely.
           </p>
+          <h2 className="text-xl font-bold text-white mt-6 mb-2">
+            Terminal Output
+          </h2>
+          <img
+            src="/screenshot-mcp.png"
+            alt="autodev mcp CLI Output"
+            className="my-4 border-2 border-[#2A2A2A] rounded-md max-w-full shadow-lg"
+          />
         </>
       ),
     },
@@ -778,6 +817,14 @@ export default function DocsClient() {
             achieved when using AutoDev metadata rules files to keep context
             windows small and compact.
           </p>
+          <h2 className="text-xl font-bold text-white mt-6 mb-2">
+            Terminal Output
+          </h2>
+          <img
+            src="/screenshot-benchmark.png"
+            alt="autodev benchmark CLI Output"
+            className="my-4 border-2 border-[#2A2A2A] rounded-md max-w-full shadow-lg"
+          />
         </>
       ),
     },
@@ -804,6 +851,14 @@ export default function DocsClient() {
             archiving developer environment requirements alongside your
             codebase.
           </p>
+          <h2 className="text-xl font-bold text-white mt-6 mb-2">
+            Terminal Output
+          </h2>
+          <img
+            src="/screenshot-report.png"
+            alt="autodev report CLI Output"
+            className="my-4 border-2 border-[#2A2A2A] rounded-md max-w-full shadow-lg"
+          />
         </>
       ),
     },
@@ -831,6 +886,14 @@ export default function DocsClient() {
             framework prevalence, and tooling usage across their entire public
             code catalog.
           </p>
+          <h2 className="text-xl font-bold text-white mt-6 mb-2">
+            Terminal Output
+          </h2>
+          <img
+            src="/screenshot-github.png"
+            alt="autodev github CLI Output"
+            className="my-4 border-2 border-[#2A2A2A] rounded-md max-w-full shadow-lg"
+          />
         </>
       ),
     },
@@ -857,6 +920,115 @@ export default function DocsClient() {
             configurations on the fly to ensure commands execute with the
             correct tool versions without polluting your host shell environment.
           </p>
+          <h2 className="text-xl font-bold text-white mt-6 mb-2">
+            Terminal Output
+          </h2>
+          <img
+            src="/screenshot-exec.png"
+            alt="autodev exec CLI Output"
+            className="my-4 border-2 border-[#2A2A2A] rounded-md max-w-full shadow-lg"
+          />
+        </>
+      ),
+    },
+    {
+      id: "cmd-prompts",
+      category: "Commands",
+      title: "autodev prompts",
+      content: (
+        <>
+          <h1 className="text-4xl font-black text-white mb-6 uppercase tracking-tight">
+            autodev prompts
+          </h1>
+          <p className="text-neutral-300 leading-relaxed mb-4">
+            The{" "}
+            <code className="text-[#FFD700] font-mono bg-[#111] px-1 py-0.5 rounded text-sm">
+              prompts
+            </code>{" "}
+            command manages the prompt capture engine. It lets you view, track, and replay prompts typed into your local AI coding sessions.
+          </p>
+          {renderCodeBlock("cmd-prompts-run", "autodev prompts")}
+          <p className="text-neutral-300 leading-relaxed mb-4">
+            By default, running this command opens the master <code className="font-mono text-neutral-400">prompts.md</code> file in your terminal pager (less), displaying a complete history of all captured AI coding prompts.
+          </p>
+          <Callout type="tip" title="Today's Session Summary">
+            Run <code className="text-[#00FF87] font-mono font-bold bg-[#111] px-1.5 py-0.5 rounded">autodev prompts --today</code> to print a timeline of today's active captured prompts directly in the console.
+          </Callout>
+
+          <h2 className="text-2xl font-bold text-[#FFD700] mt-8 mb-4">
+            Available Subcommands
+          </h2>
+          
+          <div className="space-y-6">
+            <div>
+              <h3 className="text-lg font-bold text-white mb-1">
+                autodev prompts chat (or autodev chat)
+              </h3>
+              <p className="text-neutral-400 text-sm mb-2">
+                Starts an interactive AI coding session that automatically records all developer prompts, AI responses, created files, and commands executed. Integrates directly with real Gemini models when <code className="font-mono text-neutral-300">GEMINI_API_KEY</code> is set.
+              </p>
+              {renderCodeBlock("cmd-chat-run", "autodev prompts chat")}
+            </div>
+
+            <div>
+              <h3 className="text-lg font-bold text-white mb-1">
+                autodev prompts capture (or autodev capture)
+              </h3>
+              <p className="text-neutral-400 text-sm mb-2">
+                Intercepts and captures prompts entered into other terminal-based AI assistant CLI tools (e.g. Copilot, Claude, Gemini CLIs) and automatically appends them to your local project logs.
+              </p>
+              {renderCodeBlock("cmd-capture-run", "autodev prompts capture <command> [args...]")}
+            </div>
+
+            <div>
+              <h3 className="text-lg font-bold text-white mb-1">
+                autodev prompts daemon (or autodev daemon)
+              </h3>
+              <p className="text-neutral-400 text-sm mb-2">
+                Starts a background monitoring daemon that automatically records command-line prompts and activity from active editor/AI assistant sessions without needing to manually run wrapper commands.
+              </p>
+              {renderCodeBlock("cmd-daemon-run", "autodev prompts daemon")}
+            </div>
+
+            <div>
+              <h3 className="text-lg font-bold text-white mb-1">
+                autodev prompts replay (or autodev replay)
+              </h3>
+              <p className="text-neutral-400 text-sm mb-2">
+                Lists all recently captured prompts from the latest session, allowing you to select and re-execute a prompt (along with any suggested file creations or shell commands) against your current codebase.
+              </p>
+              {renderCodeBlock("cmd-replay-run", "autodev prompts replay")}
+            </div>
+
+            <div>
+              <h3 className="text-lg font-bold text-white mb-1">
+                autodev prompts export-prompts (or autodev export-prompts)
+              </h3>
+              <p className="text-neutral-400 text-sm mb-2">
+                Consolidates and exports all captured prompt logs into a single Markdown or JSON file.
+              </p>
+              {renderCodeBlock("cmd-export-run-cli", "autodev prompts export-prompts -o backup.md -f markdown")}
+            </div>
+
+            <div>
+              <h3 className="text-lg font-bold text-white mb-1">
+                autodev prompts sync (or autodev sync)
+              </h3>
+              <p className="text-neutral-400 text-sm mb-2">
+                Synchronizes any offline-queued prompt events (such as prompts written while offline) to the remote DevMentor API.
+              </p>
+              {renderCodeBlock("cmd-sync-run", "autodev prompts sync")}
+            </div>
+          </div>
+
+          <h2 className="text-xl font-bold text-white mt-8 mb-2">
+            Terminal Output
+          </h2>
+          <img
+            src="/screenshot-prompts.png"
+            alt="autodev prompts CLI Output"
+            className="my-4 border-2 border-[#2A2A2A] rounded-md max-w-full shadow-lg"
+          />
         </>
       ),
     },

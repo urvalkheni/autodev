@@ -47,7 +47,7 @@ func runChat() error {
 	if err != nil {
 		return fmt.Errorf("failed to initialize session: %w", err)
 	}
-	defer engine.EndSession()
+	defer func() { _ = engine.EndSession() }()
 
 	fmt.Println()
 	fmt.Println(titleStyle.Render("  ⚡ AutoDev Prompt Capture Chat Engine v0.3.2"))

@@ -276,7 +276,7 @@ func UpdateMetadataJSON(root string, newTechs []string) error {
 		// Keep original case
 		found := false
 		for _, existing := range meta.Technologies {
-			if strings.ToLower(existing) == strings.ToLower(t) {
+			if strings.EqualFold(existing, t) {
 				found = true
 				break
 			}
@@ -387,7 +387,7 @@ func FindActiveAISessions() ([]AIProcess, error) {
 				}
 			}
 			pid := 0
-			fmt.Sscanf(name, "%d", &pid)
+			_, _ = fmt.Sscanf(name, "%d", &pid)
 
 			processes = append(processes, AIProcess{
 				PID:     pid,

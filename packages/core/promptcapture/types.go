@@ -104,3 +104,61 @@ func (ee *EventEmitter) Emit(event Event) {
 		}
 	}
 }
+
+func (pm ProjectMetadata) Clone() ProjectMetadata {
+	clone := pm
+	if pm.Languages != nil {
+		clone.Languages = make([]string, len(pm.Languages))
+		copy(clone.Languages, pm.Languages)
+	}
+	if pm.Frameworks != nil {
+		clone.Frameworks = make([]string, len(pm.Frameworks))
+		copy(clone.Frameworks, pm.Frameworks)
+	}
+	return clone
+}
+
+func (ec ExecutedCommand) Clone() ExecutedCommand {
+	clone := ec
+	if ec.Args != nil {
+		clone.Args = make([]string, len(ec.Args))
+		copy(clone.Args, ec.Args)
+	}
+	return clone
+}
+
+func (pe PromptEvent) Clone() PromptEvent {
+	clone := pe
+	clone.Metadata = pe.Metadata.Clone()
+	if pe.ExecutedCommands != nil {
+		clone.ExecutedCommands = make([]ExecutedCommand, len(pe.ExecutedCommands))
+		for i, cmd := range pe.ExecutedCommands {
+			clone.ExecutedCommands[i] = cmd.Clone()
+		}
+	}
+	if pe.GeneratedFiles != nil {
+		clone.GeneratedFiles = make([]GeneratedFile, len(pe.GeneratedFiles))
+		copy(clone.GeneratedFiles, pe.GeneratedFiles)
+	}
+	return clone
+}
+
+func (s *SessionLog) Clone() *SessionLog {
+	if s == nil {
+		return nil
+	}
+	clone := &SessionLog{
+		SessionID: s.SessionID,
+		StartTime: s.StartTime,
+		EndTime:   s.EndTime,
+		Metadata:  s.Metadata.Clone(),
+	}
+	if s.Events != nil {
+		clone.Events = make([]PromptEvent, len(s.Events))
+		for i, ev := range s.Events {
+			clone.Events[i] = ev.Clone()
+		}
+	}
+	return clone
+}
+

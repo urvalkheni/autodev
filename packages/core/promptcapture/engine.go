@@ -225,7 +225,7 @@ func (e *Engine) StartSession() error {
 
 	e.Emitter.Emit(Event{
 		Type:      EventSessionStarted,
-		Payload:   e.Session,
+		Payload:   e.Session.Clone(),
 		Timestamp: e.Session.StartTime,
 	})
 
@@ -295,7 +295,7 @@ func (e *Engine) AddEvent(prompt string, response string, cmds []ExecutedCommand
 
 	e.Emitter.Emit(Event{
 		Type:      EventPromptCaptured,
-		Payload:   ev,
+		Payload:   ev.Clone(),
 		Timestamp: ev.Timestamp,
 	})
 
@@ -369,7 +369,7 @@ func (e *Engine) EndSession() error {
 	e.Session.EndTime = time.Now()
 	e.Emitter.Emit(Event{
 		Type:      EventSessionEnded,
-		Payload:   e.Session,
+		Payload:   e.Session.Clone(),
 		Timestamp: e.Session.EndTime,
 	})
 

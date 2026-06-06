@@ -952,7 +952,7 @@ export default function DocsClient() {
             By default, running this command opens the master <code className="font-mono text-neutral-400">prompts.md</code> file in your terminal pager (less), displaying a complete history of all captured AI coding prompts.
           </p>
           <Callout type="tip" title="Today's Session Summary">
-            Run <code className="text-[#00FF87] font-mono font-bold bg-[#111] px-1.5 py-0.5 rounded">autodev prompts --today</code> to print a timeline of today's active captured prompts directly in the console.
+            Run <code className="text-[#00FF87] font-mono font-bold bg-[#111] px-1.5 py-0.5 rounded">autodev prompts --today</code> to print a timeline of today&apos;s active captured prompts directly in the console.
           </Callout>
 
           <h2 className="text-2xl font-bold text-[#FFD700] mt-8 mb-4">

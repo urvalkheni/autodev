@@ -104,7 +104,3 @@ go.work.sum
 
 # Antigravity CLI config
 .antigravitycli/
-
-# Local AutoDev captured prompt sessions & files
-.autodevs/
-prompts.md

@@ -1,0 +1,82 @@
+[
+  {
+    "type": "session.started",
+    "payload": {
+      "end_time": "0001-01-01T00:00:00Z",
+      "events": [],
+      "metadata": {
+        "branch": "main",
+        "commit": "a47f481",
+        "frameworks": [],
+        "languages": [
+          "JavaScript"
+        ],
+        "path": "/media/heet18/Futuristic1/Heet/Github/Autodev",
+        "project_name": "Autodev"
+      },
+      "session_id": "2026-06-05-1",
+      "start_time": "2026-06-05T17:29:43.249164137+05:30"
+    },
+    "timestamp": "2026-06-05T17:29:43.249164137+05:30"
+  },
+  {
+    "type": "session.started",
+    "payload": {
+      "end_time": "0001-01-01T00:00:00Z",
+      "events": [],
+      "metadata": {
+        "branch": "main",
+        "commit": "a47f481",
+        "frameworks": [],
+        "languages": [
+          "JavaScript"
+        ],
+        "path": "/media/heet18/Futuristic1/Heet/Github/Autodev",
+        "project_name": "Autodev"
+      },
+      "session_id": "2026-06-05-2",
+      "start_time": "2026-06-05T17:29:52.705529863+05:30"
+    },
+    "timestamp": "2026-06-05T17:29:52.705529863+05:30"
+  },
+  {
+    "type": "prompt.captured",
+    "payload": {
+      "id": "prompt_1",
+      "metadata": {
+        "branch": "main",
+        "commit": "a47f481",
+        "frameworks": [],
+        "languages": [
+          "JavaScript"
+        ],
+        "path": "/media/heet18/Futuristic1/Heet/Github/Autodev",
+        "project_name": "Autodev"
+      },
+      "prompt": "export GEMINI_API_KEY=\"your_api_key_here\"",
+      "response": "I've received your prompt: \"export GEMINI_API_KEY=\"your_api_key_here\"\".\nLet's run a doctor toolchain health diagnostics scan to make sure the environment is fully compliant.\n\n[RUN_COMMAND:autodev doctor]\n",
+      "timestamp": "2026-06-05T17:30:52.466316313+05:30"
+    },
+    "timestamp": "2026-06-05T17:30:52.466316313+05:30"
+  },
+  {
+    "type": "session.started",
+    "payload": {
+      "session_id": "2026-06-05-3",
+      "start_time": "2026-06-05T17:34:51.200082703+05:30",
+      "end_time": "0001-01-01T00:00:00Z",
+      "events": [],
+      "metadata": {
+        "project_name": "Autodev",
+        "path": "/media/heet18/Futuristic1/Heet/Github/Autodev",
+        "branch": "main",
+        "commit": "a47f481",
+        "languages": [
+          "JavaScript"
+        ],
+        "frameworks": []
+      }
+    },
+    "timestamp": "2026-06-05T17:34:51.200082703+05:30"
+  }
+]

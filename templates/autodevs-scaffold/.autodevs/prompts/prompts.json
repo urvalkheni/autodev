@@ -1,0 +1,7 @@
+[
+  {
+    "timestamp": "2026-06-05T17:30:52.4663704+05:30",
+    "session_id": "2026-06-05-2",
+    "prompt": "export GEMINI_API_KEY=\"your_api_key_here\""
+  }
+]

@@ -49,6 +49,7 @@ type GeneratedFile struct {
 
 type PromptEvent struct {
 	ID               string            `json:"id"`
+	SessionID        string            `json:"session_id,omitempty"`
 	Timestamp        time.Time         `json:"timestamp"`
 	Prompt           string            `json:"prompt"`
 	Response         string            `json:"response"`

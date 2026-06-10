@@ -32,8 +32,11 @@ func TestEngineLifecycle(t *testing.T) {
 		t.Errorf("expected engine Root to be %s, got %s", tempDir, engine.Root)
 	}
 
-	// Verify dirs were created
-	dirs := []string{"sessions", "prompts", "workflows", "analytics"}
+	// Verify dirs were created (capture + Ralph Loop supply chain)
+	dirs := []string{
+		"sessions", "prompts", "workflows", "analytics",
+		"todo", "completed", "failed", "logs", "plans", "loops", "memory", "context", "agents",
+	}
 	for _, d := range dirs {
 		path := filepath.Join(tempDir, ".autodevs", d)
 		if _, err := os.Stat(path); os.IsNotExist(err) {

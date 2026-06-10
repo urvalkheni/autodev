@@ -51,6 +51,16 @@ func InitDirs(root string) error {
 		filepath.Join(root, ".autodevs", "prompts"),
 		filepath.Join(root, ".autodevs", "workflows"),
 		filepath.Join(root, ".autodevs", "analytics"),
+		// Ralph Loop + DevMentor supply chain (v0.4+)
+		filepath.Join(root, ".autodevs", "todo"),
+		filepath.Join(root, ".autodevs", "completed"),
+		filepath.Join(root, ".autodevs", "failed"),
+		filepath.Join(root, ".autodevs", "logs"),
+		filepath.Join(root, ".autodevs", "plans"),
+		filepath.Join(root, ".autodevs", "loops"),
+		filepath.Join(root, ".autodevs", "memory"),
+		filepath.Join(root, ".autodevs", "context"),
+		filepath.Join(root, ".autodevs", "agents"),
 	}
 	for _, d := range dirs {
 		if err := os.MkdirAll(d, 0755); err != nil {
@@ -280,6 +290,7 @@ func (e *Engine) AddEvent(prompt string, response string, cmds []ExecutedCommand
 	eventID := fmt.Sprintf("prompt_%d", len(e.Session.Events)+1)
 	ev := PromptEvent{
 		ID:               eventID,
+		SessionID:        e.Session.SessionID,
 		Timestamp:        time.Now(),
 		Prompt:           prompt,
 		Response:         response,
@@ -491,16 +502,26 @@ func (e *Engine) SyncOfflineEvents() (int, error) {
 }
 
 func (e *Engine) sendToDevMentor(event Event) error {
+	sessionID := ""
+	if m, ok := event.Payload.(map[string]interface{}); ok {
+		if sid, ok := m["session_id"].(string); ok {
+			sessionID = sid
+		}
+	} else if promptEv, ok := event.Payload.(PromptEvent); ok {
+		sessionID = promptEv.SessionID
+	} else if promptEvPtr, ok := event.Payload.(*PromptEvent); ok {
+		sessionID = promptEvPtr.SessionID
+	} else if sessionLog, ok := event.Payload.(SessionLog); ok {
+		sessionID = sessionLog.SessionID
+	} else if sessionLogPtr, ok := event.Payload.(*SessionLog); ok {
+		sessionID = sessionLogPtr.SessionID
+	}
+
 	payload := DevMentorEventPayload{
 		Event:     string(event.Type),
+		SessionID: sessionID,
 		Timestamp: event.Timestamp.Format(time.RFC3339),
 		Data:      event.Payload,
-	}
-	
-	if promptEv, ok := event.Payload.(PromptEvent); ok {
-		payload.SessionID = promptEv.ID
-	} else if sessionEv, ok := event.Payload.(*SessionLog); ok {
-		payload.SessionID = sessionEv.SessionID
 	}
 
 	body, err := json.Marshal(payload)
